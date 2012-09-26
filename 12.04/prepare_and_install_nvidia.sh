@@ -1,5 +1,8 @@
 #!/bin/sh
 
+VIDEO_DRIVER="nvidia-current"
+VIDEO_MANUFACTURER="NVIDIA"
+
 echo ""
 echo "-----------"
 echo ""
@@ -21,7 +24,8 @@ sudo echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal
 sudo echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list
 
 sudo apt-key -y adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null
-sudo apt-get update && apt-get -y dist-upgrade > /dev/null
+sudo apt-get update > /dev/null 
+sudo apt-get -y dist-upgrade > /dev/null
 
 echo "Wsnipex xbmc-xvba-testing PPA successfully added"
 
@@ -37,12 +41,12 @@ echo "Installing lightdm (this will take a while)..."
 sudo apt-get -y install lightdm > /dev/null
 
 echo "Lightdm successfully installed"
-echo "Installing NVIDIA video drivers..."
+echo "Installing $VIDEO_MANUFACTURER video drivers..."
 
 ## Install nvidia video drivers
-sudo apt-get -y install nvidia-current > /dev/null
+sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 
-echo "NVIDIA video drivers successfully installed"
+echo "$VIDEO_MANUFACTURER video drivers successfully installed"
 echo "Rebooting..."
 
 ## Reboot
