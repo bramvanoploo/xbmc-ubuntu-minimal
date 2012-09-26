@@ -45,6 +45,11 @@ echo "Installing $VIDEO_MANUFACTURER video drivers..."
 sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 
 echo "$VIDEO_MANUFACTURER video drivers successfully installed"
+echo "Installing XBMC-live..."
+
+sudo apt-get install xbmc-live
+
+echo "XBMC-live successfully installed"
 echo "Rebooting..."
 
 ## Reboot
