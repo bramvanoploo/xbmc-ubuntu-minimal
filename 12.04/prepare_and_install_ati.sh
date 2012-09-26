@@ -38,7 +38,7 @@ echo "Lightdm successfully installed"
 echo "Installing nvidia video drivers..."
 
 ## Install nvidia video drivers
-apt-get -y install nvidia-current > /dev/null
+apt-get -y install fglrx > /dev/null
 
 echo "Nvidia video drivers successfully installed"
 echo "Rebooting..."
