@@ -5,7 +5,6 @@ echo "-----------"
 echo ""
 echo "Please enter your password to start Ubuntu preparation and XBMC installation."
 echo "Your computer will restart automatically once the process has been completed."
-sudo su
 
 ## Fix locale bug
 sudo echo "LC_MESSAGES=\"C\"" >> /etc/environment
