@@ -21,7 +21,7 @@ echo "Adding Wsnipex xbmc-xvba-testing PPA..."
 sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list'
 sudo sh -c 'echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list'
 
-sudo apt-key -y adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null
 sudo apt-get update > /dev/null
 sudo apt-get -y dist-upgrade > /dev/null
 
@@ -47,7 +47,7 @@ sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 echo "$VIDEO_MANUFACTURER video drivers successfully installed"
 echo "Installing XBMC-live..."
 
-sudo apt-get -y install xbmc-live
+sudo apt-get -y install xbmc-live > /dev/null
 
 echo "XBMC-live successfully installed"
 echo "Rebooting..."
