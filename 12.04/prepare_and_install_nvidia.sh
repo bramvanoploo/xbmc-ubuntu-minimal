@@ -35,12 +35,12 @@ echo "Installing lightdm (this will take a while)..."
 apt-get -y install lightdm > /dev/null
 
 echo "Lightdm successfully installed"
-echo "Installing nvidia video drivers..."
+echo "Installing NVIDIA video drivers..."
 
 ## Install nvidia video drivers
 apt-get -y install nvidia-current > /dev/null
 
-echo "Nvidia video drivers successfully installed"
+echo "NVIDIA video drivers successfully installed"
 echo "Rebooting..."
 
 ## Reboot

@@ -35,12 +35,12 @@ echo "Installing lightdm (this will take a while)..."
 apt-get -y install lightdm > /dev/null
 
 echo "Lightdm successfully installed"
-echo "Installing nvidia video drivers..."
+echo "Installing Ati video drivers..."
 
 ## Install nvidia video drivers
 apt-get -y install fglrx > /dev/null
 
-echo "Nvidia video drivers successfully installed"
+echo "Ati video drivers successfully installed"
 echo "Rebooting..."
 
 ## Reboot
