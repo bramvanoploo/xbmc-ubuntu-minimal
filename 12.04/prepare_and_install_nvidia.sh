@@ -10,16 +10,16 @@ echo "Please enter your password to start Ubuntu preparation and XBMC installati
 echo "Your computer will restart automatically once the process has been completed."
 
 ## Fix locale bug
-sudo echo "LC_MESSAGES=\"C\"" >> /etc/environment
-sudo echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment
+sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
+sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
 
 echo "-----"
 echo "Locale environment bug successfully fixed"
 echo "Adding Wsnipex xbmc-xvba-testing PPA..."
 
 ## Add XBMCbuntu testing ppa to sources.list and reload repositories
-echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" | sudo tee -a /etc/apt/sources.list
+sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list'
+sudo sh -c 'echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list'
 
 sudo apt-key -y adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null
 sudo apt-get update > /dev/null
