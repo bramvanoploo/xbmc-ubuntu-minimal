@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VIDEO_DRIVER="fglrx"
+VIDEO_DRIVER="fgrlx"
 VIDEO_MANUFACTURER="ATI"
 
 SOURCES_FILE="/etc/apt/sources.list"
@@ -8,7 +8,7 @@ SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
 ENVIRONMENT_FILE="/etc/environment" 
 ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
 INIT_FILE="/etc/init.d/xbmc"
-LOG_FILE=$$.log
+XBMC_ADDONS_DIR="~/.xbmc/addons/"
 
 echo ""
 echo "-----------"
@@ -71,16 +71,28 @@ sudo apt-get -y install xbmc > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* XBMC successfully installed$(tput sgr0)"
 echo ""
+echo "$(tput setaf 3)$(tput bold)Downloading and installing Addon installer plugin...$(tput sgr0)"
+
+mkdir ~/temp && cd ~/temp > /dev/null
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz
+
+if [ ! -d $XBMC_ADDONS_DIR ];
+then
+	mkdir $XBMC_ADDONS_DIR > /dev/null
+fi
+
+tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null
+
+echo "$(tput setaf 2)$(tput bold)* Addon installer plugin successfully installed$(tput sgr0)"
+echo ""
 echo "$(tput setaf 3)$(tput bold)Installing $VIDEO_MANUFACTURER video drivers...$(tput sgr0)"
 
-## Install nvidia video drivers
 sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfully installed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Downloading and applying xbmc init.d script$(tput sgr0)"
 
-mkdir ~/temp && cd ~/temp > /dev/null
 wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/xbmc_init_script > /dev/null
 
 if [ -f $INIT_FILE ];
@@ -89,7 +101,6 @@ then
 fi
 
 sudo mv ./xbmc_init_script $INIT_FILE > /dev/null
-sudo rm -r ~/temp > /dev/null
 sudo chmod a+x /etc/init.d/xbmc > /dev/null
 sudo update-rc.d xbmc defaults > /dev/null
 
@@ -100,7 +111,10 @@ echo ""
 #sudo dpkg-reconfigure x11-common
 
 # echo "* X-server successfully reconfigured"
+echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
+
+sudo rm -r ~/temp > /dev/null
+
 echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
 
-## Reboot
 sudo reboot now > /dev/null
