@@ -91,7 +91,7 @@ echo ""
 #sudo dpkg-reconfigure x11-common
 
 # echo "* X-server successfully reconfigured"
-echo "$(tput setaf 6)$(tput bold)Do you wish to reboot now...$(tput sgr0)"
+echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
 
 ## Reboot
-sudo reboot now
+sudo reboot now > /dev/null
