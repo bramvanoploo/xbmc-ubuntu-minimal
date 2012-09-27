@@ -59,7 +59,7 @@ echo ""
 echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
 echo "$(tput setaf 1)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
 
-sudo apt-get -y install alsa alsa-utils pulseaudio
+sudo apt-get -y install alsa alsa-utils pulseaudio > /dev/null
 sudo alsamixer
 
 echo "$(tput setaf 2)$(tput bold)* Audio packages successfully installed$(tput sgr0)"
@@ -80,7 +80,7 @@ echo ""
 echo "$(tput setaf 3)$(tput bold)Downloading and applying xbmc init.d script$(tput sgr0)"
 
 mkdir ~/temp && cd ~/temp > /dev/null
-wget https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/xbmc_init_script > /dev/null
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/xbmc_init_script
 
 if [ -f $INIT_FILE ];
 then
