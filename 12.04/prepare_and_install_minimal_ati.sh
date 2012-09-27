@@ -116,7 +116,7 @@ then
 fi
 
 sudo touch $XWRAPPER_FILE > /dev/null
-sudo sh -c 'echo "allowed_users=anybody" >> $XWRAPPER_FILE'
+sudo sh -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
 #sudo dpkg-reconfigure x11-common
 
 echo "* X-server successfully reconfigured"
