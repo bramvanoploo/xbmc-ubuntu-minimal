@@ -62,6 +62,7 @@ echo ""
 echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
 echo "$(tput setaf 1)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
 
+sudo usermod -a -G audio xbmc > /dev/null
 sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null
 sudo alsamixer
 
