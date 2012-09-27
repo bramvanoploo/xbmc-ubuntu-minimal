@@ -60,7 +60,7 @@ echo ""
 echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
 echo "$(tput setaf 1)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
 
-sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio linux-image-`uname -r` libasound2 > /dev/null
+sudo apt-get -y install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null
 sudo alsamixer
 
 echo "$(tput setaf 2)$(tput bold)* Audio packages successfully installed$(tput sgr0)"
