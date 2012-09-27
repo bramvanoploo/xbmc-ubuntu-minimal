@@ -5,11 +5,12 @@ VIDEO_MANUFACTURER="NVIDIA"
 SOURCES_FILE="/etc/apt/sources.list"
 SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
 ENVIRONMENT_FILE="/etc/environment" 
-ENVIRONMENT_BACKUP_FILE="/etc/environment.bak" 
+ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
+INIT_FILE="/etc/init.d/xbmc" 
 
 echo ""
 echo "-----------"
-echo ">> Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress."
+echo ">> Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput setaf 4)"
 echo ">> The installation of some packages may take a while depending on your internet connection speed."
 echo ""
 echo "Your computer will restart automatically once the process has been completed!"
@@ -67,7 +68,13 @@ echo "Downloading and applying xbmc init.d script"
 
 mkdir ~/temp && cd ~/temp > /dev/null
 wget https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/xbmc_init_script > /dev/null
-sudo mv ./xbmc_init_script /etc/init.d/xbmc > /dev/null
+
+if [ -f $INIT_FILE ];
+then
+	sudo rm $INIT_FILE > /dev/null
+fi
+
+sudo mv ./xbmc_init_script $INIT_FILE > /dev/null
 sudo rm -r ~/temp > /dev/null
 sudo chmod a+x /etc/init.d/xbmc > /dev/null
 sudo update-rc.d xbmc defaults > /dev/null
