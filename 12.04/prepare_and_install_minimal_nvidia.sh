@@ -9,7 +9,6 @@ ENVIRONMENT_FILE="/etc/environment"
 ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
 INIT_FILE="/etc/init.d/xbmc"
 LOG_FILE=$$.log
-exec > $LOG_FILE 2>&1
 
 echo ""
 echo "-----------"
