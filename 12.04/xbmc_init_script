@@ -25,7 +25,7 @@ NAME=xbmc
 DESC=XBMC
 
 # user
-RUN_AS=sterfield
+RUN_AS=xbmc
 
 # Path of the PID file
 PID_FILE=/var/run/xbmc.pid
