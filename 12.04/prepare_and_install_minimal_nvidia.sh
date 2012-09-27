@@ -13,7 +13,7 @@ echo "-----------"
 echo ">> Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput setaf 3)$(tput bold)"
 echo ">> The installation of some packages may take a while depending on your internet connection speed.$(tput setaf 3)$(tput bold)"
 echo ""
-echo "Your computer will restart automatically once the process has been completed!$(tput setaf 1)$(tput bold)"
+echo "Your computer will restart automatically once the process has been completed!$(tput setaf 3)$(tput bold)"
 
 if [ -f $ENVIRONMENT_BACKUP_FILE ];
 then
@@ -85,7 +85,7 @@ echo "* init.d script succesfully downloaded and applied$(tput setaf 2)$(tput bo
 #sudo dpkg-reconfigure x11-common
 
 # echo "* X-server successfully reconfigured"
-echo "Rebooting system...$(tput setaf 1)$(tput bold)"
+echo "Rebooting system...$(tput sgr0)"
 
 ## Reboot
 sudo reboot now > /dev/null
