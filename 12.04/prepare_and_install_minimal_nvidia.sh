@@ -28,7 +28,7 @@ sudo apt-get -y dist-upgrade > /dev/null
 echo "Wsnipex xbmc-xvba-testing PPA successfully added"
 echo "Installing xinit..."
 
-sudo apt-get install xinit > /dev/null
+sudo apt-get -y install xinit > /dev/null
 
 echo "Xinit successfully installed"
 echo "Installing XBMC..."
