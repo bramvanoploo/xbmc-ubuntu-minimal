@@ -3,7 +3,7 @@
 VIDEO_DRIVER="nvidia-current"
 VIDEO_MANUFACTURER="NVIDIA"
 SOURCES_FILE="/etc/apt/sources.list"
-SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
+SOURCES_BACKUP_FILE="/etc/apt/sources.list.orig"
 ENVIRONMENT_FILE="/etc/environment" 
 ENVIRONMENT_BACKUP_FILE="/etc/environment.bak" 
 
@@ -21,8 +21,8 @@ else
 	sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null
 fi
 
-sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> $ENVIRONMENT_FILE'
-sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> $ENVIRONMENT_FILE'
+sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
+sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
 
 echo "-----"
 echo "Locale environment bug successfully fixed"
@@ -74,7 +74,7 @@ echo "init.d script succesfully downloaded and applied"
 
 #sudo dpkg-reconfigure x11-common
 
-#echo "X-server successfully reconfigured"
+echo "X-server successfully reconfigured"
 echo "Rebooting system..."
 
 ## Reboot
