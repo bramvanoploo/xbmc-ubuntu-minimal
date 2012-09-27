@@ -36,18 +36,23 @@ echo "Installing XBMC..."
 sudo apt-get -y install xbmc > /dev/null
 
 echo "XBMC successfully installed"
-
-
-
-
 echo "Installing $VIDEO_MANUFACTURER video drivers..."
 
 ## Install nvidia video drivers
 sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 
 echo "$VIDEO_MANUFACTURER video drivers successfully installed"
+echo "Downloading and applying xbmc init.d script"
 
-echo "Rebooting..."
+mkdir ~/temp && cd ~/temp > /dev/null
+wget https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/xbmc_init_script > /dev/null
+sudo mv ./xbmc_init_script /etc/init.d/xbmc > /dev/null
+sudo rm -r ~/temp > /dev/null
+sudo chmod a+x /etc/init.d/xbmc > /dev/null
+sudo update-rc.d xbmc defaults > /dev/null
+
+echo "init.d script succesfully downloaded and applied"
+echo "Rebooting system..."
 
 ## Reboot
 sudo reboot now > /dev/null
