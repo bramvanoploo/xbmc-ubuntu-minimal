@@ -2,6 +2,10 @@
 
 VIDEO_DRIVER="nvidia-current"
 VIDEO_MANUFACTURER="NVIDIA"
+SOURCES_FILE="/etc/apt/sources.list"
+SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
+ENVIRONMENT_FILE="/etc/environment" 
+ENVIRONMENT_BACKUP_FILE="/etc/environment.bak" 
 
 echo ""
 echo "-----------"
@@ -9,17 +13,31 @@ echo ""
 echo "Please enter your password to start Ubuntu preparation and XBMC installation."
 echo "Your computer will restart automatically once the process has been completed."
 
-## Fix locale bug
-sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
-sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
+if [ -f $ENVIRONMENT_BACKUP_FILE ];
+then
+	sudo rm $ENVIRONMENT_FILE > /dev/null
+	sudo cp $ENVIRONMENT_BACKUP_FILE $ENVIRONMENT_FILE > /dev/null
+else
+	sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null
+fi
+
+sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> $ENVIRONMENT_FILE'
+sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> $ENVIRONMENT_FILE'
 
 echo "-----"
 echo "Locale environment bug successfully fixed"
 echo "Adding Wsnipex xbmc-xvba-testing PPA..."
 
-## Add XBMCbuntu testing ppa to sources.list and reload repositories
-sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list'
-sudo sh -c 'echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list'
+if [ -f $SOURCES_BACKUP_FILE ];
+then
+	sudo rm $SOURCES_FILE > /dev/null
+	sudo cp $SOURCES_BACKUP_FILE $SOURCES_FILE > /dev/null
+else
+	sudo cp $SOURCES_FILE $SOURCES_BACKUP_FILE > /dev/null
+fi
+
+sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
+sudo sh -c 'echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null
 sudo apt-get update > /dev/null
@@ -33,7 +51,7 @@ sudo apt-get -y install xinit > /dev/null
 echo "Xinit successfully installed"
 echo "Installing XBMC..."
 
-sudo apt-get -y install xbmc > /dev/null
+sudo apt-get -y install xbmc-standalone > /dev/null
 
 echo "XBMC successfully installed"
 echo "Installing $VIDEO_MANUFACTURER video drivers..."
@@ -52,11 +70,11 @@ sudo chmod a+x /etc/init.d/xbmc > /dev/null
 sudo update-rc.d xbmc defaults > /dev/null
 
 echo "init.d script succesfully downloaded and applied"
-echo "Reconfiguring X-server..."
+#echo "Reconfiguring X-server..."
 
-sudo dpkg-reconfigure x11-common
+#sudo dpkg-reconfigure x11-common
 
-echo "X-server successfully reconfigured"
+#echo "X-server successfully reconfigured"
 echo "Rebooting system..."
 
 ## Reboot
