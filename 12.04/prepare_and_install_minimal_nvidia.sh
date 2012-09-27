@@ -52,6 +52,11 @@ sudo chmod a+x /etc/init.d/xbmc > /dev/null
 sudo update-rc.d xbmc defaults > /dev/null
 
 echo "init.d script succesfully downloaded and applied"
+echo "Reconfiguring X-server..."
+
+sudo dpkg-reconfigure x11-common
+
+echo "X-server successfully reconfigured"
 echo "Rebooting system..."
 
 ## Reboot
