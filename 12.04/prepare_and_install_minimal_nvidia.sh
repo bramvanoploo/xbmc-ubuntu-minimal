@@ -56,9 +56,16 @@ sudo apt-get -y install xinit > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* Xinit successfully installed$(tput sgr0)"
 echo ""
+echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
+echo "$(tput setaf 1)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
+
+sudo apt-get -y install alsa alsa-utils pulseaudio
+sudo alsamixer
+
+echo "$(tput setaf 2)$(tput bold)* Audio packages successfully installed$(tput sgr0)"
+echo ""
 echo "$(tput setaf 3)$(tput bold)Installing XBMC...$(tput sgr0)"
 
-sudo apt-get -y install  alsa alsa-utils pulseaudio
 sudo apt-get -y install xbmc > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* XBMC successfully installed$(tput sgr0)"
