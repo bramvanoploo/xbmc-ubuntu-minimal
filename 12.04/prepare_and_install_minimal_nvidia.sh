@@ -3,7 +3,7 @@
 VIDEO_DRIVER="nvidia-current"
 VIDEO_MANUFACTURER="NVIDIA"
 SOURCES_FILE="/etc/apt/sources.list"
-SOURCES_BACKUP_FILE="/etc/apt/sources.list.orig"
+SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
 ENVIRONMENT_FILE="/etc/environment" 
 ENVIRONMENT_BACKUP_FILE="/etc/environment.bak" 
 
