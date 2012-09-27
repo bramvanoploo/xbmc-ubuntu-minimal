@@ -51,7 +51,7 @@ sudo apt-get -y install xinit > /dev/null
 echo "Xinit successfully installed"
 echo "Installing XBMC..."
 
-sudo apt-get -y install xbmc-standalone > /dev/null
+sudo apt-get -y install xbmc > /dev/null
 
 echo "XBMC successfully installed"
 echo "Installing $VIDEO_MANUFACTURER video drivers..."
