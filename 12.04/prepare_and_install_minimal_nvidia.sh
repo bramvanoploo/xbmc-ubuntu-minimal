@@ -58,6 +58,7 @@ echo "$(tput setaf 2)$(tput bold)* Xinit successfully installed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing XBMC...$(tput sgr0)"
 
+sudo apt-get -y install  alsa alsa-utils pulseaudio
 sudo apt-get -y install xbmc > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* XBMC successfully installed$(tput sgr0)"
