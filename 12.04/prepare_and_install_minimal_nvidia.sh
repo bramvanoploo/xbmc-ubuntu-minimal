@@ -9,6 +9,8 @@ ENVIRONMENT_FILE="/etc/environment"
 ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
 INIT_FILE="/etc/init.d/xbmc"
 XBMC_ADDONS_DIR="~/.xbmc/addons/"
+XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
+XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 echo ""
 echo "-----------"
@@ -78,7 +80,7 @@ wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.p
 
 if [ ! -d $XBMC_ADDONS_DIR ];
 then
-	mkdir $XBMC_ADDONS_DIR > /dev/null
+	mkdir -p $XBMC_ADDONS_DIR > /dev/null
 fi
 
 tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null
@@ -106,11 +108,18 @@ sudo update-rc.d xbmc defaults > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* init.d script succesfully downloaded and applied$(tput sgr0)"
 echo ""
-#echo "Reconfiguring X-server..."
+echo "Reconfiguring X-server..."
 
+if [ ! -f $XWRAPPER_BACKUP_FILE ];
+then
+	sudo mv $XWRAPPER_FILE $XWRAPPER_BACKUP_FILE > /dev/null
+fi
+
+sudo touch $XWRAPPER_FILE > /dev/null
+sudo sh -c 'echo "allowed_users=anybody" >> $XWRAPPER_FILE'
 #sudo dpkg-reconfigure x11-common
 
-# echo "* X-server successfully reconfigured"
+echo "* X-server successfully reconfigured"
 echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
 
 sudo rm -r ~/temp > /dev/null
