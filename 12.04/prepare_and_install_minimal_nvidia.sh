@@ -109,7 +109,7 @@ sudo update-rc.d xbmc defaults > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* init.d script succesfully downloaded and applied$(tput sgr0)"
 echo ""
-echo "Reconfiguring X-server..."
+echo "$(tput setaf 3)$(tput bold)Reconfiguring X-server...$(tput sgr0)"
 
 if [ ! -f $XWRAPPER_BACKUP_FILE ];
 then
@@ -125,7 +125,7 @@ sudo touch $XWRAPPER_FILE > /dev/null
 sudo sh -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
 #sudo dpkg-reconfigure x11-common
 
-echo "* X-server successfully reconfigured"
+echo "$(tput setaf 2)$(tput bold)* X-server successfully reconfigured$(tput sgr0)"
 echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
 
 sudo rm -r ~/temp > /dev/null
