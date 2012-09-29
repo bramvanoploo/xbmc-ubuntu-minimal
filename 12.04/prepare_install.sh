@@ -169,4 +169,4 @@ sudo rm -r ~/temp > /dev/null
 echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
 echo ""
 
-rm $0 && sudo reboot now > /dev/null
+rm "./$0" && sudo reboot now > /dev/null
