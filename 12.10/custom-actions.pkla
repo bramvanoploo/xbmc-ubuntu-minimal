@@ -2,5 +2,5 @@
 Identity=unix-user:xbmc
 Action=org.freedesktop.upower.*;org.freedesktop.consolekit.system.*;org.freedesktop.udisks.*
 ResultAny=yes
-ResultInactive=no
+ResultInactive=yes
 ResultActive=yes
