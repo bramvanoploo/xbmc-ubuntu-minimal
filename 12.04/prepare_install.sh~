@@ -30,8 +30,8 @@ XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 echo ""
 echo ""
-echo "$(tput setaf 3)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
-echo "$(tput setaf 3)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
+echo "$(tput setaf 6)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
+echo "$(tput setaf 6)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
 echo ""
 
 if [ -f $ENVIRONMENT_BACKUP_FILE ];
@@ -52,11 +52,9 @@ echo "$(tput setaf 3)$(tput bold)Adding Wsnipex xbmc-xvba-testing PPA...$(tput s
 
 if [ -f $SOURCES_BACKUP_FILE ];
 then
-	echo "$(tput setaf 3)- Restoring original sources.list file$(tput sgr0)"
 	sudo rm $SOURCES_FILE > /dev/null
 	sudo cp $SOURCES_BACKUP_FILE $SOURCES_FILE > /dev/null
 else
-	echo "$(tput setaf 3)- Backing up original sources.list file$(tput sgr0)"
 	sudo cp $SOURCES_FILE $SOURCES_BACKUP_FILE > /dev/null
 fi
 

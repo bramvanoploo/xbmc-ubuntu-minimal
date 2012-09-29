@@ -30,8 +30,8 @@ XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 echo ""
 echo ""
-echo "$(tput setaf 3)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
-echo "$(tput setaf 3)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
+echo "$(tput setaf 6)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
+echo "$(tput setaf 6)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
 echo ""
 
 if [ -f $ENVIRONMENT_BACKUP_FILE ];
@@ -52,11 +52,9 @@ echo "$(tput setaf 3)$(tput bold)Adding Wsnipex xbmc-xvba-testing PPA...$(tput s
 
 if [ -f $SOURCES_BACKUP_FILE ];
 then
-	echo "$(tput setaf 3)- Restoring original sources.list file$(tput sgr0)"
 	sudo rm $SOURCES_FILE > /dev/null
 	sudo cp $SOURCES_BACKUP_FILE $SOURCES_FILE > /dev/null
 else
-	echo "$(tput setaf 3)- Backing up original sources.list file$(tput sgr0)"
 	sudo cp $SOURCES_FILE $SOURCES_BACKUP_FILE > /dev/null
 fi
 
@@ -82,7 +80,8 @@ sudo apt-get -y install upower acpi-support > /dev/null
 echo "$(tput setaf 2)$(tput bold)* Power management packages successfully installed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
-echo "$(tput setaf 6)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
+echo "$(tput setaf 6)$(tput bold)!! Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
+echo ""
 
 sudo usermod -a -G audio xbmc > /dev/null
 sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 upower acpi-support > /dev/null
