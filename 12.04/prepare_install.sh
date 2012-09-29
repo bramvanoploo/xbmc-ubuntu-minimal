@@ -2,7 +2,7 @@
 
 if [ "$1" == "ati" ];
 then
-	VIDEO_DRIVER="fgrlx"
+	VIDEO_DRIVER="fglrx"
 	VIDEO_MANUFACTURER="ATI"
 elif [ "$1" == "nvidia" ];
 then
@@ -126,13 +126,7 @@ echo "$(tput setaf 2)$(tput bold)* Addon repositories installer plugin successfu
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing $VIDEO_MANUFACTURER video drivers...$(tput sgr0)"
 
-if [ $2 == "test" ];
-then
-	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/install_ati_driver.sh
-	bash install_ati_driver.sh xbmc > /dev/null
-else
-	sudo apt-get -y install $VIDEO_DRIVER > /dev/null
-fi
+sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfully installed$(tput sgr0)"
 echo ""
