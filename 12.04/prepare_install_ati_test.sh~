@@ -127,7 +127,7 @@ echo "$(tput setaf 3)$(tput bold)Installing $VIDEO_MANUFACTURER video drivers...
 if [ $1 == "ati"];
 then
 	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/install_ati_driver.sh
-	bash install_ati_driver.sh > /dev/null
+	bash install_ati_driver.sh xbmc > /dev/null
 else
 	sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 fi
