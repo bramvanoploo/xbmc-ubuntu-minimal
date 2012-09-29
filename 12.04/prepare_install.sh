@@ -13,7 +13,9 @@ then
 	VIDEO_DRIVER="i965-va-driver"
 	VIDEO_MANUFACTURER="INTEL"
 else
+	echo ""
 	echo "$(tput setaf 1)$(tput bold)ERROR: Please provide the video card manufaturer parameter (ati / nvidia / intel)$(tput sgr0)"
+	echo ""
 	exit
 fi
 
