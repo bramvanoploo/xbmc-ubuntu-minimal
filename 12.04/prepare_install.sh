@@ -30,8 +30,8 @@ XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 echo ""
 echo ""
-echo "$(tput setaf 6)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
-echo "$(tput setaf 6)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
 echo ""
 
 if [ -f $ENVIRONMENT_BACKUP_FILE ];
@@ -159,13 +159,16 @@ sudo touch $XWRAPPER_FILE > /dev/null
 sudo sh -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
 #sudo dpkg-reconfigure x11-common
 
-echo "$(tput setaf 2)$(tput bold)** X-server successfully reconfigured$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)* X-server successfully reconfigured$(tput sgr0)"
 echo ""
 echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
 
+sudo apt-get -y autoclean
+sudo apt-get -y autoremove
 sudo rm -r ~/temp > /dev/null
+rm "/home/xbmc/$0"
 
 echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
 echo ""
 
-rm "/home/xbmc/$0" && sudo reboot now > /dev/null
+sudo reboot now > /dev/null
