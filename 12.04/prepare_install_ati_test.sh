@@ -1,21 +1,37 @@
-#!/bin/sh
+#!/bin/bash
 
-VIDEO_DRIVER="fgrlx"
-VIDEO_MANUFACTURER="ATI"
+if [ "$1" == "ati" ];
+then
+	VIDEO_DRIVER="fgrlx"
+	VIDEO_MANUFACTURER="ATI"
+elif [ "$1" == "nvidia" ];
+then
+	VIDEO_DRIVER="nvidia-current"
+	VIDEO_MANUFACTURER="NVIDIA"
+elif [ "$1" == "intel" ];
+then
+	VIDEO_DRIVER="i965-va-driver"
+	VIDEO_MANUFACTURER="INTEL"
+else
+	echo ""
+	echo "$(tput setaf 1)$(tput bold)ERROR: Please provide the video card manufaturer parameter (ati / nvidia / intel)$(tput sgr0)"
+	echo ""
+	exit
+fi
 
 SOURCES_FILE="/etc/apt/sources.list"
 SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
 ENVIRONMENT_FILE="/etc/environment" 
 ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
 INIT_FILE="/etc/init.d/xbmc"
-XBMC_ADDONS_DIR="~/.xbmc/addons/"
+XBMC_ADDONS_DIR="/home/xbmc/.xbmc/addons/"
 XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 echo ""
-echo "-----------"
-echo ">> $(tput setaf 3)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
-echo ">> $(tput setaf 3)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
+echo ""
+echo "$(tput setaf 2)$(tput bold)Please enter your password to start Ubuntu preparation and XBMC installation and be pation while the installation is in progress.$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)The installation of some packages may take a while depending on your internet connection speed.$(tput sgr0)"
 echo ""
 
 if [ -f $ENVIRONMENT_BACKUP_FILE ];
@@ -29,18 +45,16 @@ fi
 sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
 sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
 
-echo "$(tput setaf 3)-----"
+echo ""
 echo "$(tput setaf 2)$(tput bold)* Locale environment bug successfully fixed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Adding Wsnipex xbmc-xvba-testing PPA...$(tput sgr0)"
 
 if [ -f $SOURCES_BACKUP_FILE ];
 then
-	echo "$(tput setaf 3)- Restoring original sources.list file$(tput sgr0)"
 	sudo rm $SOURCES_FILE > /dev/null
 	sudo cp $SOURCES_BACKUP_FILE $SOURCES_FILE > /dev/null
 else
-	echo "$(tput setaf 3)- Backing up original sources.list file$(tput sgr0)"
 	sudo cp $SOURCES_FILE $SOURCES_BACKUP_FILE > /dev/null
 fi
 
@@ -59,14 +73,34 @@ sudo apt-get -y install xinit > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* Xinit successfully installed$(tput sgr0)"
 echo ""
+echo "$(tput setaf 3)$(tput bold)Installing power management packages...$(tput sgr0)"
+
+sudo apt-get -y install upower acpi-support > /dev/null
+
+echo "$(tput setaf 2)$(tput bold)* Power management packages successfully installed$(tput sgr0)"
+echo ""
 echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
-echo "$(tput setaf 1)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
+echo "$(tput setaf 6)$(tput bold)!! Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
+echo ""
 
 sudo usermod -a -G audio xbmc > /dev/null
-sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null
+sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 upower acpi-support > /dev/null
 sudo alsamixer
 
 echo "$(tput setaf 2)$(tput bold)* Audio packages successfully installed$(tput sgr0)"
+echo ""
+
+read -p "$(tput setaf 3)$(tput bold)Do you want to install and configure IR remote support (Y/n)? $(tput sgr0) " -n 1
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    sudo apt-get -y install lirc > /dev/null
+    echo ""
+    echo "$(tput setaf 2)$(tput bold)* Lirc successfully installed$(tput sgr0)"
+else
+	echo ""
+	echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
+fi
+
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing XBMC...$(tput sgr0)"
 
@@ -90,7 +124,12 @@ echo "$(tput setaf 2)$(tput bold)* Addon installer plugin successfully installed
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing $VIDEO_MANUFACTURER video drivers...$(tput sgr0)"
 
-sudo apt-get -y install $VIDEO_DRIVER > /dev/null
+if [ $1 == "ati"];
+then
+	wget -q 
+else
+	sudo apt-get -y install $VIDEO_DRIVER > /dev/null
+fi
 
 echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfully installed$(tput sgr0)"
 echo ""
@@ -125,11 +164,16 @@ sudo touch $XWRAPPER_FILE > /dev/null
 sudo sh -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config'
 #sudo dpkg-reconfigure x11-common
 
-echo "$(tput setaf 2)$(tput bold)** X-server successfully reconfigured$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)* X-server successfully reconfigured$(tput sgr0)"
+echo ""
 echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
 
+sudo apt-get -y autoclean > /dev/null
+sudo apt-get -y autoremove > /dev/null
 sudo rm -r ~/temp > /dev/null
+rm "/home/xbmc/$0"
 
 echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
+echo ""
 
 sudo reboot now > /dev/null
