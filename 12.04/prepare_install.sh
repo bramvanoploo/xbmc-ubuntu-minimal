@@ -165,8 +165,8 @@ fi
 
 sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null
 sudo sh -c 'echo "FRAMEBUFFER=y" >> /etc/initramfs-tools/conf.d/splash' > /dev/null
-sudo update-grub > /dev/null
-sudo update-initramfs -u > /dev/null
+sudo update-grub > /dev/null 2>&1
+sudo update-initramfs -u > /dev/null 2>&1
 
 echo "$(tput setaf 2)$(tput bold)* XBMC boot screen successfully installed$(tput sgr0)"
 echo ""
