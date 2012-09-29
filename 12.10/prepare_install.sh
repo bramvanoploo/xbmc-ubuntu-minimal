@@ -132,7 +132,7 @@ echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfull
 echo ""
 echo "$(tput setaf 3)$(tput bold)Downloading and applying xbmc init.d script$(tput sgr0)"
 
-wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/xbmc_init_script > /dev/null
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script > /dev/null
 
 if [ -f $INIT_FILE ];
 then
@@ -149,7 +149,7 @@ echo "$(tput setaf 3)$(tput bold)Installing XBMC boot screen...$(tput sgr0)"
 
 sudo apt-get -y install plymouth-label v86d > /dev/null
 cd $TEMP_DIRECTORY
-wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/plymouth-theme-xbmc-logo.deb
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb
 sudo dpkg -i plymouth-theme-xbmc-logo.deb > /dev/null
 
 if [ -f /etc/initramfs-tools/conf.d/splash ];
