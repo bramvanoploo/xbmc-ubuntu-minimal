@@ -48,10 +48,10 @@ echo ""
 echo "$(tput setaf 3)$(tput bold)Installing and configuring ATI drivers...$(tput sgr0)"
 
 chmod +x $DRIVER_FILE
-sh $DRIVER_FILE > /dev/null
-sudo aticonfig --initial -f > /dev/null
-sudo aticonfig --sync-vsync=on > /dev/null
-sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null
+#sh $DRIVER_FILE > /dev/null
+#sudo aticonfig --initial -f > /dev/null
+#sudo aticonfig --sync-vsync=on > /dev/null
+#sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)ATI drivers successfully installed and configured$(tput sgr0)"
 exit
