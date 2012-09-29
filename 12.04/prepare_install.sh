@@ -83,7 +83,6 @@ echo "$(tput setaf 2)$(tput bold)* Power management packages successfully instal
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
 echo "$(tput setaf 6)$(tput bold)!! Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
-echo ""
 
 sudo usermod -a -G audio xbmc > /dev/null
 sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 upower acpi-support > /dev/null
@@ -127,7 +126,13 @@ echo "$(tput setaf 2)$(tput bold)* Addon repositories installer plugin successfu
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing $VIDEO_MANUFACTURER video drivers...$(tput sgr0)"
 
-sudo apt-get -y install $VIDEO_DRIVER > /dev/null
+if [ $1 == "ati" ];
+then
+	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/install_ati_driver.sh
+	bash install_ati_driver.sh xbmc > /dev/null
+else
+	sudo apt-get -y install $VIDEO_DRIVER > /dev/null
+fi
 
 echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfully installed$(tput sgr0)"
 echo ""
@@ -160,8 +165,8 @@ fi
 
 sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null
 sudo sh -c 'echo "FRAMEBUFFER=y" >> /etc/initramfs-tools/conf.d/splash' > /dev/null
-sudo update-grub
-sudo update-initramfs -u
+sudo update-grub > /dev/null
+sudo update-initramfs -u > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* XBMC boot screen successfully installed$(tput sgr0)"
 echo ""
@@ -187,8 +192,8 @@ echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
 
 sudo apt-get -y autoclean > /dev/null
 sudo apt-get -y autoremove > /dev/null
-sudo rm -r ~/temp > /dev/null
-rm "/home/xbmc/$0"
+sudo rm -r $TEMP_DIRECTORY > /dev/null
+rm $HOME_DIRECTORY$0
 
 echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
 echo ""
