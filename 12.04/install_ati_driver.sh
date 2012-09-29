@@ -22,7 +22,7 @@ DRIVER_FILE="amd-driver-installer-12-8-x86.x86_64.zip"
 DRIVER_URL="http://www2.ati.com/drivers/linux/$DRIVER_FILE"
 DOWNLOAD_PATH="/home/$USERNAME/temp/"
 
-mkdir $DOWNLOAD_PATH > /dev/null
+mkdir -p $DOWNLOAD_PATH > /dev/null
 cd $DOWNLOAD_PATH > /dev/null
 
 echo ""
