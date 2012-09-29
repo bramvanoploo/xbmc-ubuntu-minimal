@@ -4,11 +4,11 @@ if [ "$1" == "ati" ];
 then
 	VIDEO_DRIVER="fgrlx"
 	VIDEO_MANUFACTURER="ATI"
-elif [ "$1" == "nvidia" ]
+elif [ "$1" == "nvidia" ];
 then
 	VIDEO_DRIVER="nvidia-current"
 	VIDEO_MANUFACTURER="NVIDIA"
-elif [ "$1" == "intel" ]
+elif [ "$1" == "intel" ];
 then
 	VIDEO_DRIVER="i965-va-driver"
 	VIDEO_MANUFACTURER="INTEL"
