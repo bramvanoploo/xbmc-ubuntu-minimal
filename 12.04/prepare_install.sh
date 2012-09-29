@@ -19,6 +19,8 @@ else
 	exit
 fi
 
+HOME_DIRECTORY="/etc/xbmc/"
+TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
 SOURCES_FILE="/etc/apt/sources.list"
 SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
 ENVIRONMENT_FILE="/etc/environment" 
@@ -61,7 +63,7 @@ fi
 sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
 sudo sh -c 'echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
 
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null 2>&1
 sudo apt-get update > /dev/null
 sudo apt-get -y dist-upgrade > /dev/null
 
@@ -108,9 +110,10 @@ sudo apt-get -y install xbmc > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* XBMC successfully installed$(tput sgr0)"
 echo ""
-echo "$(tput setaf 3)$(tput bold)Downloading and installing Addon installer plugin...$(tput sgr0)"
+echo "$(tput setaf 3)$(tput bold)Downloading and installing Addon repositories installer plugin...$(tput sgr0)"
 
-mkdir ~/temp && cd ~/temp > /dev/null
+mkdir -p $TEMP_DIRECTORY > /dev/null
+cd $TEMP_DIRECTORY > /dev/null
 wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz
 
 if [ ! -d $XBMC_ADDONS_DIR ];
@@ -118,9 +121,9 @@ then
 	mkdir -p $XBMC_ADDONS_DIR > /dev/null
 fi
 
-tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null
+tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null 2>&1
 
-echo "$(tput setaf 2)$(tput bold)* Addon installer plugin successfully installed$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)* Addon repositories installer plugin successfully installed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing $VIDEO_MANUFACTURER video drivers...$(tput sgr0)"
 
@@ -146,6 +149,7 @@ echo ""
 echo "$(tput setaf 3)$(tput bold)Installing XBMC boot screen...$(tput sgr0)"
 
 sudo apt-get -y install plymouth-label v86d > /dev/null
+cd $TEMP_DIRECTORY
 wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/plymouth-theme-xbmc-logo.deb
 sudo dpkg -i plymouth-theme-xbmc-logo.deb > /dev/null
 
