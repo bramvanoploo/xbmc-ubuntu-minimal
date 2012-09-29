@@ -126,7 +126,7 @@ echo "$(tput setaf 2)$(tput bold)* Addon repositories installer plugin successfu
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing $VIDEO_MANUFACTURER video drivers...$(tput sgr0)"
 
-if [ $1 == "ati" ];
+if [ $2 == "test" ];
 then
 	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.04/install_ati_driver.sh
 	bash install_ati_driver.sh xbmc > /dev/null
