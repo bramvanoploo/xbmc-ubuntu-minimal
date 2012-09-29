@@ -115,10 +115,10 @@ wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.p
 
 if [ ! -d $XBMC_ADDONS_DIR ];
 then
-	mkdir -p $XBMC_ADDONS_DIR
+	mkdir -p $XBMC_ADDONS_DIR > /dev/null
 fi
 
-tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR
+tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* Addon installer plugin successfully installed$(tput sgr0)"
 echo ""
