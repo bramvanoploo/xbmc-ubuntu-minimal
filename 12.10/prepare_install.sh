@@ -77,7 +77,7 @@ echo "$(tput setaf 2)$(tput bold)* Xinit successfully installed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing power management packages...$(tput sgr0)"
 
-sudo apt-get -y install policykit-1 upower acpi-support > /dev/null
+sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null
 wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla
 sudo mkdir -p /var/lib/polkit-1/localauthority/50-local.d/
 sudo mv custom-actions.pkla /var/lib/polkit-1/localauthority/50-local.d/
