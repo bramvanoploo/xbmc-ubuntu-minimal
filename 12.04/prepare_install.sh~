@@ -63,7 +63,7 @@ fi
 sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
 sudo sh -c 'echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
 
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/null 2>&1
 sudo apt-get update > /dev/null
 sudo apt-get -y dist-upgrade > /dev/null
 

@@ -19,7 +19,7 @@ else
 	exit
 fi
 
-HOME_DIRECTORY="/etc/xbmc/"
+HOME_DIRECTORY="/home/xbmc/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
 SOURCES_FILE="/etc/apt/sources.list"
 SOURCES_BACKUP_FILE="/etc/apt/sources.list.bak"
