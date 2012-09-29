@@ -82,7 +82,7 @@ sudo apt-get -y install upower acpi-support > /dev/null
 echo "$(tput setaf 2)$(tput bold)* Power management packages successfully installed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing audio packages.$(tput sgr0)"
-echo "$(tput setaf 1)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
+echo "$(tput setaf 6)$(tput bold)Please ensure no channels are muted that shouldn't be and that the volumes are up...$(tput sgr0)"
 
 sudo usermod -a -G audio xbmc > /dev/null
 sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 upower acpi-support > /dev/null
@@ -95,9 +95,11 @@ read -p "$(tput setaf 3)$(tput bold)Do you want to install and configure IR remo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     sudo apt-get -y install lirc > /dev/null
+    echo ""
     echo "$(tput setaf 2)$(tput bold)* Lirc successfully installed$(tput sgr0)"
 else
-	echo "$(tput setaf 3)$(tput bold)* Lirc installation skipped$(tput sgr0)"
+	echo ""
+	echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
 fi
 
 echo ""
@@ -168,3 +170,4 @@ echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
 echo ""
 
 sudo reboot now > /dev/null
+rm $0 > /dev/null
