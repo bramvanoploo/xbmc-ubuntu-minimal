@@ -115,10 +115,10 @@ wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.p
 
 if [ ! -d $XBMC_ADDONS_DIR ];
 then
-	mkdir -p $XBMC_ADDONS_DIR > /dev/null
+	mkdir -p $XBMC_ADDONS_DIR
 fi
 
-tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null
+tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR
 
 echo "$(tput setaf 2)$(tput bold)* Addon installer plugin successfully installed$(tput sgr0)"
 echo ""
@@ -163,8 +163,8 @@ echo "$(tput setaf 2)$(tput bold)* X-server successfully reconfigured$(tput sgr0
 echo ""
 echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
 
-sudo apt-get -y autoclean
-sudo apt-get -y autoremove
+sudo apt-get -y autoclean > /dev/null
+sudo apt-get -y autoremove > /dev/null
 sudo rm -r ~/temp > /dev/null
 rm "/home/xbmc/$0"
 

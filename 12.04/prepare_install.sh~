@@ -163,11 +163,12 @@ echo "$(tput setaf 2)$(tput bold)* X-server successfully reconfigured$(tput sgr0
 echo ""
 echo "$(tput setaf 6)$(tput bold)Cleaning up...$(tput sgr0)"
 
-sudo apt-get -y autoclean
-sudo apt-get -y autoremove
+sudo apt-get -y autoclean > /dev/null
+sudo apt-get -y autoremove > /dev/null
 sudo rm -r ~/temp > /dev/null
+rm "/home/xbmc/$0"
 
 echo "$(tput setaf 6)$(tput bold)Rebooting system...$(tput sgr0)"
 echo ""
 
-rm "/home/xbmc/$0" && sudo reboot now > /dev/null
+sudo reboot now > /dev/null
