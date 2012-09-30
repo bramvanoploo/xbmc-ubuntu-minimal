@@ -190,12 +190,12 @@ then
 	
 	if [[ $REPLY =~ ^[Yy]$ ]];
 	then
-		sudo kill $(pidof X)
+		sudo kill $(pidof X) > /dev/null 2>&1
 		sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null
 		
 		echo "$(tput setaf 2)$(tput bold)* Underscan successfully disabled$(tput sgr0)"
 	else
-		sudo kill $(pidof X)
+		sudo kill $(pidof X) > /dev/null 2>&1
 		sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null
 	
 		echo "$(tput setaf 2)$(tput bold)* Underscan successfully enabled$(tput sgr0)"
