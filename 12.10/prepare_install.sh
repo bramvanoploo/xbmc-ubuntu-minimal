@@ -112,8 +112,10 @@ read -p "$(tput setaf 3)$(tput bold)Do you want to install and configure IR remo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     sudo apt-get -y install lirc > /dev/null
+    echo ""
     echo "$(tput setaf 2)$(tput bold)* Lirc successfully installed$(tput sgr0)"
 else
+	echo ""
 	echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
 fi
 
@@ -145,8 +147,10 @@ then
     mkdir -p $XBMC_USERDATA_DIR > /dev/null
     mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null
     
+    echo ""
     echo "$(tput setaf 2)$(tput bold)* XBMC dirty-region-rendering enabled$(tput sgr0)"
 else
+	echo ""
 	echo "$(tput setaf 6)$(tput bold)* XBMC dirty-region-rendering not enabled$(tput sgr0)"
 fi
 
