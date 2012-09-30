@@ -61,6 +61,8 @@ fi
 
 sudo sh -c 'echo "xbmc             -       nice            -1" >> /etc/security/limits.conf' > /dev/null
 
+echo "> $(tput setaf 2)$(tput bold)Allowed XBMC to change nice level$(tput sgr0)"
+
 #sudo usermod -a -G audio xbmc > /dev/null
 sudo adduser xbmc video > /dev/null 2>&1
 sudo adduser xbmc audio > /dev/null 2>&1
