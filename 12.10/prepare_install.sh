@@ -60,7 +60,7 @@ sudo sh -c 'echo "xbmc             -       nice            -1" >> /etc/security/
 
 echo "> $(tput setaf 2)$(tput bold)Allowed XBMC to change nice level$(tput sgr0)"
 echo ""
-echo "$(tput setaf 3)$(tput bold)Adding Wsnipex xbmc-xvba-testing PPA...$(tput sgr0)"
+echo "$(tput setaf 3)$(tput bold)Adding Wsnipex xbmc-xvba PPA...$(tput sgr0)"
 
 if [ -f $SOURCES_BACKUP_FILE ];
 then
