@@ -141,7 +141,7 @@ then
     
     mkdir -p $TEMP_DIRECTORY > /dev/null
     cd $TEMP_DIRECTORY > /dev/null
-    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/dirty_region_rendering.xml
+    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml
     mkdir -p $XBMC_USERDATA_DIR > /dev/null
     mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null
     
