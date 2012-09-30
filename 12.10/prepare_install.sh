@@ -27,6 +27,9 @@ ENVIRONMENT_FILE="/etc/environment"
 ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
 INIT_FILE="/etc/init.d/xbmc"
 XBMC_ADDONS_DIR="/home/xbmc/.xbmc/addons/"
+XBMC_USERDATA_DIR="/home/xbmc/.xbmc/userdata/"
+XBMC_ADVANCEDSETTINGS_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml"
+XBMC_ADVANCEDSETTINGS_BACKUP_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml.bak"
 XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
@@ -109,10 +112,8 @@ read -p "$(tput setaf 3)$(tput bold)Do you want to install and configure IR remo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     sudo apt-get -y install lirc > /dev/null
-    echo ""
     echo "$(tput setaf 2)$(tput bold)* Lirc successfully installed$(tput sgr0)"
 else
-	echo ""
 	echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
 fi
 
@@ -122,6 +123,33 @@ echo "$(tput setaf 3)$(tput bold)Installing XBMC...$(tput sgr0)"
 sudo apt-get -y install xbmc > /dev/null
 
 echo "$(tput setaf 2)$(tput bold)* XBMC successfully installed$(tput sgr0)"
+echo ""
+
+read -p "$(tput setaf 3)$(tput bold)Do you wish to enable the expirimental dirty-region-rendering in XBMC? (will replce your existing advancedsettings.xml) (Y/n)? $(tput sgr0) " -n 1
+
+if [[ $REPLY =~ ^[Yy]$ ]];
+then
+	if [ -f $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
+    then
+    	rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null
+    fi
+
+    if [ -f $XBMC_ADVANCEDSETTINGS_FILE ];
+    then
+    	mv $XBMC_ADVANCEDSETTINGS_FILE $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null
+    fi
+    
+    mkdir -p $TEMP_DIRECTORY > /dev/null
+    cd $TEMP_DIRECTORY > /dev/null
+    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/dirty_region_rendering.xml
+    mkdir -p $XBMC_USERDATA_DIR > /dev/null
+    mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null
+    
+    echo "$(tput setaf 2)$(tput bold)* XBMC dirty-region-rendering enabled$(tput sgr0)"
+else
+	echo "$(tput setaf 6)$(tput bold)* XBMC dirty-region-rendering not enabled$(tput sgr0)"
+fi
+
 echo ""
 echo "$(tput setaf 3)$(tput bold)Downloading and installing Addon repositories installer plugin...$(tput sgr0)"
 
