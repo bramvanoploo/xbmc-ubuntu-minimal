@@ -47,8 +47,9 @@ fi
 sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
 sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
 
-echo "> $(tput setaf 2)$(tput bold)Locale environment bug fixed$(tput sgr0)"
+
 echo ""
+echo "> $(tput setaf 2)$(tput bold)Locale environment bug fixed$(tput sgr0)"
 
 if [ ! -f /etc/security/limits.conf ];
 then
@@ -76,7 +77,7 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC > /dev/nu
 sudo apt-get update > /dev/null
 sudo apt-get -y dist-upgrade > /dev/null
 
-echo "$(tput setaf 2)$(tput bold)* Wsnipex xbmc-xvba-testing PPA successfully added$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)* Wsnipex xbmc-xvba PPA successfully added$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing xinit...$(tput sgr0)"
 
