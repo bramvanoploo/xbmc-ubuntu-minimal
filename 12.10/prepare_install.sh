@@ -208,7 +208,7 @@ fi
 
 echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfully installed$(tput sgr0)"
 echo ""
-echo "$(tput setaf 3)$(tput bold)Downloading and applying xbmc init.d script$(tput sgr0)"
+echo "$(tput setaf 3)$(tput bold)Downloading and applying xbmc auto-run script$(tput sgr0)"
 
 wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script > /dev/null
 
@@ -221,7 +221,7 @@ sudo mv ./xbmc_init_script $INIT_FILE > /dev/null
 sudo chmod a+x /etc/init.d/xbmc > /dev/null
 sudo update-rc.d xbmc defaults > /dev/null
 
-echo "$(tput setaf 2)$(tput bold)* init.d script succesfully downloaded and applied$(tput sgr0)"
+echo "$(tput setaf 2)$(tput bold)*  auto-run script succesfully downloaded and installed$(tput sgr0)"
 echo ""
 echo "$(tput setaf 3)$(tput bold)Installing XBMC boot screen...$(tput sgr0)"
 
