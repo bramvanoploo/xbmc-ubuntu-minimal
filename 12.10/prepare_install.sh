@@ -118,7 +118,7 @@ echo ""
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    sudo apt-get -y install lirc > /dev/null
+    sudo apt-get -y install lirc
     echo "$(tput setaf 2)$(tput bold)* Lirc successfully installed$(tput sgr0)"
 else
 	echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
