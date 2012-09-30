@@ -108,14 +108,13 @@ echo "$(tput setaf 2)$(tput bold)* Audio packages successfully installed$(tput s
 echo ""
 
 read -p "$(tput setaf 3)$(tput bold)Do you want to install and configure IR remote support (Y/n)? $(tput sgr0) " -n 1
+echo ""
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     sudo apt-get -y install lirc > /dev/null
-    echo ""
     echo "$(tput setaf 2)$(tput bold)* Lirc successfully installed$(tput sgr0)"
 else
-	echo ""
 	echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
 fi
 
@@ -127,7 +126,14 @@ sudo apt-get -y install xbmc > /dev/null
 echo "$(tput setaf 2)$(tput bold)* XBMC successfully installed$(tput sgr0)"
 echo ""
 
-read -p "$(tput setaf 3)$(tput bold)Do you wish to enable the expirimental dirty-region-rendering in XBMC? (will replce your existing advancedsettings.xml) (Y/n)? $(tput sgr0) " -n 1
+if [ -f $XBMC_ADVANCEDSETTINGS_FILE ];
+then
+	read -p "$(tput setaf 3)$(tput bold)Do you wish to enable dirty-region-rendering in XBMC? (this will replace your existing advancedsettings.xml) (Y/n)? $(tput sgr0) " -n 1
+	echo ""
+else
+	read -p "$(tput setaf 3)$(tput bold)Do you wish to enable dirty-region-rendering in XBMC? (Y/n)? $(tput sgr0) " -n 1
+	echo ""
+fi
 
 if [[ $REPLY =~ ^[Yy]$ ]];
 then
@@ -146,8 +152,7 @@ then
     wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml
     mkdir -p $XBMC_USERDATA_DIR > /dev/null
     mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null
-    
-    echo ""
+
     echo "$(tput setaf 2)$(tput bold)* XBMC dirty-region-rendering enabled$(tput sgr0)"
 else
 	echo ""
@@ -179,6 +184,22 @@ then
 	sudo aticonfig --initial -f > /dev/null
 	sudo aticonfig --sync-vsync=on > /dev/null
 	sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null
+	
+	read -p "$(tput setaf 3)$(tput bold)Do you want to disable underscan (removes black borders). Do this only if you're sure you need it! (Y/n)? $(tput sgr0) " -n 1
+	echo ""
+	
+	if [[ $REPLY =~ ^[Yy]$ ]];
+	then
+		sudo kill $(pidof X)
+		sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null
+		
+		echo "$(tput setaf 2)$(tput bold)* Underscan successfully disabled$(tput sgr0)"
+	else
+		sudo kill $(pidof X)
+		sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null
+	
+		echo "$(tput setaf 2)$(tput bold)* Underscan successfully enabled$(tput sgr0)"
+	fi
 fi
 
 echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfully installed$(tput sgr0)"
