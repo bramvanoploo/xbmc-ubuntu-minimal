@@ -20,7 +20,7 @@ XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 LOG_TEXT="\n"
-DIALOG_WIDTH=80
+DIALOG_WIDTH=90
 SCRIPT_TITLE="XBMC installation script for Ubuntu 12.10 by Bram77 :: Contact me at bram@sudo-systems.com"
 
 ## ------ START functions ---------
@@ -171,7 +171,7 @@ function confirmEnableDirtyRegionRendering()
 {
 	dialog --title "Dirty region rendering" \
 		--backtitle "$SCRIPT_TITLE" \
-		--yesno "Do you wish to enable dirty region rendering in XBMC? (this will replace your existing advancedsettings.xml)?" 7 150
+		--yesno "Do you wish to enable dirty region rendering in XBMC? (this will replace your existing advancedsettings.xml)?" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
 	case $RESPONSE in
