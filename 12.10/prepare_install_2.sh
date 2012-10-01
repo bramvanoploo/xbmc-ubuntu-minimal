@@ -25,7 +25,7 @@ LOG_TEXT=""
 function log()
 {
 	LOG_TEXT="$LOG_TEXT$@\n"
-	dialog --infobox "$LOG_TEXT" 40 100
+	dialog --infobox "$LOG_TEXT" 20 100
 }
 
 function showDialog()
