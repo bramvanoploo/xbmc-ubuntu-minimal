@@ -21,7 +21,7 @@ XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 LOG_TEXT="\n"
 DIALOG_WIDTH=80
-SCRIPT_TITLE="XBMC minimal installation script by Bram77 :: Contact me at bram@sudo-systems.com"
+SCRIPT_TITLE="XBMC installation script for Ubuntu 12.10 by Bram77 :: Contact me at bram@sudo-systems.com"
 
 ## ------ START functions ---------
 
@@ -327,7 +327,7 @@ function rebootMachine()
 
 function quit()
 {
-	#clear
+	clear
 	exit
 }
 
