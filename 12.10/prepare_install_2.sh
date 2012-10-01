@@ -19,7 +19,7 @@ XBMC_ADVANCEDSETTINGS_BACKUP_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml.bak"
 XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
-LOG_TEXT=""
+LOG_TEXT="\n"
 DIALOG_WIDTH=80
 
 ## ------ START functions ---------
@@ -27,7 +27,7 @@ DIALOG_WIDTH=80
 function log()
 {
 	LOG_TEXT="$LOG_TEXT$@\n"
-	dialog --infobox "$LOG_TEXT" 40 $DIALOG_WIDTH
+	dialog --infobox "$LOG_TEXT" 34 $DIALOG_WIDTH
 }
 
 function showDialog()
@@ -329,7 +329,7 @@ control_c()
 
 clear
 
-showDialog "The installation of some packages may take a while depending on your internet connection speed. Please be patient!"
+showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed. Please be patient!\n\n\nFor questions or answers contact me: bram@sudo-systems.com"
 
 trap control_c SIGINT
 
@@ -367,7 +367,7 @@ installPowerManagement
 log "[x] Power management packages successfully installed"
 
 log "-- Installing audio packages..."
-log "!! Please ensure no channels are muted that shouldn't be and that the volumes are up !!"
+log "!! Please make sure no used channels are muted !!"
 installAudio
 log "[x] Audio packages successfully installed"
 
