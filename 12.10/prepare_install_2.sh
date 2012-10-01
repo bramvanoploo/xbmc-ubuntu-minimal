@@ -29,7 +29,7 @@ function log()
 {
 	LOG_TEXT="$LOG_TEXT$@\n"
 	
-	dialog --title "XBMC installation in progress..." \
+	dialog --title "Ubuntu configuration and XBMC installation in progress..." \
 		--backtitle "$SCRIPT_TITLE" \
 		--infobox "$LOG_TEXT" \
 	 	34 $DIALOG_WIDTH
@@ -340,6 +340,9 @@ control_c()
 
 clear
 
+echo "-- Installing installation dependencies..."
+installDependencies
+
 showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed. Please be patient or exit with CTRL+C!"
 
 trap control_c SIGINT
@@ -349,9 +352,6 @@ then
 	rm $LOG_FILE
 	touch $LOG_FILE
 fi
-
-log "-- Installing installation dependencies..."
-installDependencies
 
 hasRequiredParams $VIDEO_MANUFACTURER
 
