@@ -94,8 +94,6 @@ function applyXbmcNiceLevelPermissions()
 
 function addUserToRequiredGroups()
 {
-	#sudo usermod -a -G audio xbmc > /dev/null
-	
 	sudo adduser $USER video > /dev/null 2>&1
 	sudo adduser $USER audio > /dev/null 2>&1
 	sudo adduser $USER users > /dev/null 2>&1
@@ -104,25 +102,12 @@ function addUserToRequiredGroups()
 function addXbmcPpa()
 {
 	sudo add-apt-repository -y ppa:wsnipex/xbmc-xvba > /dev/null 2>&1
-
-	#if [ -f $SOURCES_BACKUP_FILE ];
-	#then
-	#	sudo rm $SOURCES_FILE > /dev/null
-	#	sudo cp $SOURCES_BACKUP_FILE $SOURCES_FILE > /dev/null
-	#else
-	#	sudo cp $SOURCES_FILE $SOURCES_BACKUP_FILE > /dev/null
-	#fi
-
-	#sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
-	#sudo sh -c 'echo "deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
-
-	#sudo apt-key -qq adv --keyserver keyserver.ubuntu.com --recv-keys A93CABBC
 }
 
 function distUpgrade()
 {
 	sudo apt-get -qq update
-	sudo apt-get -y -qq dist-upgrade
+	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
 }
 
 function installXinit()
@@ -155,19 +140,6 @@ function confirmLircInstallation()
 	   1) cancelLircInstallation;;
 	   255) cancelLircInstallation;;
 	esac
-
-	#read -p "$(tput setaf 3)$(tput bold)Do you want to install and configure IR remote support (Y/n)? $(tput sgr0) " -n 1
-	#br
-
-	#if [[ $REPLY =~ ^[Yy]$ ]]
-	#then
-	#	sudo apt-get -y -qq install lirc
-	#	showSuccess "* Lirc successfully installed"
-	#	br
-	#else
-	#	showSystemMessage "* Lirc installation skipped"
-	#	br
-	#fi
 }
 
 function installLirc()
