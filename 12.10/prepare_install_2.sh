@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USER="bram"
+USER="xbmc"
 VIDEO_MANUFACTURER=$1
 VIDEO_DRIVER=""
 VIDEO_MANUFACTURER_NAME=""
@@ -18,13 +18,15 @@ XBMC_ADVANCEDSETTINGS_BACKUP_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml.bak"
 XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
+LOG_TEXT=""
 
 ## ------ START functions ---------
 
 log()
 {
-	echo -e "$@" >> $LOG_FILE
-	dialog --textbox $LOG_FILE 60 100
+	
+	LOG_TEXT="$LOG_TEXT$@\n"
+	dialog --infobox "$LOG_TEXT" 60 100
 }
 
 showDialog()
@@ -101,7 +103,7 @@ function addUserToRequiredGroups()
 
 function addXbmcPpa()
 {
-	sudo add-apt-repository -y ppa:wsnipex/xbmc-xvba > /dev/null
+	sudo add-apt-repository -y ppa:wsnipex/xbmc-xvba > /dev/null 2>&1
 
 	#if [ -f $SOURCES_BACKUP_FILE ];
 	#then
@@ -171,12 +173,12 @@ function confirmLircInstallation()
 function installLirc()
 {
 	sudo apt-get -y -qq install lirc
-	log "* Lirc successfully installed"
+	log "[x] Lirc successfully installed"
 }
 
 function cancelLircInstallation()
 {
-	log "* Lirc installation skipped"
+	log "[ ] Lirc installation skipped"
 }
 
 function installXbmc()
@@ -192,8 +194,8 @@ function confirmEnableDirtyRegionRendering()
 	RESPONSE=$?
 	case $RESPONSE in
 	   0) enableDirtyRegionRendering;;
-	   1) log "* XBMC dirty-region-rendering not enabled";;
-	   255) log "* XBMC dirty-region-rendering not enabled";;
+	   1) log "[ ] XBMC dirty-region-rendering not enabled";;
+	   255) log "[ ] XBMC dirty-region-rendering not enabled";;
 	esac
 }
 
@@ -215,7 +217,7 @@ function enableDirtyRegionRendering()
 	mkdir -p $XBMC_USERDATA_DIR > /dev/null
 	mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null
 
-	log "* XBMC dirty-region-rendering enabled"
+	log "[x] XBMC dirty-region-rendering enabled"
 }
 
 function installXbmcAddonRepositoriesInstaller()
@@ -258,14 +260,14 @@ function disbaleAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null
-	log "* Underscan successfully disabled"
+	log "[ ] Underscan successfully disabled"
 }
 
 function enableAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null
-	log "* Underscan successfully enabled"
+	log "[x] Underscan successfully enabled"
 }
 
 function installXbmcAutorunScript()
@@ -341,7 +343,7 @@ function rebootMachine()
 
 function quit()
 {
-	clear
+	#clear
 	exit
 }
 
@@ -369,62 +371,62 @@ hasRequiredParams $VIDEO_MANUFACTURER
 showDialog "The installation of some packages may take a while depending on your internet connection speed. Please be patient!"
 
 fixLocaleBug
-log "* Locale environment bug fixed"
+log "[x] Locale environment bug fixed"
 
 applyXbmcNiceLevelPermissions
-log "* Allowed XBMC to prioritize threads"
+log "[x] Allowed XBMC to prioritize threads"
 
 addUserToRequiredGroups
-log "* XBMC user added to required groups"
+log "[x] XBMC user added to required groups"
 
-log "Adding Wsnipex xbmc-xvba PPA..."
+log "-- Adding Wsnipex xbmc-xvba PPA..."
 addXbmcPpa
 distUpgrade
-log "* Wsnipex xbmc-xvba PPA successfully added"
+log "[x] Wsnipex xbmc-xvba PPA successfully added"
 
-log "Installing xinit..."
+log "-- Installing xinit..."
 installXinit
-log "* Xinit successfully installed"
+log "[x] Xinit successfully installed\n"
 
-log "Installing power management packages..."
+log "-- Installing power management packages..."
 installPowerManagement
-log "* Power management packages successfully installed"
+log "[x] Power management packages successfully installed"
 
-log "Installing audio packages..."
+log "-- Installing audio packages..."
 log "!! Please ensure no channels are muted that shouldn't be and that the volumes are up !!"
 installAudio
-log "* Audio packages successfully installed"
+log "[x] Audio packages successfully installed"
 
 confirmLircInstallation
 
-log "Installing XBMC..."
+log "-- Installing XBMC..."
 installXbmc
-log "* XBMC successfully installed"
+log "[x] XBMC successfully installed"
 
 confirmEnableDirtyRegionRendering
 
-log "Installing Addon repositories installer plugin..."
+log "-- Installing Addon repositories installer plugin..."
 installXbmcAddonRepositoriesInstaller
-log "* Addon repositories installer plugin successfully installed"
+log "[x] Addon repositories installer plugin successfully installed"
 
 log "Installing $VIDEO_MANUFACTURER_NAME video drivers..."
 installVideoDriver
-log "* $VIDEO_MANUFACTURER_NAME video drivers successfully installed"
+log "[x] $VIDEO_MANUFACTURER_NAME video drivers successfully installed"
 
-log "Installing XBMC autorun script..."
+log "-- Installing XBMC autorun script..."
 installXbmcAutoRunScript
-log "*  XBMC autorun script succesfully installed"
+log "[x] XBMC autorun script succesfully installed"
 
-log "Installing XBMC boot screen..."
+log "-- Installing XBMC boot screen..."
 installXbmcBootScreen
-log "* XBMC boot screen successfully installed"
+log "[x] XBMC boot screen successfully installed"
 
-log "Reconfiguring X-server..."
+log "-- Reconfiguring X-server..."
 reconfigureXServer
-log "* X-server successfully reconfigured"
+log "[x] X-server successfully reconfigured"
 
-log "Cleaning up..."
+log "-- Cleaning up..."
 cleanUp
 
-log "Rebooting system..."
+log "-- Rebooting system..."
 rebootMachine
