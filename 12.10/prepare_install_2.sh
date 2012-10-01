@@ -30,7 +30,6 @@ function log()
 	LOG_TEXT="$LOG_TEXT$@\n"
 	
 	dialog --title "XBMC installation in progress..."
-		--backtitle "$SCRIPT_TITLE" \
 		--infobox "$LOG_TEXT" \
 	 	34 $DIALOG_WIDTH
 }
