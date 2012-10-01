@@ -20,7 +20,7 @@ XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 LOG_TEXT=""
-DIALOG_WIDTH=110
+DIALOG_WIDTH=80
 
 ## ------ START functions ---------
 
