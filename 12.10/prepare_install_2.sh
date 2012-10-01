@@ -20,25 +20,26 @@ XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 LOG_TEXT=""
+DIALOG_WIDTH=110
 
 ## ------ START functions ---------
 
 function log()
 {
 	LOG_TEXT="$LOG_TEXT$@\n"
-	dialog --infobox "$LOG_TEXT" 20 100
+	dialog --infobox "$LOG_TEXT" 50 $DIALOG_WIDTH
 }
 
 function showDialog()
 {
 	dialog --title "XBMC installation script" \
-		--msgbox "\n$@" 8 100
+		--msgbox "\n$@" 8 $DIALOG_WIDTH
 }
 
 function showErrorDialog()
 {
 	dialog --title "ERROR: XBMC installation script" \
-		--msgbox "\n$@" 8 100
+		--msgbox "\n$@" 8 $DIALOG_WIDTH
 }
 
 function installDependencies()
@@ -132,7 +133,7 @@ function installAudio()
 function confirmLircInstallation()
 {
 	dialog --title "Lirc installation" \
-		--yesno "Do you want to install and configure Infra Red remote support?" 7 150
+		--yesno "Do you want to install and configure Infra Red remote support?" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
 	case $RESPONSE in
@@ -217,7 +218,7 @@ function installVideoDriver()
 		sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null
 		
 		dialog --title "Disable underscan" \
-			--yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 150
+			--yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
 
 		RESPONSE=$?
 		case $RESPONSE in
@@ -303,7 +304,7 @@ function cleanUp()
 function rebootMachine()
 {
 	dialog --title "Installation complete" \
-		--yesno "Do you want to reboot now?" 7 150
+		--yesno "Do you want to reboot now?" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
 	case $RESPONSE in
@@ -315,7 +316,7 @@ function rebootMachine()
 
 function quit()
 {
-	rm $HOME_DIRECTORY$THIS_FILE
+	#clear
 	exit
 }
 
@@ -359,7 +360,7 @@ log "[x] Wsnipex xbmc-xvba PPA successfully added"
 
 log "-- Installing xinit..."
 installXinit
-log "[x] Xinit successfully installed\n"
+log "[x] Xinit successfully installed"
 
 log "-- Installing power management packages..."
 installPowerManagement
