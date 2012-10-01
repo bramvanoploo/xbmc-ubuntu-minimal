@@ -2,21 +2,21 @@
 
 if [ "$1" == "ati" ];
 then
-	VIDEO_DRIVER="fglrx"
-	VIDEO_MANUFACTURER="ATI"
+    VIDEO_DRIVER="fglrx"
+    VIDEO_MANUFACTURER="ATI"
 elif [ "$1" == "nvidia" ];
 then
-	VIDEO_DRIVER="nvidia-current"
-	VIDEO_MANUFACTURER="NVIDIA"
+    VIDEO_DRIVER="nvidia-current"
+    VIDEO_MANUFACTURER="NVIDIA"
 elif [ "$1" == "intel" ];
 then
-	VIDEO_DRIVER="i965-va-driver"
-	VIDEO_MANUFACTURER="INTEL"
+    VIDEO_DRIVER="i965-va-driver"
+    VIDEO_MANUFACTURER="INTEL"
 else
-	echo ""
-	echo "$(tput setaf 1)$(tput bold)ERROR: Please provide the video card manufaturer parameter (ati / nvidia / intel)$(tput sgr0)"
-	echo ""
-	exit
+    echo ""
+    echo "$(tput setaf 1)$(tput bold)ERROR: Please provide the video card manufaturer parameter (ati / nvidia / intel)$(tput sgr0)"
+    echo ""
+    exit
 fi
 
 HOME_DIRECTORY="/home/xbmc/"
@@ -41,10 +41,10 @@ echo ""
 
 if [ -f $ENVIRONMENT_BACKUP_FILE ];
 then
-	sudo rm $ENVIRONMENT_FILE > /dev/null
-	sudo cp $ENVIRONMENT_BACKUP_FILE $ENVIRONMENT_FILE > /dev/null
+    sudo rm $ENVIRONMENT_FILE > /dev/null
+    sudo cp $ENVIRONMENT_BACKUP_FILE $ENVIRONMENT_FILE > /dev/null
 else
-	sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null
+    sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null
 fi
 
 sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
@@ -56,7 +56,7 @@ echo "> $(tput setaf 2)$(tput bold)Locale environment bug fixed$(tput sgr0)"
 
 if [ ! -f /etc/security/limits.conf ];
 then
-	sudo touch /etc/security/limits.conf > /dev/null
+    sudo touch /etc/security/limits.conf > /dev/null
 fi
 
 sudo sh -c 'echo "xbmc             -       nice            -1" >> /etc/security/limits.conf' > /dev/null
@@ -74,10 +74,10 @@ echo "$(tput setaf 3)$(tput bold)Adding Wsnipex xbmc-xvba PPA...$(tput sgr0)"
 
 if [ -f $SOURCES_BACKUP_FILE ];
 then
-	sudo rm $SOURCES_FILE > /dev/null
-	sudo cp $SOURCES_BACKUP_FILE $SOURCES_FILE > /dev/null
+    sudo rm $SOURCES_FILE > /dev/null
+    sudo cp $SOURCES_BACKUP_FILE $SOURCES_FILE > /dev/null
 else
-	sudo cp $SOURCES_FILE $SOURCES_BACKUP_FILE > /dev/null
+    sudo cp $SOURCES_FILE $SOURCES_BACKUP_FILE > /dev/null
 fi
 
 sudo sh -c 'echo "deb http://ppa.launchpad.net/wsnipex/xbmc-xvba/ubuntu quantal main" >> /etc/apt/sources.list' > /dev/null
@@ -121,7 +121,7 @@ then
     sudo apt-get -y install lirc
     echo "$(tput setaf 2)$(tput bold)* Lirc successfully installed$(tput sgr0)"
 else
-	echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
+    echo "$(tput setaf 6)$(tput bold)* Lirc installation skipped$(tput sgr0)"
 fi
 
 echo ""
@@ -134,23 +134,23 @@ echo ""
 
 if [ -f $XBMC_ADVANCEDSETTINGS_FILE ];
 then
-	read -p "$(tput setaf 3)$(tput bold)Do you wish to enable dirty-region-rendering in XBMC? (this will replace your existing advancedsettings.xml) (Y/n)? $(tput sgr0) " -n 1
-	echo ""
+    read -p "$(tput setaf 3)$(tput bold)Do you wish to enable dirty-region-rendering in XBMC? (this will replace your existing advancedsettings.xml) (Y/n)? $(tput sgr0) " -n 1
+    echo ""
 else
-	read -p "$(tput setaf 3)$(tput bold)Do you wish to enable dirty-region-rendering in XBMC? (Y/n)? $(tput sgr0) " -n 1
-	echo ""
+    read -p "$(tput setaf 3)$(tput bold)Do you wish to enable dirty-region-rendering in XBMC? (Y/n)? $(tput sgr0) " -n 1
+    echo ""
 fi
 
 if [[ $REPLY =~ ^[Yy]$ ]];
 then
-	if [ -f $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
+    if [ -f $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
     then
-    	rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null
+        rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null
     fi
 
     if [ -f $XBMC_ADVANCEDSETTINGS_FILE ];
     then
-    	mv $XBMC_ADVANCEDSETTINGS_FILE $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null
+        mv $XBMC_ADVANCEDSETTINGS_FILE $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null
     fi
     
     mkdir -p $TEMP_DIRECTORY > /dev/null
@@ -161,8 +161,8 @@ then
 
     echo "$(tput setaf 2)$(tput bold)* XBMC dirty-region-rendering enabled$(tput sgr0)"
 else
-	echo ""
-	echo "$(tput setaf 6)$(tput bold)* XBMC dirty-region-rendering not enabled$(tput sgr0)"
+    echo ""
+    echo "$(tput setaf 6)$(tput bold)* XBMC dirty-region-rendering not enabled$(tput sgr0)"
 fi
 
 echo ""
@@ -174,7 +174,7 @@ wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.p
 
 if [ ! -d $XBMC_ADDONS_DIR ];
 then
-	mkdir -p $XBMC_ADDONS_DIR > /dev/null
+    mkdir -p $XBMC_ADDONS_DIR > /dev/null
 fi
 
 tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null 2>&1
@@ -187,25 +187,25 @@ sudo apt-get -y install $VIDEO_DRIVER > /dev/null
 
 if [ $1 == "ati" ];
 then
-	sudo aticonfig --initial -f > /dev/null
-	sudo aticonfig --sync-vsync=on > /dev/null
-	sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null
-	
-	read -p "$(tput setaf 3)$(tput bold)Do you want to disable underscan (removes black borders). Do this only if you're sure you need it! (Y/n)? $(tput sgr0) " -n 1
-	echo ""
-	
-	if [[ $REPLY =~ ^[Yy]$ ]];
-	then
-		sudo kill $(pidof X) > /dev/null 2>&1
-		sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null
-		
-		echo "$(tput setaf 2)$(tput bold)* Underscan successfully disabled$(tput sgr0)"
-	else
-		sudo kill $(pidof X) > /dev/null 2>&1
-		sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null
-	
-		echo "$(tput setaf 2)$(tput bold)* Underscan successfully enabled$(tput sgr0)"
-	fi
+    sudo aticonfig --initial -f > /dev/null
+    sudo aticonfig --sync-vsync=on > /dev/null
+    sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null
+    
+    read -p "$(tput setaf 3)$(tput bold)Do you want to disable underscan (removes black borders). Do this only if you're sure you need it! (Y/n)? $(tput sgr0) " -n 1
+    echo ""
+    
+    if [[ $REPLY =~ ^[Yy]$ ]];
+    then
+        sudo kill $(pidof X) > /dev/null 2>&1
+        sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null
+        
+        echo "$(tput setaf 2)$(tput bold)* Underscan successfully disabled$(tput sgr0)"
+    else
+        sudo kill $(pidof X) > /dev/null 2>&1
+        sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null
+    
+        echo "$(tput setaf 2)$(tput bold)* Underscan successfully enabled$(tput sgr0)"
+    fi
 fi
 
 echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfully installed$(tput sgr0)"
@@ -216,7 +216,7 @@ wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init
 
 if [ -f $INIT_FILE ];
 then
-	sudo rm $INIT_FILE > /dev/null
+    sudo rm $INIT_FILE > /dev/null
 fi
 
 sudo mv ./xbmc_init_script $INIT_FILE > /dev/null
@@ -234,7 +234,7 @@ sudo dpkg -i plymouth-theme-xbmc-logo.deb > /dev/null
 
 if [ -f /etc/initramfs-tools/conf.d/splash ];
 then
-	sudo rm /etc/initramfs-tools/conf.d/splash > /dev/null
+    sudo rm /etc/initramfs-tools/conf.d/splash > /dev/null
 fi
 
 sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null
@@ -248,12 +248,12 @@ echo "$(tput setaf 3)$(tput bold)Reconfiguring X-server...$(tput sgr0)"
 
 if [ ! -f $XWRAPPER_BACKUP_FILE ];
 then
-	sudo mv $XWRAPPER_FILE $XWRAPPER_BACKUP_FILE > /dev/null
+    sudo mv $XWRAPPER_FILE $XWRAPPER_BACKUP_FILE > /dev/null
 fi
 
 if [ -f $XWRAPPER_FILE ];
 then
-	sudo rm $XWRAPPER_FILE > /dev/null
+    sudo rm $XWRAPPER_FILE > /dev/null
 fi
 
 sudo touch $XWRAPPER_FILE > /dev/null
