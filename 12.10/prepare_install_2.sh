@@ -27,7 +27,7 @@ DIALOG_WIDTH=110
 function log()
 {
 	LOG_TEXT="$LOG_TEXT$@\n"
-	dialog --infobox "$LOG_TEXT" 50 $DIALOG_WIDTH
+	dialog --infobox "$LOG_TEXT" 40 $DIALOG_WIDTH
 }
 
 function showDialog()
