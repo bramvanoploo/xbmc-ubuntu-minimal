@@ -355,6 +355,8 @@ control_c()
 
 clear
 
+showDialog "The installation of some packages may take a while depending on your internet connection speed. Please be patient!"
+
 trap control_c SIGINT
 
 if [ -f $LOG_FILE ];
@@ -366,8 +368,6 @@ fi
 installDependencies
 
 hasRequiredParams $VIDEO_MANUFACTURER
-
-showDialog "The installation of some packages may take a while depending on your internet connection speed. Please be patient!"
 
 fixLocaleBug
 log "[x] Locale environment bug fixed"
