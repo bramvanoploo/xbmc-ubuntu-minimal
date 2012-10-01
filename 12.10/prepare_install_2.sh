@@ -51,7 +51,7 @@ function showErrorDialog()
 
 function installDependencies()
 {
-	sudo apt-get -y -qq install dialog software-properties-common
+	sudo apt-get -y -qq install dialog software-properties-common > /dev/null
 }
 
 function hasRequiredParams()
@@ -340,7 +340,10 @@ control_c()
 
 clear
 
+echo ""
+echo ""
 echo "-- Installing installation dependencies..."
+echo ""
 installDependencies
 
 showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed. Please be patient or exit with CTRL+C!"
