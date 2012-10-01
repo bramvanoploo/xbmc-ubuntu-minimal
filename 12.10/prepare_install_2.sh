@@ -33,7 +33,7 @@ function log()
 function showDialog()
 {
 	dialog --title "XBMC installation script" \
-		--msgbox "\n$@" 8 $DIALOG_WIDTH
+		--msgbox "\n$@" 12 $DIALOG_WIDTH
 }
 
 function showErrorDialog()
@@ -329,7 +329,7 @@ control_c()
 
 clear
 
-showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed. Please be patient!\n\n\nFor questions or answers contact me: bram@sudo-systems.com"
+showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed. Please be patient or exit with CTRL+C!"
 
 trap control_c SIGINT
 
