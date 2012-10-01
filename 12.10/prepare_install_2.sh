@@ -37,15 +37,13 @@ function log()
 
 function showDialog()
 {
-	dialog --backtitle "$SCRIPT_TITLE" \ 
-		--title "XBMC installation script" \
+	dialog --title "XBMC installation script" \
 		--msgbox "\n$@" 12 $DIALOG_WIDTH
 }
 
 function showErrorDialog()
 {
-	dialog --backtitle "$SCRIPT_TITLE" \ 
-		--title "ERROR: XBMC installation script" \
+	dialog --title "ERROR: XBMC installation script" \
 		--msgbox "\n$@" 8 $DIALOG_WIDTH
 }
 
@@ -140,7 +138,6 @@ function installAudio()
 function confirmLircInstallation()
 {
 	dialog --title "Lirc installation" \
-		--backtitle "$SCRIPT_TITLE" \
 		--yesno "Do you want to install and configure Infra Red remote support?" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
@@ -170,7 +167,6 @@ function installXbmc()
 function confirmEnableDirtyRegionRendering()
 {
 	dialog --title "Dirty region rendering" \
-		--backtitle "$SCRIPT_TITLE" \
 		--yesno "Do you wish to enable dirty region rendering in XBMC? (this will replace your existing advancedsettings.xml)?" 7 150
 
 	RESPONSE=$?
@@ -227,7 +223,6 @@ function installVideoDriver()
 		sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null
 		
 		dialog --title "Disable underscan" \
-			--backtitle "$SCRIPT_TITLE" \
 			--yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
 
 		RESPONSE=$?
@@ -314,7 +309,6 @@ function cleanUp()
 function rebootMachine()
 {
 	dialog --title "Installation complete" \
-		--backtitle "$SCRIPT_TITLE" \
 		--yesno "Do you want to reboot now?" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
