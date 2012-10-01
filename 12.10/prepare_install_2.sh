@@ -1,6 +1,7 @@
 #!/bin/bash
 
 USER="xbmc"
+THIS_FILE=$0
 VIDEO_MANUFACTURER=$1
 VIDEO_DRIVER=""
 VIDEO_MANUFACTURER_NAME=""
@@ -324,7 +325,7 @@ function cleanUp()
 	sudo apt-get -y autoclean > /dev/null
 	sudo apt-get -y autoremove > /dev/null
 	sudo rm -r $TEMP_DIRECTORY > /dev/null
-	rm $HOME_DIRECTORY$0
+	rm $HOME_DIRECTORY$THIS_FILE
 }
 
 function rebootMachine()
@@ -342,7 +343,7 @@ function rebootMachine()
 
 function quit()
 {
-	#clear
+	rm $HOME_DIRECTORY$THIS_FILE
 	exit
 }
 
