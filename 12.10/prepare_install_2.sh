@@ -22,26 +22,25 @@ LOG_TEXT=""
 
 ## ------ START functions ---------
 
-log()
+function log()
 {
-	
 	LOG_TEXT="$LOG_TEXT$@\n"
 	dialog --infobox "$LOG_TEXT" 60 100
 }
 
-showDialog()
+function showDialog()
 {
 	dialog --title "XBMC installation script" \
 		--msgbox "\n$@" 8 100
 }
 
-showErrorDialog()
+function showErrorDialog()
 {
 	dialog --title "ERROR: XBMC installation script" \
 		--msgbox "\n$@" 8 100
 }
 
-installDependencies()
+function installDependencies()
 {
 	sudo apt-get -y -qq install dialog software-properties-common
 }
