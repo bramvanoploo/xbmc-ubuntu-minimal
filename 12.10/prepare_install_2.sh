@@ -365,6 +365,7 @@ then
 	touch $LOG_FILE
 fi
 
+log "-- Installing installation dependencies..."
 installDependencies
 
 hasRequiredParams $VIDEO_MANUFACTURER
