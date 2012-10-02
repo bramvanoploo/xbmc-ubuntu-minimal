@@ -514,29 +514,21 @@ hasRequiredParams $VIDEO_MANUFACTURER
 
 declare -a METHODS=("fixLocaleBug" "applyXbmcNiceLevelPermissions" "addUserToRequiredGroups" "addXbmcPpa" "distUpgrade" "installXinit" "installPowerManagement" "installAudio" "confirmLircInstallation" "installXbmc" "confirmEnableDirtyRegionRendering" "installXbmcAddonRepositoriesInstaller" "installVideoDriver" "installXbmcAutoRunScript" "installXbmcBootScreen" "reconfigureXServer" "cleanUp" "rebootMachine")
 
-dialog --title "Configring Ubuntu and Installing XBMC" --gauge "Installation initializing" 35 $DIALOG_WIDTH < <(
-    n=${#METHODS[*]}; 
-    i=0
-   
-    for f in "${METHODS[@]}"
+METHOD_COUNT=${#METHODS[*]}; 
+INDEX=0
+PERCENTAGE=0
+(
+    for METHOD in "${METHODS[@]}"
     do
-        PCT=$(( 100*(++i)/n ))
-        
-cat <<EOF
-XXX
-$PCT
-"$LOG_TEXT"
-XXX
-EOF
-        
-    eval "$f"
+        PERCENTAGE=$(( 100*(++i)/n ))
+
+    eval "$METHOD"
     
 cat <<EOF
-XXX
-$PCT
-"$LOG_TEXT"
-XXX
+$PERCENTAGE
+$LOG_TEXT
 EOF
     
   done
-)
+) |
+dialog --title "Configuring Ubuntu and Installing XBMC" --gauge "-- Installation initializing..." 35 $DIALOG_WIDTH 0
