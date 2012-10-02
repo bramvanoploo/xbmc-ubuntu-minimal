@@ -212,6 +212,8 @@ function confirmLircInstallation()
 
 function installLirc()
 {
+    log "-- Allowing installation of lirc"
+
 	RESULT=$(sudo apt-get -y -qq install lirc)
 	
 	if [ "$RESULT" != "" ];
@@ -243,6 +245,8 @@ function installXbmc()
 
 function confirmEnableDirtyRegionRendering()
 {
+    log "-- Allowing to enable dirty region rendering"
+
 	dialog --title "Dirty region rendering" \
 		--backtitle "$SCRIPT_TITLE" \
 		--yesno "Do you wish to enable dirty region rendering in XBMC? (this will replace your existing advancedsettings.xml)?" 7 $DIALOG_WIDTH
@@ -250,8 +254,8 @@ function confirmEnableDirtyRegionRendering()
 	RESPONSE=$?
 	case $RESPONSE in
 	   0) enableDirtyRegionRendering;;
-	   1) log "[ ] XBMC dirty-region-rendering not enabled";;
-	   255) log "[ ] XBMC dirty-region-rendering not enabled";;
+	   1) log "[ ] XBMC dirty region rendering not enabled";;
+	   255) log "[ ] XBMC dirty region rendering not enabled";;
 	esac
 }
 
@@ -305,7 +309,7 @@ function installXbmcAddonRepositoriesInstaller()
 
 function installVideoDriver()
 {
-    log "Installing $VIDEO_MANUFACTURER_NAME video drivers..."
+    log "-- Installing $VIDEO_MANUFACTURER_NAME video drivers..."
 
 	RESULT=$(sudo apt-get -y -qq install $VIDEO_DRIVER)
 	
