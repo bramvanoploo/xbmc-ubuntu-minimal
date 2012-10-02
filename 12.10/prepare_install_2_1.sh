@@ -430,9 +430,11 @@ fi
 touch $LOG_FILE
 
 echo ""
-echo ""
 
 installDependencies
+
+echo "-- Loading installer..."
+
 showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed.\nPlease be patient or exit with CTRL+C!"
 trap control_c SIGINT
 hasRequiredParams $VIDEO_MANUFACTURER
