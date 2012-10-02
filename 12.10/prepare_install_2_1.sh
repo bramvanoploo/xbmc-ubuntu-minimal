@@ -514,15 +514,16 @@ hasRequiredParams $VIDEO_MANUFACTURER
 
 declare -a METHODS=("fixLocaleBug" "applyXbmcNiceLevelPermissions" "addUserToRequiredGroups" "addXbmcPpa" "distUpgrade" "installXinit" "installPowerManagement" "installAudio" "confirmLircInstallation" "installXbmc" "confirmEnableDirtyRegionRendering" "installXbmcAddonRepositoriesInstaller" "installVideoDriver" "installXbmcAutoRunScript" "installXbmcBootScreen" "reconfigureXServer" "cleanUp" "rebootMachine")
 
+(
 METHOD_COUNT=${#METHODS[*]}; 
 INDEX=0
 PERCENTAGE=0
-(
-    for METHOD in "${METHODS[@]}"
-    do
-        PERCENTAGE=$(( 100*(++i)/n ))
 
-    eval "$METHOD"
+for METHOD in "${METHODS[@]}"
+do
+    PERCENTAGE=$(( 100*(++i)/n ))
+
+eval "$METHOD"
     
 cat <<EOF
 $PERCENTAGE
