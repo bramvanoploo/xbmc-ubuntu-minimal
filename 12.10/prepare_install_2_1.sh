@@ -57,7 +57,7 @@ function installDependencies()
     echo "-- Installing installation dependencies..."
     echo ""
 
-	RESULT=$(sudo apt-get -y -qq install dialog software-properties-common > /dev/null)
+	RESULT=$(sudo apt-get -y install dialog software-properties-common > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -144,8 +144,8 @@ function distUpgrade()
 {
     log "-- Updating Ubuntu installation..."
 
-	sudo apt-get -qq update
-	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
+	sudo apt-get update
+	sudo apt-get -y dist-upgrade > /dev/null 2>&1
 	
 	log "[x] Ubuntu installation successfully updated"
 }
@@ -154,7 +154,7 @@ function installXinit()
 {
     log "-- Installing xinit..."
     
-	RESULT=$(sudo apt-get -y -qq install xinit > /dev/null)
+	RESULT=$(sudo apt-get -y install xinit > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -170,7 +170,7 @@ function installPowerManagement()
 {
     log "-- Installing power management packages..."
 
-	RESULT=$(sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null)
+	RESULT=$(sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -188,7 +188,7 @@ function installAudio()
 {
     log "-- Installing audio packages. !! Please make sure no used channels are muted !!..."
     
-	RESULT=$(sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null)
+	RESULT=$(sudo apt-get -y install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -217,7 +217,7 @@ function confirmLircInstallation()
 
 function installLirc()
 {
-	RESULT=$(sudo apt-get -y -qq install lirc > /dev/null)
+	RESULT=$(sudo apt-get -y install lirc > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -236,7 +236,7 @@ function installXbmc()
 {
     log "-- Installing XBMC..."
 
-	RESULT=$(sudo apt-get -y -qq install xbmc > /dev/null)
+	RESULT=$(sudo apt-get -y install xbmc > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -314,7 +314,7 @@ function installVideoDriver()
 {
     log "-- Installing $VIDEO_MANUFACTURER_NAME video drivers..."
 
-	RESULT=$(sudo apt-get -y -qq install $VIDEO_DRIVER > /dev/null)
+	RESULT=$(sudo apt-get -y install $VIDEO_DRIVER > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -407,7 +407,7 @@ function installXbmcBootScreen()
 {
     log "-- Installing XBMC boot screen..."
 
-	RESULT=$(sudo apt-get -y -qq install plymouth-label v86d > /dev/null)
+	RESULT=$(sudo apt-get -y install plymouth-label v86d > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
