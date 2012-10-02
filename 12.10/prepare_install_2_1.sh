@@ -23,7 +23,7 @@ LOG_TEXT="\n"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 SYSLOG_FILE=$HOME_DIRECTORY"xbmc_installation_sys.log"
 DIALOG_WIDTH=90
-SCRIPT_TITLE="XBMC installation script for Ubuntu 12.10 by Bram van Oploo :: Contact me at bram@sudo-systems.com"
+SCRIPT_TITLE="XBMC installation script v2.1 for Ubuntu 12.10 by Bram van Oploo :: Contact me at bram@sudo-systems.com"
 
 ## ------ START functions ---------
 
@@ -427,7 +427,13 @@ then
     rm $LOG_FILE
 fi
 
+if [ -f $SYSLOG_FILE ];
+then
+    rm $SYSLOG_FILE
+fi
+
 touch $LOG_FILE
+touch $SYSLOG_FILE
 
 echo ""
 echo ""
