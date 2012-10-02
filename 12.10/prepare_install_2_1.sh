@@ -126,7 +126,7 @@ function addXbmcPpa()
 {
     log "-- Adding Wsnipex xbmc-xvba PPA..."
     sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null >> $SYSLOG_FILE
-	sudo add-apt-repository -y ppa:wsnipex/xbmc-xvba > /dev/null >> $SYSLOG_FILE
+	sudo add-apt-repository -y ppa:wsnipex/xbmc-xvba > /dev/null 2>&1
 	log "[x] Wsnipex xbmc-xvba PPA successfully added"
 }
 
@@ -260,7 +260,7 @@ function installXbmcAddonRepositoriesInstaller()
 
     if [ -f ./plugin.program.repo.installer-1.0.5.tar.gz ];
     then
-        tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null >> $SYSLOG_FILE
+        tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null 2>&1
 	    log "[x] Addon repositories installer plugin successfully installed"
     else
 	    log "ERROR: Addon Repositories Installer plugin could not be installed"
@@ -353,8 +353,8 @@ function installXbmcBootScreen()
 
         sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null >> $SYSLOG_FILE
         sudo sh -c 'echo "FRAMEBUFFER=y" >> /etc/initramfs-tools/conf.d/splash' > /dev/null >> $SYSLOG_FILE
-        sudo update-grub > /dev/null >> $SYSLOG_FILE
-        sudo update-initramfs -u > /dev/null >> $SYSLOG_FILE
+        sudo update-grub > /dev/null 2>&1
+        sudo update-initramfs -u > /dev/null 2>&1
         log "[x] XBMC boot screen successfully installed"
     fi
 }
