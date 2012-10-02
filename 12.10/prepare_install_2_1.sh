@@ -56,7 +56,7 @@ function installDependencies()
 
 	RESULT=$(sudo apt-get -y -qq install dialog software-properties-common > /dev/null)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    echo "FATAL ERROR: Installation dependencies could not be installed '$RESULT'"
 	    echo "Installation terminated"
@@ -153,7 +153,7 @@ function installXinit()
     
 	RESULT=$(sudo apt-get -y -qq install xinit)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "FATAL ERROR: Xinit could not be installed '$RESULT'"
 	    log "Installation terminated"
@@ -169,7 +169,7 @@ function installPowerManagement()
 
 	RESULT=$(sudo apt-get -y -qq install policykit-1 upower udisks acpi-support)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "ERROR: Not all power management packages could be installed '$RESULT'"
 	fi
@@ -187,7 +187,7 @@ function installAudio()
     
 	RESULT=$(sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "ERROR: Not all audio packages could be installed '$RESULT'"
 	else
@@ -214,7 +214,7 @@ function installLirc()
 {
 	RESULT=$(sudo apt-get -y -qq install lirc)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "ERROR: Lirc could not be installed '$RESULT'"
 	else
@@ -233,7 +233,7 @@ function installXbmc()
 
 	RESULT=$(sudo apt-get -y -qq install xbmc)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "ERROR: XBMC could not be installed '$RESULT'"
 	else
@@ -273,7 +273,7 @@ function enableDirtyRegionRendering()
 	mkdir -p $XBMC_USERDATA_DIR > /dev/null
 	RESULT=$(mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "ERROR: Dirty region rendering could not be enabled '$RESULT'"
 	else
@@ -309,7 +309,7 @@ function installVideoDriver()
 
 	RESULT=$(sudo apt-get -y -qq install $VIDEO_DRIVER)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "ERROR: Video driver could not be installed '$RESULT'"
 	else
@@ -319,7 +319,7 @@ function installVideoDriver()
 		    RESULT=$(sudo aticonfig --sync-vsync=on > /dev/null)
 		    RESULT=$(sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null)
 		    
-		    if [ $RESULT != "" ];
+		    if [ "$RESULT" != "" ];
 		    then
 		        log "ERROR: Video driver configuration failed '$RESULT'"
 		    fi
@@ -345,7 +345,7 @@ function disbaleAtiUnderscan()
 	sudo kill $(pidof X) > /dev/null 2>&1
 	RESULT=$(sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
     then
         log "ERROR: Video driver configuration failed '$RESULT'"
     else
@@ -358,7 +358,7 @@ function enableAtiUnderscan()
 	sudo kill $(pidof X) > /dev/null 2>&1
 	RESULT=$(sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
     then
         log "ERROR: Video driver configuration failed '$RESULT'"
     else
@@ -387,7 +387,7 @@ function installXbmcAutorunScript()
 	    sudo chmod a+x /etc/init.d/xbmc > /dev/null
 	    RESULT=$(sudo update-rc.d xbmc defaults > /dev/null)
 	    
-	    if [ $RESULT != "" ];
+	    if [ "$RESULT" != "" ];
 	    then
 	        log "ERROR: XBMC autorun could not be activated"
 	    else
@@ -402,7 +402,7 @@ function installXbmcBootScreen()
 
 	RESULT=$(sudo apt-get -y -qq install plymouth-label v86d)
 	
-	if [ $RESULT != "" ];
+	if [ "$RESULT" != "" ];
 	then
 	    log "ERROR: Boot screen installation requirements could not be installed"
 	else
@@ -416,7 +416,7 @@ function installXbmcBootScreen()
 	    else
 	        RESULT=$(sudo dpkg -i plymouth-theme-xbmc-logo.deb > /dev/null)
 	        
-	        if [ $RESULT != "" ];
+	        if [ "$RESULT" != "" ];
 	        then
 	            log "ERROR: XBMC boot screen could not be installed"
 	        else
