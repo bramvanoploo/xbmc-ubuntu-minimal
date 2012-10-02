@@ -188,7 +188,7 @@ function confirmLircInstallation()
 
 function installLirc()
 {
-	sudo apt-get -y install lirc > /dev/null
+	sudo apt-get -y -qq install lirc
     log "[x] Lirc successfully installed"
 }
 
