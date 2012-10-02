@@ -21,7 +21,6 @@ XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 LOG_TEXT="\n"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
-SYSLOG_FILE=$HOME_DIRECTORY"xbmc_installation_sys.log"
 DIALOG_WIDTH=90
 SCRIPT_TITLE="XBMC installation script v2.1 for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
 
@@ -98,8 +97,8 @@ function fixLocaleBug()
 		sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null 2>&1
 	fi
 
-	sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
-	sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
+	sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment' > /dev/null 2>&1
+	sudo sh -c 'echo "LC_ALL=\"en_US.UTF-8\"" >> /etc/environment' > /dev/null 2>&1
 	log "[x] Locale environment bug fixed"
 }
 
@@ -110,7 +109,7 @@ function applyXbmcNiceLevelPermissions()
 		sudo touch /etc/security/limits.conf > /dev/null 2>&1
 	fi
 
-	sudo sh -c 'echo "xbmc             -       nice            -1" >> /etc/security/limits.conf' > /dev/null
+	sudo sh -c 'echo "xbmc             -       nice            -1" >> /etc/security/limits.conf' > /dev/null 2>&1
 	log "[x] Allowed XBMC to prioritize threads"
 }
 
@@ -153,11 +152,11 @@ function installPowerManagement()
 	cd $TEMP_DIRECTORY
 	sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null 2>&1
 	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla 2>&1
-	sudo mkdir -p /var/lib/polkit-1/localauthority/50-local.d/
+	sudo mkdir -p /var/lib/polkit-1/localauthority/50-local.d/ 2>&1
 	
 	if [ -f ./custom-actions.pkla ];
 	then
-        sudo mv custom-actions.pkla /var/lib/polkit-1/localauthority/50-local.d/
+        sudo mv custom-actions.pkla /var/lib/polkit-1/localauthority/50-local.d/ 2>&1
 	    log "[x] Power management packages successfully installed"
 	else
 	    log "[ ] Could not enable XBMC power management features"  
@@ -233,8 +232,8 @@ function enableDirtyRegionRendering()
 	fi
 	
 	mkdir -p $TEMP_DIRECTORY > /dev/null
-	cd $TEMP_DIRECTORY > /dev/null
-	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml
+	cd $TEMP_DIRECTORY
+	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml 2>&1
 	mkdir -p $XBMC_USERDATA_DIR > /dev/null 2>&1
 	
 	if [ -f ./dirty_region_rendering.xml ];
@@ -255,7 +254,7 @@ function installXbmcAddonRepositoriesInstaller()
 
 	if [ ! -d $XBMC_ADDONS_DIR ];
 	then
-		mkdir -p $XBMC_ADDONS_DIR > /dev/null
+		mkdir -p $XBMC_ADDONS_DIR > /dev/null 2>&1
 	fi
 
     if [ -f ./plugin.program.repo.installer-1.0.5.tar.gz ];
@@ -321,7 +320,7 @@ function installXbmcAutorunScript()
 	else
 	    if [ -f $INIT_FILE ];
 	    then
-		    sudo rm $INIT_FILE > /dev/null
+		    sudo rm $INIT_FILE > /dev/null 2>&1
 	    fi
 
 	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null 2>&1
@@ -375,7 +374,7 @@ function reconfigureXServer()
 
 	if [ -f $XWRAPPER_FILE ];
 	then
-		sudo rm $XWRAPPER_FILE > /dev/null
+		sudo rm $XWRAPPER_FILE > /dev/null 2>&1
 	fi
 
 	sudo touch $XWRAPPER_FILE > /dev/null 2>&1
