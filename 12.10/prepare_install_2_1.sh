@@ -58,7 +58,7 @@ function installDependencies()
     echo "-- Installing installation dependencies..."
     echo ""
 
-	sudo apt-get -y -qq install dialog software-properties-common > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -y -qq install dialog software-properties-common > /dev/null 2>&1
 }
 
 function hasRequiredParams()
@@ -92,10 +92,10 @@ function fixLocaleBug()
 
 	if [ -f $ENVIRONMENT_BACKUP_FILE ];
 	then
-		sudo rm $ENVIRONMENT_FILE > /dev/null >> $SYSLOG_FILE
-		sudo cp $ENVIRONMENT_BACKUP_FILE $ENVIRONMENT_FILE > /dev/null >> $SYSLOG_FILE
+		sudo rm $ENVIRONMENT_FILE > /dev/null 2>&1
+		sudo cp $ENVIRONMENT_BACKUP_FILE $ENVIRONMENT_FILE > /dev/null 2>&1
 	else
-		sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null >> $SYSLOG_FILE
+		sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null 2>&1
 	fi
 
 	sudo sh -c 'echo "LC_MESSAGES=\"C\"" >> /etc/environment'
@@ -107,7 +107,7 @@ function applyXbmcNiceLevelPermissions()
 {
 	if [ ! -f /etc/security/limits.conf ];
 	then
-		sudo touch /etc/security/limits.conf > /dev/null >> $SYSLOG_FILE
+		sudo touch /etc/security/limits.conf > /dev/null 2>&1
 	fi
 
 	sudo sh -c 'echo "xbmc             -       nice            -1" >> /etc/security/limits.conf' > /dev/null
@@ -125,7 +125,7 @@ function addUserToRequiredGroups()
 function addXbmcPpa()
 {
     log "-- Adding Wsnipex xbmc-xvba PPA..."
-    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null >> $SYSLOG_FILE
+    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
 	sudo add-apt-repository -y ppa:wsnipex/xbmc-xvba > /dev/null 2>&1
 	log "[x] Wsnipex xbmc-xvba PPA successfully added"
 }
@@ -133,15 +133,15 @@ function addXbmcPpa()
 function distUpgrade()
 {
     log "-- Updating Ubuntu installation..."
-	sudo apt-get -qq update > /dev/null >> $SYSLOG_FILE
-	sudo apt-get -y -qq dist-upgrade > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -qq update > /dev/null 2>&1
+	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
 	log "[x] Ubuntu installation successfully updated"
 }
 
 function installXinit()
 {
     log "-- Installing xinit..."
-	sudo apt-get -y -qq install xinit > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -y -qq install xinit > /dev/null 2>&1
 	log "[x] Xinit successfully installed"
 }
 
@@ -151,8 +151,8 @@ function installPowerManagement()
 
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null >> $SYSLOG_FILE
-	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla >> $SYSLOG_FILE
+	sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null 2>&1
+	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla 2>&1
 	sudo mkdir -p /var/lib/polkit-1/localauthority/50-local.d/
 	
 	if [ -f ./custom-actions.pkla ];
@@ -167,7 +167,7 @@ function installPowerManagement()
 function installAudio()
 {
     log "-- Installing audio packages. !! Please make sure no used channels are muted !!..."
-	sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null 2>&1
     sudo alsamixer
     log "[x] Audio packages successfully installed"
 }
@@ -201,7 +201,7 @@ function cancelLircInstallation()
 function installXbmc()
 {
     log "-- Installing XBMC..."
-	sudo apt-get -y -qq install xbmc > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -y -qq install xbmc > /dev/null 2>&1
     log "[x] XBMC successfully installed"  
 }
 
@@ -224,22 +224,22 @@ function enableDirtyRegionRendering()
 {
 	if [ -f $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
 	then
-		rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null >> $SYSLOG_FILE
+		rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null 2>&1
 	fi
 
 	if [ -f $XBMC_ADVANCEDSETTINGS_FILE ];
 	then
-		mv $XBMC_ADVANCEDSETTINGS_FILE $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null >> $SYSLOG_FILE
+		mv $XBMC_ADVANCEDSETTINGS_FILE $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null 2>&1
 	fi
 	
 	mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY > /dev/null
 	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml
-	mkdir -p $XBMC_USERDATA_DIR > /dev/null >> $SYSLOG_FILE
+	mkdir -p $XBMC_USERDATA_DIR > /dev/null 2>&1
 	
 	if [ -f ./dirty_region_rendering.xml ];
 	then
-        mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null >> $SYSLOG_FILE
+        mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null 2>&1
         log "[x] XBMC dirty-region-rendering enabled"
     else
         log "ERROR: XBMC dirty-region-rendering could not be enabled"
@@ -251,7 +251,7 @@ function installXbmcAddonRepositoriesInstaller()
     log "-- Installing Addon repositories installer plugin..."
 	mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz > /dev/null >> $SYSLOG_FILE
+	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz > /dev/null 2>&1
 
 	if [ ! -d $XBMC_ADDONS_DIR ];
 	then
@@ -270,13 +270,13 @@ function installXbmcAddonRepositoriesInstaller()
 function installVideoDriver()
 {
     log "-- Installing $VIDEO_MANUFACTURER_NAME video drivers..."
-	sudo apt-get -y -qq install $VIDEO_DRIVER > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -y -qq install $VIDEO_DRIVER > /dev/null 2>&1
 
     if [ $VIDEO_MANUFACTURER == "ati" ];
     then
-	    sudo aticonfig --initial -f > /dev/null >> $SYSLOG_FILE
-	    sudo aticonfig --sync-vsync=on > /dev/null >> $SYSLOG_FILE
-	    sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null >> $SYSLOG_FILE
+	    sudo aticonfig --initial -f > /dev/null 2>&1
+	    sudo aticonfig --sync-vsync=on > /dev/null 2>&1
+	    sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
 
 	    dialog --title "Disable underscan" \
 		    --backtitle "$SCRIPT_TITLE" \
@@ -295,15 +295,15 @@ function installVideoDriver()
 
 function disbaleAtiUnderscan()
 {
-	sudo kill $(pidof X) > /dev/null >> $SYSLOG_FILE
-	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null >> $SYSLOG_FILE
+	sudo kill $(pidof X) > /dev/null 2>&1
+	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null 2>&1
     log "[ ] Underscan successfully disabled"
 }
 
 function enableAtiUnderscan()
 {
-	sudo kill $(pidof X) > /dev/null >> $SYSLOG_FILE
-	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null >> $SYSLOG_FILE
+	sudo kill $(pidof X) > /dev/null 2>&1
+	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null 2>&1
     log "[x] Underscan successfully enabled"
 }
 
@@ -313,7 +313,7 @@ function installXbmcAutorunScript()
     
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script > /dev/null >> $SYSLOG_FILE
+	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script > /dev/null 2>&1
 	
 	if [ ! -f ./xbmc_init_script ];
 	then
@@ -324,9 +324,9 @@ function installXbmcAutorunScript()
 		    sudo rm $INIT_FILE > /dev/null
 	    fi
 
-	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null >> $SYSLOG_FILE
-	    sudo chmod a+x /etc/init.d/xbmc > /dev/null >> $SYSLOG_FILE
-	    sudo update-rc.d xbmc defaults > /dev/null >> $SYSLOG_FILE
+	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null 2>&1
+	    sudo chmod a+x /etc/init.d/xbmc > /dev/null 2>&1
+	    sudo update-rc.d xbmc defaults > /dev/null 2>&1
         log "[x] XBMC autorun succesfully configured"
 	fi
 }
@@ -334,25 +334,25 @@ function installXbmcAutorunScript()
 function installXbmcBootScreen()
 {
     log "-- Installing XBMC boot screen (this will take several minutes)..."
-	sudo apt-get -y -qq install plymouth-label v86d > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -y -qq install plymouth-label v86d > /dev/null 2>&1
 
     mkdir -p $TEMP_DIRECTORY > /dev/null
     cd $TEMP_DIRECTORY
-    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb > /dev/null >> $SYSLOG_FILE
+    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
     
     if [ ! -f ./plymouth-theme-xbmc-logo.deb ];
     then
         log "ERROR: Download of XBMC boot screen package failed"
     else
-        sudo dpkg -i ./plymouth-theme-xbmc-logo.deb > /dev/null >> $SYSLOG_FILE
+        sudo dpkg -i ./plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
 
         if [ -f /etc/initramfs-tools/conf.d/splash ];
         then
-            sudo rm /etc/initramfs-tools/conf.d/splash > /dev/null >> $SYSLOG_FILE
+            sudo rm /etc/initramfs-tools/conf.d/splash > /dev/null 2>&1
         fi
 
-        sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null >> $SYSLOG_FILE
-        sudo sh -c 'echo "FRAMEBUFFER=y" >> /etc/initramfs-tools/conf.d/splash' > /dev/null >> $SYSLOG_FILE
+        sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null 2>&1
+        sudo sh -c 'echo "FRAMEBUFFER=y" >> /etc/initramfs-tools/conf.d/splash' > /dev/null 2>&1
         sudo update-grub > /dev/null 2>&1
         sudo update-initramfs -u > /dev/null 2>&1
         log "[x] XBMC boot screen successfully installed"
@@ -370,25 +370,25 @@ function reconfigureXServer()
 
 	if [ ! -f $XWRAPPER_BACKUP_FILE ];
 	then
-		sudo mv $XWRAPPER_FILE $XWRAPPER_BACKUP_FILE > /dev/null >> $SYSLOG_FILE
+		sudo mv $XWRAPPER_FILE $XWRAPPER_BACKUP_FILE > /dev/null 2>&1
 	fi
 
 	if [ -f $XWRAPPER_FILE ];
 	then
-		sudo rm $XWRAPPER_FILE > /dev/null >> $SYSLOG_FILE
+		sudo rm $XWRAPPER_FILE > /dev/null
 	fi
 
-	sudo touch $XWRAPPER_FILE > /dev/null >> $SYSLOG_FILE
-	sudo sh -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config' > /dev/null >> $SYSLOG_FILE
+	sudo touch $XWRAPPER_FILE > /dev/null 2>&1
+	sudo sh -c 'echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config' > /dev/null 2>&1
 	log "[x] X-server successfully configured"
 }
 
 function cleanUp()
 {
     log "-- Cleaning up..."
-	sudo apt-get -y autoclean > /dev/null >> $SYSLOG_FILE
-	sudo apt-get -y autoremove > /dev/null >> $SYSLOG_FILE
-	sudo rm -r $TEMP_DIRECTORY > /dev/null >> $SYSLOG_FILE
+	sudo apt-get -y autoclean > /dev/null 2>&1
+	sudo apt-get -y autoremove > /dev/null 2>&1
+	sudo rm -r $TEMP_DIRECTORY > /dev/null 2>&1
 	rm $HOME_DIRECTORY$THIS_FILE
 }
 
