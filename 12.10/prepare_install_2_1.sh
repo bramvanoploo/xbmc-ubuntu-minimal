@@ -125,7 +125,7 @@ function addUserToRequiredGroups()
 function addXbmcPpa()
 {
     log "-- Adding Wsnipex xbmc-xvba PPA..."
-    sudo mkdir -q /home/xbmc/.gnupg > /dev/null >> $SYSLOG_FILE
+    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null >> $SYSLOG_FILE
 	sudo add-apt-repository -y ppa:wsnipex/xbmc-xvba > /dev/null >> $SYSLOG_FILE
 	log "[x] Wsnipex xbmc-xvba PPA successfully added"
 }
