@@ -198,6 +198,8 @@ function installAudio()
 
 function confirmLircInstallation()
 {
+    log "-- Allowing installation of Infra Red remote support"
+
 	dialog --title "Lirc installation" \
 		--backtitle "$SCRIPT_TITLE" \
 		--yesno "Do you want to install and configure Infra Red remote support?" 7 $DIALOG_WIDTH
@@ -212,8 +214,6 @@ function confirmLircInstallation()
 
 function installLirc()
 {
-    log "-- Allowing installation of lirc"
-
 	RESULT=$(sudo apt-get -y -qq install lirc)
 	
 	if [ "$RESULT" != "" ];
