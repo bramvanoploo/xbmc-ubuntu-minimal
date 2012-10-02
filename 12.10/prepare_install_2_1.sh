@@ -144,8 +144,8 @@ function distUpgrade()
 {
     log "-- Updating Ubuntu installation..."
 
-	sudo apt-get update
-	sudo apt-get -y dist-upgrade > /dev/null 2>&1
+	sudo apt-get -qq update > /dev/null
+	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
 	
 	log "[x] Ubuntu installation successfully updated"
 }
