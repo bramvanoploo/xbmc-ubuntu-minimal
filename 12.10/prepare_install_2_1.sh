@@ -1,4 +1,4 @@
-#!/bin/bash
+null#!/bin/bash
 
 USER="xbmc"
 THIS_FILE=$0
@@ -154,7 +154,7 @@ function installXinit()
 {
     log "-- Installing xinit..."
     
-	RESULT=$(sudo apt-get -y -qq install xinit)
+	RESULT=$(sudo apt-get -y -qq install xinit > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -170,7 +170,7 @@ function installPowerManagement()
 {
     log "-- Installing power management packages..."
 
-	RESULT=$(sudo apt-get -y -qq install policykit-1 upower udisks acpi-support)
+	RESULT=$(sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -188,7 +188,7 @@ function installAudio()
 {
     log "-- Installing audio packages. !! Please make sure no used channels are muted !!..."
     
-	RESULT=$(sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2)
+	RESULT=$(sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -217,7 +217,7 @@ function confirmLircInstallation()
 
 function installLirc()
 {
-	RESULT=$(sudo apt-get -y -qq install lirc)
+	RESULT=$(sudo apt-get -y -qq install lirc > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -236,7 +236,7 @@ function installXbmc()
 {
     log "-- Installing XBMC..."
 
-	RESULT=$(sudo apt-get -y -qq install xbmc)
+	RESULT=$(sudo apt-get -y -qq install xbmc > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -314,7 +314,7 @@ function installVideoDriver()
 {
     log "-- Installing $VIDEO_MANUFACTURER_NAME video drivers..."
 
-	RESULT=$(sudo apt-get -y -qq install $VIDEO_DRIVER)
+	RESULT=$(sudo apt-get -y -qq install $VIDEO_DRIVER > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
@@ -407,7 +407,7 @@ function installXbmcBootScreen()
 {
     log "-- Installing XBMC boot screen..."
 
-	RESULT=$(sudo apt-get -y -qq install plymouth-label v86d)
+	RESULT=$(sudo apt-get -y -qq install plymouth-label v86d > /dev/null)
 	
 	if [ "$RESULT" != "" ];
 	then
