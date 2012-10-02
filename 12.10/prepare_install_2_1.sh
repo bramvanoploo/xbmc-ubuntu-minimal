@@ -20,6 +20,7 @@ XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 LOG_TEXT="\n"
+LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=90
 SCRIPT_TITLE="XBMC installation script for Ubuntu 12.10 by Bram van Oploo :: Contact me at bram@sudo-systems.com"
 
@@ -27,6 +28,8 @@ SCRIPT_TITLE="XBMC installation script for Ubuntu 12.10 by Bram van Oploo :: Con
 
 function log()
 {
+    echo "$@" >> $LOG_FILE
+
 	LOG_TEXT="$LOG_TEXT$@\n"
 	
 	dialog --title "Ubuntu configuration and XBMC installation in progress..." \
@@ -507,6 +510,13 @@ control_c()
 ## ------- END functions -------
 
 clear
+
+if [ -f $LOG_FILE ];
+then
+    rm $LOG_FILE
+fi
+
+touch $LOG_FILE
 
 echo ""
 echo ""
