@@ -205,7 +205,8 @@ function installAudio()
 function installLirc()
 {
     showInfo "Installing lirc"
-	sudo apt-get -y install lirc /dev/null
+	sudo apt-get -y install lirc > /dev/null 2>&1
+	sudo dpkg-reconfigure lirc
     showInfo "Lirc successfully installed"
 }
 
