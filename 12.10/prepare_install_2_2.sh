@@ -437,7 +437,7 @@ function selectAdditionalOptions()
     OPTIONS=(1 "Lirc (IR remote support)" off
             2 "Hts tvheadend (live TV backend)" off
             3 "Oscam (live HDTV decryption tool)" off
-            4 "XBMC Dirty region rendering (improved XBMC GUI performance)" on
+            4 "XBMC Dirty region rendering (improved performance)" on
             5 "XBMC Addon Repositories Installer addon" on)
             
     CHOICES=$("${CHECKLIST[@]}" "${OPTIONS[@]}" 2>&1 >/dev/tty)
@@ -478,7 +478,7 @@ function rebootMachine()
     showInfo "Reboot system..."
 	dialog --title "Installation complete" \
 		--backtitle "$SCRIPT_TITLE" \
-		--yesno "Do you want to reboot now?\n\nYou can review the installation log by running 'cat ~/xbmc_installation.log'" 7 $DIALOG_WIDTH
+		--yesno "Do you want to reboot now?\n\nYou can review the installation log by running \"cat ~/xbmc_installation.log\"" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
 	case $RESPONSE in
@@ -528,7 +528,7 @@ installAudio
 #confirmLircInstallation
 installXbmc
 #confirmEnableDirtyRegionRendering
-installXbmcAddonRepositoriesInstaller
+#installXbmcAddonRepositoriesInstaller
 installVideoDriver
 installXbmcAutoRunScript
 installXbmcBootScreen
