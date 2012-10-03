@@ -4,7 +4,7 @@ USER="xbmc"
 THIS_FILE=$0
 SCRIPT_VERSION="2.2"
 
-VIDEO_MANUFACTURER=""
+VIDEO_MANUFACTURER=$1
 VIDEO_DRIVER=""
 VIDEO_MANUFACTURER_NAME=""
 
@@ -76,27 +76,27 @@ function installDependencies()
 	sudo apt-get -y -qq install dialog software-properties-common > /dev/null 2>&1
 }
 
-#function hasRequiredParams()
-#{
-#	if [ $VIDEO_MANUFACTURER == "ati" ];
-#	then
-#		VIDEO_DRIVER="fglrx"
-#		VIDEO_MANUFACTURER_NAME="ATI"
-#	elif [ $VIDEO_MANUFACTURER == "nvidia" ];
-#	then
-#		VIDEO_DRIVER="nvidia-current"
-#		VIDEO_MANUFACTURER_NAME="NVIDIA"
-#	elif [ $VIDEO_MANUFACTURER == "intel" ];
-#	then
-#		VIDEO_DRIVER="i965-va-driver"
-#		VIDEO_MANUFACTURER_NAME="INTEL"
-#	else
-#		MESSAGE="Please provide the videocard manufacturer parameter (ati/nvidia/intel)"
-#		showErrorDialog "$MESSAGE"
-#		clear
-#		exit
-#	fi
-#}
+function hasRequiredParams()
+{
+	if [ $VIDEO_MANUFACTURER == "ati" ];
+	then
+		VIDEO_DRIVER="fglrx"
+		VIDEO_MANUFACTURER_NAME="ATI"
+	elif [ $VIDEO_MANUFACTURER == "nvidia" ];
+	then
+		VIDEO_DRIVER="nvidia-current"
+		VIDEO_MANUFACTURER_NAME="NVIDIA"
+	elif [ $VIDEO_MANUFACTURER == "intel" ];
+	then
+		VIDEO_DRIVER="i965-va-driver"
+		VIDEO_MANUFACTURER_NAME="INTEL"
+	else
+		MESSAGE="Please provide the videocard manufacturer parameter (ati/nvidia/intel)"
+		showErrorDialog "$MESSAGE"
+		clear
+		exit
+	fi
+}
 
 function fixLocaleBug()
 {
@@ -431,43 +431,11 @@ function reconfigureXServer()
 	showInfo "X-server successfully configured"
 }
 
-function selectVideoDriver()
-{
-    result=(dialog --title "Video driver selection" \
-        --backtitle "$SCRIPT_TITLE" \
-        --radiolist "Please select your video card's chipset manufacturer (required):" \
-        10 $DIALOG_WIDTH 3 \
-        1 "NVIDIA" off \
-        2 "ATI (series >= 5xxx)" off \
-        3 "Intel" off 2>&1 >/dev/tty)
-        
-    VIDEO_MANUFACTURER_NAME=$result    
-        
-    if [ "$VIDEO_MANUFACTURER_NAME" == "NVIDIA" ];
-    then
-        VIDEO_MANUFACTURER="nvidia"
-        VIDEO_DRIVER="nvidia-current"
-        installVideoDriver
-    elif [ "$VIDEO_MANUFACTURER_NAME" == "ATI" ];
-    then
-        VIDEO_MANUFACTURER="ati"
-        VIDEO_DRIVER="fglrx"
-        installVideoDriver
-    elif [ "$VIDEO_MANUFACTURER_NAME" == "Intel" ];
-    then
-        VIDEO_MANUFACTURER="intel"
-        VIDEO_DRIVER="i965-va-driver"
-        installVideoDriver
-    else
-        selectVideoDriver
-    fi
-}
-
 function selectAdditionalOptions()
 {
     cmd=(dialog --title "Optional packages and features" 
         --backtitle "$SCRIPT_TITLE" 
-        --checklist "Please select optional packages to install:" 
+        --checklist "Plese select optional packages to install:" 
         15 $DIALOG_WIDTH 5)
         
     options=(1 "Lirc (IR remote support)" off
@@ -551,7 +519,7 @@ installDependencies
 echo "Loading installer..."
 showDialog "Welcome to the XBMC minimal installation script. Some parts may take a while to install depending on your internet connection speed.\n\nPlease be patient..."
 trap control_c SIGINT
-#hasRequiredParams $VIDEO_MANUFACTURER
+hasRequiredParams $VIDEO_MANUFACTURER
 
 fixLocaleBug
 applyXbmcNiceLevelPermissions
@@ -561,7 +529,6 @@ distUpgrade
 installXinit
 installPowerManagement
 installAudio
-selectVideoDriver
 #confirmLircInstallation
 installXbmc
 #confirmEnableDirtyRegionRendering
