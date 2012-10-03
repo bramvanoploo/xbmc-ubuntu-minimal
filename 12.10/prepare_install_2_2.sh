@@ -443,17 +443,17 @@ function selectVideoDriver()
         
     VIDEO_MANUFACTURER_NAME=$result    
         
-    if [ $VIDEO_MANUFACTURER_NAME == "NVIDIA" ];
+    if [ "$VIDEO_MANUFACTURER_NAME" == "NVIDIA" ];
     then
         VIDEO_MANUFACTURER="nvidia"
         VIDEO_DRIVER="nvidia-current"
         installVideoDriver
-    elif [ $VIDEO_MANUFACTURER_NAME == "ATI" ];
+    elif [ "$VIDEO_MANUFACTURER_NAME" == "ATI" ];
     then
         VIDEO_MANUFACTURER="ati"
         VIDEO_DRIVER="fglrx"
         installVideoDriver
-    elif [ $VIDEO_MANUFACTURER_NAME == "Intel" ];
+    elif [ "$VIDEO_MANUFACTURER_NAME" == "Intel" ];
     then
         VIDEO_MANUFACTURER="intel"
         VIDEO_DRIVER="i965-va-driver"
