@@ -156,7 +156,6 @@ function distUpgrade()
 function installXinit()
 {
     showInfo "Installing xinit..."
-    
     sudo dpkg-query -l xinit > /dev/null 2>&1
     
     if [ $? == 1 ];
@@ -195,21 +194,6 @@ function installAudio()
     showInfo "Audio packages successfully installed"
 }
 
-#function confirmLircInstallation()
-#{
-#    showInfo "Allowing infra red remote support"
-#	dialog --title "Lirc installation" \
-#		--backtitle "$SCRIPT_TITLE" \
-#		--yesno "Do you want to install and configure Infra Red remote support?" 7 $DIALOG_WIDTH
-#
-#	RESPONSE=$?
-#	case $RESPONSE in
-#	   0) installLirc;;
-#	   1) cancelLircInstallation;;
-#	   255) cancelLircInstallation;;
-#	esac
-#}
-
 function installLirc()
 {
     showInfo "Installing lirc"
@@ -246,32 +230,19 @@ function installOscam()
     showInfo "Oscam installed"
 }
 
-#function cancelLircInstallation()
-#{
-#	showInfo "Lirc installation skipped"
-#}
-
 function installXbmc()
 {
     showInfo "Installing XBMC..."
-	sudo apt-get -y -qq install xbmc > /dev/null 2>&1
-    showInfo "XBMC successfully installed"  
+    sudo dpkg-query -l xbmc > /dev/null 2>&1
+    
+    if [ $? == 1 ];
+    then
+	    sudo apt-get -y -qq install xbmc > /dev/null 2>&1
+        showInfo "XBMC successfully installed"
+    else
+        showInfo "Skipping. XBMC already installed"
+    fi
 }
-
-#function confirmEnableDirtyRegionRendering()
-#{
-#    showInfo "Allowing to enable dirty region rendering"
-#	dialog --title "Dirty region rendering" \
-#		--backtitle "$SCRIPT_TITLE" \
-#		--yesno "Do you wish to enable dirty region rendering in XBMC? (this will replace your existing advancedsettings.xml)?" 7 $DIALOG_WIDTH
-#
-#	RESPONSE=$?
-#	case $RESPONSE in
-#	   0) enableDirtyRegionRendering;;
-#	   1) showInfo "XBMC dirty region rendering not enabled";;
-#	   255) showInfo "XBMC dirty region rendering not enabled";;
-#	esac
-#}
 
 function enableDirtyRegionRendering()
 {
