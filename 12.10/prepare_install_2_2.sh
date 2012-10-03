@@ -42,9 +42,7 @@ function showInfo()
     echo "$@" >> $LOG_FILE
 	LOG_TEXT="$LOG_TEXT$@\n"
 
-    dialog --infobox "\n$@" \
-        --backtitle "$SCRIPT_TITLE" \
-        4 $DIALOG_WIDTH
+    dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 4 $DIALOG_WIDTH
 }
 
 function showError()
@@ -52,10 +50,7 @@ function showError()
     echo "$@" >> $LOG_FILE
 	LOG_TEXT="$LOG_TEXT$@\n"
 
-    dialog --title "Error" \
-        --backtitle "$SCRIPT_TITLE" \
-        --msgbox "\n$@" \
-        4 $DIALOG_WIDTH
+    dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "\n$@" 4 $DIALOG_WIDTH
 }
 
 function showDialog()
