@@ -478,7 +478,7 @@ function rebootMachine()
     showInfo "Reboot system..."
 	dialog --title "Installation complete" \
 		--backtitle "$SCRIPT_TITLE" \
-		--yesno "Do you want to reboot now?\n\nYou can review the installation log by running \"cat ~/xbmc_installation.log\"" 7 $DIALOG_WIDTH
+		--yesno "Do you want to reboot now?" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
 	case $RESPONSE in
