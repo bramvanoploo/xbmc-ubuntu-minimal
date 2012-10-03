@@ -517,7 +517,7 @@ touch $LOG_FILE
 echo ""
 installDependencies
 echo "Loading installer..."
-showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed.\nPlease be patient!"
+showDialog "Welcome to the XBMC minimal installation script. Some parts may take a while to install depending on your internet connection speed.\n\nPlease be patient..."
 trap control_c SIGINT
 hasRequiredParams $VIDEO_MANUFACTURER
 
