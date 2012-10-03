@@ -63,7 +63,7 @@ function showDialog()
 
 function showErrorDialog()
 {
-	dialog --title "ERROR: XBMC installation script" \
+	dialog --title "ERROR" \
 		--backtitle "$SCRIPT_TITLE" \
 		--msgbox "\n$@" 8 $DIALOG_WIDTH
 }
@@ -147,7 +147,7 @@ function addXbmcPpa()
 
 function distUpgrade()
 {
-    showInfo "Updating Ubuntu installation..."
+    showInfo "Updating Ubuntu with latest packages..."
 	sudo apt-get -qq update > /dev/null 2>&1
 	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
 	showInfo "Ubuntu installation updated"
@@ -181,38 +181,68 @@ function installPowerManagement()
 
 function installAudio()
 {
-    showInfo "Installing audio packages. !! Please make sure no used channels are muted !!..."
+    showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
 	sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null 2>&1
     sudo alsamixer
     showInfo "Audio packages successfully installed"
 }
 
-function confirmLircInstallation()
-{
-    showInfo "Allowing infra red remote support"
-	dialog --title "Lirc installation" \
-		--backtitle "$SCRIPT_TITLE" \
-		--yesno "Do you want to install and configure Infra Red remote support?" 7 $DIALOG_WIDTH
-
-	RESPONSE=$?
-	case $RESPONSE in
-	   0) installLirc;;
-	   1) cancelLircInstallation;;
-	   255) cancelLircInstallation;;
-	esac
-}
+#function confirmLircInstallation()
+#{
+#    showInfo "Allowing infra red remote support"
+#	dialog --title "Lirc installation" \
+#		--backtitle "$SCRIPT_TITLE" \
+#		--yesno "Do you want to install and configure Infra Red remote support?" 7 $DIALOG_WIDTH
+#
+#	RESPONSE=$?
+#	case $RESPONSE in
+#	   0) installLirc;;
+#	   1) cancelLircInstallation;;
+#	   255) cancelLircInstallation;;
+#	esac
+#}
 
 function installLirc()
 {
+    showInfo "Installing lirc"
 	sudo apt-get -y -qq install lirc /dev/null 2>&1
 	sudo dpkg-reconfigure lirc
     showInfo "Lirc successfully installed"
 }
 
-function cancelLircInstallation()
+function installTvHeadend()
 {
-	showInfo "Lirc installation skipped"
+    showInfo "Adding jabbors hts-stable PPA..."
+    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
+	sudo add-apt-repository -y ppa:jabbors/hts-stable > /dev/null 2>&1
+	showInfo "Jabbors hts-stable PPA added"
+	
+    distUpgrade
+    
+    showInfo "Installing hts tvheadend..."
+    sudo apt-get -y -qq install tvheadend > /dev/null 2>&1
+    sudo dpkg-reconfigure tvheadend
+    showInfo "Hts tvheadend installed"
 }
+
+function installOscam()
+{
+    showInfo "Adding oscam PPA..."
+    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
+	sudo add-apt-repository -y ppa:oscam/ppa > /dev/null 2>&1
+	showInfo "Oscam PPA added"
+	
+    distUpgrade
+    
+    showInfo "Installing oscam..."
+    sudo apt-get -y -qq install oscam > /dev/null 2>&1
+    showInfo "Oscam installed"
+}
+
+#function cancelLircInstallation()
+#{
+#	showInfo "Lirc installation skipped"
+#}
 
 function installXbmc()
 {
@@ -221,23 +251,25 @@ function installXbmc()
     showInfo "XBMC successfully installed"  
 }
 
-function confirmEnableDirtyRegionRendering()
-{
-    showInfo "Allowing to enable dirty region rendering"
-	dialog --title "Dirty region rendering" \
-		--backtitle "$SCRIPT_TITLE" \
-		--yesno "Do you wish to enable dirty region rendering in XBMC? (this will replace your existing advancedsettings.xml)?" 7 $DIALOG_WIDTH
-
-	RESPONSE=$?
-	case $RESPONSE in
-	   0) enableDirtyRegionRendering;;
-	   1) showInfo "XBMC dirty region rendering not enabled";;
-	   255) showInfo "XBMC dirty region rendering not enabled";;
-	esac
-}
+#function confirmEnableDirtyRegionRendering()
+#{
+#    showInfo "Allowing to enable dirty region rendering"
+#	dialog --title "Dirty region rendering" \
+#		--backtitle "$SCRIPT_TITLE" \
+#		--yesno "Do you wish to enable dirty region rendering in XBMC? (this will replace your existing advancedsettings.xml)?" 7 $DIALOG_WIDTH
+#
+#	RESPONSE=$?
+#	case $RESPONSE in
+#	   0) enableDirtyRegionRendering;;
+#	   1) showInfo "XBMC dirty region rendering not enabled";;
+#	   255) showInfo "XBMC dirty region rendering not enabled";;
+#	esac
+#}
 
 function enableDirtyRegionRendering()
 {
+    showInfo "Enabling XBMC dirty-region-rendering..."    
+    
 	if [ -f $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
 	then
 		rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null 2>&1
@@ -264,7 +296,7 @@ function enableDirtyRegionRendering()
 
 function installXbmcAddonRepositoriesInstaller()
 {
-    showInfo "Installing Addon repositories installer plugin..."
+    showInfo "Installing Addon Repositories Installer addon..."
 	mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
 	wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz > /dev/null 2>&1
@@ -277,9 +309,9 @@ function installXbmcAddonRepositoriesInstaller()
     if [ -f ./plugin.program.repo.installer-1.0.5.tar.gz ];
     then
         tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null 2>&1
-	    showInfo "Addon repositories installer plugin successfully installed"
+	    showInfo "Addon Repositories Installer addon successfully installed"
     else
-	    showError "Addon Repositories Installer plugin could not be installed"
+	    showError "Addon Repositories Installer addon could not be installed"
     fi
 }
 
@@ -349,7 +381,7 @@ function installXbmcAutorunScript()
 
 function installXbmcBootScreen()
 {
-    showInfo "Installing XBMC boot screen (this will take several minutes)..."
+    showInfo "Installing XBMC boot screen (please be patient)..."
 	sudo apt-get -y -qq install plymouth-label v86d > /dev/null 2>&1
 
     mkdir -p $TEMP_DIRECTORY > /dev/null
@@ -399,6 +431,39 @@ function reconfigureXServer()
 	showInfo "X-server successfully configured"
 }
 
+function selectAdditionalOptions()
+{
+    CHECKLIST=(dialog --checklist "Plese select optional packages to install:" 20 $DIALOG_WIDTH 5)
+    OPTIONS=(1 "Lirc (IR remote support)" off
+            2 "Hts tvheadend (live TV backend)" off
+            3 "Oscam (live HDTV decryption tool)" off
+            4 "XBMC Dirty region rendering (improved XBMC GUI performance)" on
+            5 "XBMC Addon Repositories Installer addon" on)
+            
+    CHOICES=$("${CHECKLIST[@]}" "${OPTIONS[@]}" 2>&1 >/dev/tty)
+    
+    for CHOICE in $CHOICES
+    do
+        case $CHOICE in
+            1)
+                installLirc
+                ;;
+            2)
+                installTvHeadend
+                ;;
+            3)
+                installOscam
+                ;;
+            4)
+                enableDirtyRegionRendering
+                ;;
+            5)
+                installXbmcAddonRepositoriesInstaller
+                ;;
+        esac
+    done
+}
+
 function cleanUp()
 {
     showInfo "Cleaning up..."
@@ -413,7 +478,7 @@ function rebootMachine()
     showInfo "Reboot system..."
 	dialog --title "Installation complete" \
 		--backtitle "$SCRIPT_TITLE" \
-		--yesno "Do you want to reboot now?" 7 $DIALOG_WIDTH
+		--yesno "Do you want to reboot now?\n\nYou can review the installation log by running 'cat ~/xbmc_installation.log'" 7 $DIALOG_WIDTH
 
 	RESPONSE=$?
 	case $RESPONSE in
@@ -446,11 +511,8 @@ fi
 touch $LOG_FILE
 
 echo ""
-
 installDependencies
-
-echo "-- Loading installer..."
-
+echo "Loading installer..."
 showDialog "Welcome to the XBMC minimal installation script.\n\nSome parts may take a while to install depending on your internet connection speed.\nPlease be patient or exit with CTRL+C!"
 trap control_c SIGINT
 hasRequiredParams $VIDEO_MANUFACTURER
@@ -463,13 +525,14 @@ distUpgrade
 installXinit
 installPowerManagement
 installAudio
-confirmLircInstallation
+#confirmLircInstallation
 installXbmc
-confirmEnableDirtyRegionRendering
+#confirmEnableDirtyRegionRendering
 installXbmcAddonRepositoriesInstaller
 installVideoDriver
 installXbmcAutoRunScript
 installXbmcBootScreen
 reconfigureXServer
+selectAdditionalOptions
 cleanUp
 rebootMachine
