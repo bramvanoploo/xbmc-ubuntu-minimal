@@ -446,6 +446,9 @@ function selectAdditionalOptions()
             
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
     
+    echo "$choices"
+    exit
+    
     for choice in $choices
     do
         case $(choice//\"/) in
@@ -511,6 +514,8 @@ if [ -f $LOG_FILE ];
 then
     rm $LOG_FILE
 fi
+
+selectAdditionalOptions
 
 touch $LOG_FILE
 
