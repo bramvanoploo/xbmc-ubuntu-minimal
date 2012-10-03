@@ -156,8 +156,16 @@ function distUpgrade()
 function installXinit()
 {
     showInfo "Installing xinit..."
-	sudo apt-get -y -qq install xinit > /dev/null 2>&1
-	showInfo "Xinit installed"
+    
+    sudo dpkg-query -l xinit > /dev/null 2>&1
+    
+    if [ $? == 1 ];
+    then
+        sudo apt-get -y -qq install xinit > /dev/null 2>&1
+	    showInfo "Xinit installed"
+    else
+        showInfo "Skipping. Xinit already installed"
+    fi
 }
 
 function installPowerManagement()
