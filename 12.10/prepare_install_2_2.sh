@@ -147,7 +147,7 @@ function addXbmcPpa()
 
 function distUpgrade()
 {
-    showInfo "Updating Ubuntu with latest packages..."
+    showInfo "Updating Ubuntu with latest packages (may take a while)..."
 	sudo apt-get -qq update > /dev/null 2>&1
 	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
 	showInfo "Ubuntu installation updated"
