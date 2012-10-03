@@ -1,7 +1,8 @@
-null#!/bin/bash
+#!/bin/bash
 
 USER="xbmc"
 THIS_FILE=$0
+SCRIPT_VERSION="2.2"
 
 VIDEO_MANUFACTURER=$1
 VIDEO_DRIVER=""
@@ -21,8 +22,8 @@ XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 
 LOG_TEXT="\n"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
-DIALOG_WIDTH=90
-SCRIPT_TITLE="XBMC installation script v2.1 for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
+DIALOG_WIDTH=70
+SCRIPT_TITLE="XBMC installation script $SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
 
 ## ------ START functions ---------
 
@@ -42,7 +43,7 @@ function showInfo()
     echo "$@" >> $LOG_FILE
 	LOG_TEXT="$LOG_TEXT$@\n"
 
-    dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 4 $DIALOG_WIDTH
+    dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
 }
 
 function showError()
@@ -50,7 +51,7 @@ function showError()
     echo "$@" >> $LOG_FILE
 	LOG_TEXT="$LOG_TEXT$@\n"
 
-    dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "\n$@" 4 $DIALOG_WIDTH
+    dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "\n$@" 5 $DIALOG_WIDTH
 }
 
 function showDialog()
