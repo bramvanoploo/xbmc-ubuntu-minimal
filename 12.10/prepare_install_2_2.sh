@@ -381,28 +381,35 @@ function installXbmcAutorunScript()
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
-	sudo apt-get -y -qq install plymouth-label v86d > /dev/null 2>&1
-
-    mkdir -p $TEMP_DIRECTORY > /dev/null
-    cd $TEMP_DIRECTORY
-    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
+    sudo dpkg-query -l plymouth-theme-xbmc-logo > /dev/null 2>&1
     
-    if [ ! -f ./plymouth-theme-xbmc-logo.deb ];
+    if [ $? == 1 ];
     then
-        showError "Download of XBMC boot screen package failed"
-    else
-        sudo dpkg -i ./plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
+	    sudo apt-get -y -qq install plymouth-label v86d > /dev/null 2>&1
 
-        if [ -f /etc/initramfs-tools/conf.d/splash ];
+        mkdir -p $TEMP_DIRECTORY > /dev/null
+        cd $TEMP_DIRECTORY
+        wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
+        
+        if [ ! -f ./plymouth-theme-xbmc-logo.deb ];
         then
-            sudo rm /etc/initramfs-tools/conf.d/splash > /dev/null 2>&1
-        fi
+            showError "Download of XBMC boot screen package failed"
+        else
+            sudo dpkg -i ./plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
 
-        sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null 2>&1
-        sudo sh -c 'echo "FRAMEBUFFER=y" >> /etc/initramfs-tools/conf.d/splash' > /dev/null 2>&1
-        sudo update-grub > /dev/null 2>&1
-        sudo update-initramfs -u > /dev/null 2>&1
-        showInfo "XBMC boot screen successfully installed"
+            if [ -f /etc/initramfs-tools/conf.d/splash ];
+            then
+                sudo rm /etc/initramfs-tools/conf.d/splash > /dev/null 2>&1
+            fi
+
+            sudo touch /etc/initramfs-tools/conf.d/splash > /dev/null 2>&1
+            sudo sh -c 'echo "FRAMEBUFFER=y" >> /etc/initramfs-tools/conf.d/splash' > /dev/null 2>&1
+            sudo update-grub > /dev/null 2>&1
+            sudo update-initramfs -u > /dev/null 2>&1
+            showInfo "XBMC boot screen successfully installed"
+        fi
+    else
+        showInfo "Skipping. XBMC boot screen already installed"
     fi
 }
 
