@@ -512,8 +512,6 @@ then
     rm $LOG_FILE
 fi
 
-selectAdditionalOptions
-
 touch $LOG_FILE
 
 echo ""
