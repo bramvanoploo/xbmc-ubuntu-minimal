@@ -433,33 +433,28 @@ function reconfigureXServer()
 
 function selectAdditionalOptions()
 {
-    CHECKLIST=(dialog --checklist "Plese select optional packages to install:" 20 $DIALOG_WIDTH 5)
-    OPTIONS=(1 "Lirc (IR remote support)" off
-            2 "Hts tvheadend (live TV backend)" off
-            3 "Oscam (live HDTV decryption tool)" off
-            4 "XBMC Dirty region rendering (improved performance)" on
-            5 "XBMC Addon Repositories Installer addon" on)
-            
-    CHOICES=$("${CHECKLIST[@]}" "${OPTIONS[@]}" 2>&1 >/dev/tty)
-    
-    for CHOICE in $CHOICES
+    RESULT=(dialog --title "Optional packages and features" --backtitle "$SCRIPT_TITLE" --checklist "Plese select optional packages to install:" 15 $DIALOG_WIDTH 5
+        1 "Lirc (IR remote support)" off
+        2 "Hts tvheadend (live TV backend)" off
+        3 "Oscam (live HDTV decryption tool)" off
+        4 "XBMC Dirty region rendering (improved performance)" on
+        5 "XBMC Addon Repositories Installer addon" on)
+
+    for OPTION in $RESULT
     do
-        case $CHOICE in
+        echo "$OPTION"
+    
+        case $OPTION in
             1)
-                installLirc
-                ;;
+                installLirc ;;
             2)
-                installTvHeadend
-                ;;
+                installTvHeadend ;;
             3)
-                installOscam
-                ;;
+                installOscam ;;
             4)
-                enableDirtyRegionRendering
-                ;;
+                enableDirtyRegionRendering ;;
             5)
-                installXbmcAddonRepositoriesInstaller
-                ;;
+                installXbmcAddonRepositoriesInstaller ;;
         esac
     done
 }
