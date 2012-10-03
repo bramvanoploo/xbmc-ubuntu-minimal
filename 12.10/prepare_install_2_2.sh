@@ -445,13 +445,10 @@ function selectAdditionalOptions()
             5 "XBMC Addon Repositories Installer addon" on)
             
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-    
-    echo "$choices"
-    exit
-    
+
     for choice in $choices
     do
-        case $(choice//\"/) in
+        case ${choice//\"/} in
             1)
                 installLirc 
                 ;;
