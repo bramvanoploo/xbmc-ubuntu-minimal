@@ -287,9 +287,7 @@ function installVideoDriver()
     
     if [ $? == 1 ];
     then
-        showInfo "Skipping $VIDEO_MANUFACTURER_NAME video drivers installation. Already installed."
-    else
-	    sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
+        sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
 
         if [ $VIDEO_MANUFACTURER == "ati" ];
         then
@@ -310,6 +308,8 @@ function installVideoDriver()
         fi
         
         showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed"
+    else
+	    showInfo "Skipping $VIDEO_MANUFACTURER_NAME video drivers installation. Already installed."
     fi
 }
 
