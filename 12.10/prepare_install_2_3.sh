@@ -449,6 +449,8 @@ function selectVideoDriver()
          3 "Intel" off
          
     choice=$?
+    
+    echo $choice
          
     case ${choice//\"/} in
         1)
