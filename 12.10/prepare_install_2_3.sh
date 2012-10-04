@@ -494,7 +494,11 @@ function rebootMachine()
 		--yesno "Do you want to reboot now?" 7 $DIALOG_WIDTH
 
 	case $? in
-        0) 
+        0)
+            clear
+            echo ""
+            echo "Installation complete. Rebooting..."
+            echo ""
             sudo reboot now > /dev/null 2>&1
 	        ;;
 	    1) 
