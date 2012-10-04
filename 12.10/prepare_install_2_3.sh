@@ -442,19 +442,15 @@ function selectAdditionalOptions()
 
 function selectVideoDriver()
 {
-    mkdir -p $TEMP_DIRECTORY > /dev/null
-    cd $TEMP_DIRECTORY
-    choice=$TEMP_DIRECTORY"driver_choice"
-
-    dialog --backtitle "Video driver installation" \
+    choice=`dialog --backtitle "Video driver installation" \
         --radiolist "Select your video chipset manufacturer (required):" 10 $DIALOG_WIDTH 3 \
          1 "NVIDIA" on \
          2 "ATI (series >= 5xxx)" off \
-         3 "Intel" off 2> $choice
-         
-    driverChoice=$(cat $choice)?
+         3 "Intel" off  3>&1 1>&2 2>&3`
 
-    case $driverChoice in
+    echo $choice
+
+    case ${choice${choice//\"/}} in
         1)
             VIDEO_MANUFACTURER="nvidia"
 		    VIDEO_DRIVER="nvidia-current"
