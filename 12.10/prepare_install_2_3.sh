@@ -452,13 +452,7 @@ function selectVideoDriver()
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
-    clear
-
-    echo $choice
-    
-    exit
-
-    case ${choice${choice//\"/}} in
+    case ${choice//\"/} in
         1)
             VIDEO_MANUFACTURER="nvidia"
 		    VIDEO_DRIVER="nvidia-current"
