@@ -309,7 +309,7 @@ function installVideoDriver()
         
         showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed"
     else
-	    showInfo "Skipping $VIDEO_MANUFACTURER_NAME video drivers installation. Already installed."
+	    showInfo "Skipping. $VIDEO_MANUFACTURER_NAME video drivers already installed."
     fi
 }
 
