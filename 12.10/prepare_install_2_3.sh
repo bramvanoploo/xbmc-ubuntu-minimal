@@ -549,7 +549,6 @@ installXinit
 installPowerManagement
 installAudio
 installXbmc
-installVideoDriver
 installXbmcAutoRunScript
 installXbmcBootScreen
 reconfigureXServer
