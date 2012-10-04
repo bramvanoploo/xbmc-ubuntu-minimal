@@ -201,7 +201,7 @@ function installPowerManagement()
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-	sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils pulseaudio libasound2 > /dev/null 2>&1
+	sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null 2>&1
     sudo alsamixer
     showInfo "Audio packages successfully installed"
 }
