@@ -43,10 +43,7 @@ function log()
     echo "$@" >> $LOG_FILE
 	LOG_TEXT="$LOG_TEXT$@\n"
 	
-	dialog --title "Ubuntu configuration and XBMC installation in progress..." \
-		--backtitle "$SCRIPT_TITLE" \
-		--infobox "$LOG_TEXT" \
-	 	34 $DIALOG_WIDTH
+	dialog --title "Ubuntu configuration and XBMC installation in progress..." --backtitle "$SCRIPT_TITLE" --infobox "$LOG_TEXT" 34 $DIALOG_WIDTH
 }
 
 function showInfo()
@@ -86,28 +83,6 @@ function installDependencies()
 
 	sudo apt-get -y -qq install dialog software-properties-common > /dev/null 2>&1
 }
-
-#function hasRequiredParams()
-#{
-#	if [ $VIDEO_MANUFACTURER == "ati" ];
-#	then
-#		VIDEO_DRIVER="fglrx"
-#		VIDEO_MANUFACTURER_NAME="ATI"
-#	elif [ $VIDEO_MANUFACTURER == "nvidia" ];
-#	then
-#		VIDEO_DRIVER="nvidia-current"
-#		VIDEO_MANUFACTURER_NAME="NVIDIA"
-#	elif [ $VIDEO_MANUFACTURER == "intel" ];
-#	then
-#		VIDEO_DRIVER="i965-va-driver"
-#		VIDEO_MANUFACTURER_NAME="INTEL"
-#	else
-#		MESSAGE="Please provide the videocard manufacturer parameter (ati/nvidia/intel)"
-#		showErrorDialog "$MESSAGE"
-#		clear
-#		exit
-#	fi
-#}
 
 function fixLocaleBug()
 {
@@ -500,7 +475,7 @@ function cleanUp()
     showInfo "Cleaning up..."
 	sudo apt-get -y autoclean > /dev/null 2>&1
 	sudo apt-get -y autoremove > /dev/null 2>&1
-	sudo rm -r $TEMP_DIRECTORY > /dev/null 2>&1
+	sudo rm -R $TEMP_DIRECTORY > /dev/null 2>&1
 	rm $HOME_DIRECTORY$THIS_FILE
 }
 
@@ -511,11 +486,16 @@ function rebootMachine()
 		--backtitle "$SCRIPT_TITLE" \
 		--yesno "Do you want to reboot now?" 7 $DIALOG_WIDTH
 
-	RESPONSE=$?
-	case $RESPONSE in
-	   0) sudo reboot now > /dev/null;;
-	   1) quit;;
-	   255) quit;;
+	case $? in
+        0) 
+            sudo reboot now > /dev/null 2>&1
+	        ;;
+	    1) 
+            quit
+	        ;;
+	    255) 
+	        quit
+	        ;;
 	esac
 }
 
@@ -551,7 +531,6 @@ installDependencies
 echo "Loading installer..."
 showDialog "Welcome to the XBMC minimal installation script. Some parts may take a while to install depending on your internet connection speed.\n\nPlease be patient..."
 trap control_c SIGINT
-#hasRequiredParams $VIDEO_MANUFACTURER
 
 fixLocaleBug
 applyXbmcNiceLevelPermissions
