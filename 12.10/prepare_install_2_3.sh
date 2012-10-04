@@ -3,7 +3,7 @@
 THIS_FILE=$0
 SCRIPT_VERSION="2.3"
 
-VIDEO_MANUFACTURER=$1
+VIDEO_MANUFACTURER=""
 VIDEO_DRIVER=""
 VIDEO_MANUFACTURER_NAME=""
 
@@ -23,7 +23,7 @@ INITRAMFS_SPLASH_FILE="/etc/initramfs-tools/conf.d/splash"
 XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 
-XBMC_PPA="ppa:oscam/ppa"
+XBMC_PPA="ppa:wsnipex/xbmc-xvba"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
@@ -87,27 +87,27 @@ function installDependencies()
 	sudo apt-get -y -qq install dialog software-properties-common > /dev/null 2>&1
 }
 
-function hasRequiredParams()
-{
-	if [ $VIDEO_MANUFACTURER == "ati" ];
-	then
-		VIDEO_DRIVER="fglrx"
-		VIDEO_MANUFACTURER_NAME="ATI"
-	elif [ $VIDEO_MANUFACTURER == "nvidia" ];
-	then
-		VIDEO_DRIVER="nvidia-current"
-		VIDEO_MANUFACTURER_NAME="NVIDIA"
-	elif [ $VIDEO_MANUFACTURER == "intel" ];
-	then
-		VIDEO_DRIVER="i965-va-driver"
-		VIDEO_MANUFACTURER_NAME="INTEL"
-	else
-		MESSAGE="Please provide the videocard manufacturer parameter (ati/nvidia/intel)"
-		showErrorDialog "$MESSAGE"
-		clear
-		exit
-	fi
-}
+#function hasRequiredParams()
+#{
+#	if [ $VIDEO_MANUFACTURER == "ati" ];
+#	then
+#		VIDEO_DRIVER="fglrx"
+#		VIDEO_MANUFACTURER_NAME="ATI"
+#	elif [ $VIDEO_MANUFACTURER == "nvidia" ];
+#	then
+#		VIDEO_DRIVER="nvidia-current"
+#		VIDEO_MANUFACTURER_NAME="NVIDIA"
+#	elif [ $VIDEO_MANUFACTURER == "intel" ];
+#	then
+#		VIDEO_DRIVER="i965-va-driver"
+#		VIDEO_MANUFACTURER_NAME="INTEL"
+#	else
+#		MESSAGE="Please provide the videocard manufacturer parameter (ati/nvidia/intel)"
+#		showErrorDialog "$MESSAGE"
+#		clear
+#		exit
+#	fi
+#}
 
 function fixLocaleBug()
 {
@@ -209,7 +209,7 @@ function installAudio()
 function installLirc()
 {
     showInfo "Installing lirc"
-	sudo apt-get -y install lirc > /dev/null
+	sudo apt-get -y install lirc
     showInfo "Lirc successfully installed"
 }
 
@@ -447,7 +447,7 @@ function selectAdditionalOptions()
     do
         case ${choice//\"/} in
             1)
-                installLirc 
+                installLirc
                 ;;
             2)
                 installTvHeadend 
@@ -463,6 +463,36 @@ function selectAdditionalOptions()
                 ;;
         esac
     done
+}
+
+function selectVideoDriver()
+{
+    choice=$(dialog --backtitle "Video driver installation" 
+        --radiolist "Select your videocard's chipset manufacturer (required):" 10 $DIALOG_WIDTH 3 
+         1 "NVIDIA" on 
+         2 "ATI" off 
+         3 "Intel" off 2>&1 >/dev/tty )
+         
+    case ${choice//\"/} in
+        1)
+            VIDEO_MANUFACTURER="nvidia"
+		    VIDEO_DRIVER="nvidia-current"
+		    VIDEO_MANUFACTURER_NAME="NVIDIA"
+            ;;
+        2)
+            VIDEO_MANUFACTURER="ati"
+		    VIDEO_DRIVER="fglrx"
+		    VIDEO_MANUFACTURER_NAME="ATI"
+            ;;
+        3)
+            VIDEO_MANUFACTURER="intel"
+		    VIDEO_DRIVER="i965-va-driver"
+		    VIDEO_MANUFACTURER_NAME="Intel" 
+            ;;
+        *)
+            selectVideoDriver
+            ;;
+    esac
 }
 
 function cleanUp()
@@ -521,13 +551,14 @@ installDependencies
 echo "Loading installer..."
 showDialog "Welcome to the XBMC minimal installation script. Some parts may take a while to install depending on your internet connection speed.\n\nPlease be patient..."
 trap control_c SIGINT
-hasRequiredParams $VIDEO_MANUFACTURER
+#hasRequiredParams $VIDEO_MANUFACTURER
 
 fixLocaleBug
 applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
 addXbmcPpa
 distUpgrade
+selectVideoDriver
 installXinit
 installPowerManagement
 installAudio
