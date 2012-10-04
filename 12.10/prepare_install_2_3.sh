@@ -443,9 +443,9 @@ function selectAdditionalOptions()
 function selectVideoDriver()
 {
     choice=$(dialog --backtitle "Video driver installation" 
-        --radiolist "Select your videocard's chipset manufacturer (required):" 10 $DIALOG_WIDTH 3 
+        --radiolist "Select your video chipset manufacturer (required):" 10 $DIALOG_WIDTH 3 
          1 "NVIDIA" on 
-         2 "ATI" off 
+         2 "ATI (series >= 5xxx)" off 
          3 "Intel" off 2>&1 >/dev/tty )
          
     case ${choice//\"/} in
