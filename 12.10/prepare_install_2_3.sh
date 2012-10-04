@@ -283,27 +283,34 @@ function installXbmcAddonRepositoriesInstaller()
 function installVideoDriver()
 {
     showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers..."
-	sudo apt-get -y -qq install $VIDEO_DRIVER > /dev/null 2>&1
-
-    if [ $VIDEO_MANUFACTURER == "ati" ];
-    then
-	    sudo aticonfig --initial -f > /dev/null 2>&1
-	    sudo aticonfig --sync-vsync=on > /dev/null 2>&1
-	    sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
-
-	    dialog --title "Disable underscan" \
-		    --backtitle "$SCRIPT_TITLE" \
-		    --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
-
-	    RESPONSE=$?
-	    case $RESPONSE in
-	       0) disbaleAtiUnderscan;;
-	       1) enableAtiUnderscan;;
-	       255) showInfo "ATI underscan configuration skipped";;
-	    esac
-    fi
+    sudo dpkg-query -l $VIDEO_DRIVER > /dev/null 2>&1
     
-    showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed"
+    if [ $? == 1 ];
+    then
+        showInfo "Skipping $VIDEO_MANUFACTURER_NAME video drivers installation. Already installed."
+    else
+	    sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
+
+        if [ $VIDEO_MANUFACTURER == "ati" ];
+        then
+	        sudo aticonfig --initial -f > /dev/null 2>&1
+	        sudo aticonfig --sync-vsync=on > /dev/null 2>&1
+	        sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
+
+	        dialog --title "Disable underscan" \
+		        --backtitle "$SCRIPT_TITLE" \
+		        --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
+
+	        RESPONSE=$?
+	        case $RESPONSE in
+	           0) disbaleAtiUnderscan;;
+	           1) enableAtiUnderscan;;
+	           255) showInfo "ATI underscan configuration skipped";;
+	        esac
+        fi
+        
+        showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed"
+    fi
 }
 
 function disbaleAtiUnderscan()
