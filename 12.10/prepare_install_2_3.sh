@@ -455,16 +455,19 @@ function selectVideoDriver()
             VIDEO_MANUFACTURER="nvidia"
 		    VIDEO_DRIVER="nvidia-current"
 		    VIDEO_MANUFACTURER_NAME="NVIDIA"
+		    installVideoDriver
             ;;
         2)
             VIDEO_MANUFACTURER="ati"
 		    VIDEO_DRIVER="fglrx"
 		    VIDEO_MANUFACTURER_NAME="ATI"
+		    installVideoDriver
             ;;
         3)
             VIDEO_MANUFACTURER="intel"
 		    VIDEO_DRIVER="i965-va-driver"
-		    VIDEO_MANUFACTURER_NAME="Intel" 
+		    VIDEO_MANUFACTURER_NAME="Intel"
+		    installVideoDriver
             ;;
         *)
             selectVideoDriver
