@@ -81,7 +81,7 @@ function installDependencies()
     echo "-- Installing installation dependencies..."
     echo ""
 
-	sudo apt-get -y -qq install dialog software-properties-common > /dev/null 2>&1
+	sudo apt-get -y install dialog software-properties-common > /dev/null 2>&1
 }
 
 function fixLocaleBug()
@@ -135,8 +135,8 @@ function addXbmcPpa()
 function distUpgrade()
 {
     showInfo "Updating Ubuntu with latest packages (may take a while)..."
-	sudo apt-get -qq update > /dev/null 2>&1
-	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
+	sudo apt-get update > /dev/null 2>&1
+	sudo apt-get -y dist-upgrade > /dev/null 2>&1
 	showInfo "Ubuntu installation updated"
 }
 
@@ -147,7 +147,7 @@ function installXinit()
     
     if [ $? == 1 ];
     then
-        sudo apt-get -y -qq install xinit > /dev/null 2>&1
+        sudo apt-get -y install xinit > /dev/null 2>&1
 	    showInfo "Xinit installed"
     else
         showInfo "Skipping. Xinit already installed"
@@ -160,7 +160,7 @@ function installPowerManagement()
 
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null 2>&1
+	sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
 	wget -q $SCRIPTS_DIR_URL"custom-actions.pkla" > /dev/null 2>&1
 	sudo mkdir -p $POWERMANAGEMENT_DIR > /dev/null 2>&1
 	
@@ -176,7 +176,7 @@ function installPowerManagement()
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-	sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null 2>&1
+	sudo apt-get -y install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null 2>&1
     sudo alsamixer
     showInfo "Audio packages successfully installed"
 }
@@ -190,7 +190,7 @@ function installLirc()
     echo "------------------"
     echo ""
 
-	sudo apt-get -y -qq install lirc
+	sudo apt-get -y install lirc
     showInfo "Lirc successfully installed"
 }
 
@@ -209,7 +209,7 @@ function installTvHeadend()
     echo ""
     
     sudo apt-get update > /dev/null 2>&1
-    sudo apt-get -y -qq install tvheadend
+    sudo apt-get -y install tvheadend
     showInfo "Tvheadend successfully installed"
 }
 
@@ -222,7 +222,7 @@ function installOscam()
 
     showInfo "Installing oscam..."
     sudo apt-get update > /dev/null 2>&1
-    sudo apt-get -y -qq install oscam-svn > /dev/null 2>&1
+    sudo apt-get -y install oscam-svn > /dev/null 2>&1
     showInfo "Oscam installed"
 }
 
@@ -233,7 +233,7 @@ function installXbmc()
     
     if [ $? == 1 ];
     then
-	    sudo apt-get -y -qq install xbmc > /dev/null 2>&1
+	    sudo apt-get -y install xbmc > /dev/null 2>&1
         showInfo "XBMC successfully installed"
     else
         showInfo "Skipping. XBMC already installed"
@@ -344,7 +344,7 @@ function installXbmcAutorunScript()
 	cd $TEMP_DIRECTORY
 	wget -q $SCRIPTS_DIR_URL"xbmc_init_script" > /dev/null 2>&1
 	
-	if [ -f $TEMP_DIRECTORY"xbmc_init_script" ];
+	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ];
 	then
 	    if [ -f $INIT_FILE ];
 	    then
@@ -367,13 +367,13 @@ function installXbmcBootScreen()
     
     if [ $? == 1 ];
     then
-	    sudo apt-get -y -qq install plymouth-label v86d > /dev/null 2>&1
+	    sudo apt-get -y install plymouth-label v86d > /dev/null 2>&1
 
         mkdir -p $TEMP_DIRECTORY > /dev/null
         cd $TEMP_DIRECTORY
         wget -q $SCRIPTS_DIR_URL"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
         
-        if [ -f $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
+        if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
         then
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
 
