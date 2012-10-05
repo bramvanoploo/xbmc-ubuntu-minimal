@@ -361,7 +361,11 @@ function installXbmcAutorunScript()
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
-    sudo dpkg-query -l plymouth-theme-xbmc-logo > /dev/null 2>&1
+    sudo dpkg-query -l plymouth-theme-xbmc-logo > /dev/null
+    
+    clear
+    echo $?
+    exit
     
     if [ $? == 1 ];
     then
