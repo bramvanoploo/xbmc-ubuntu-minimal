@@ -81,17 +81,7 @@ function installDependencies()
     echo "-- Installing installation dependencies..."
     echo ""
 
-	sudo apt-get -y install dialog software-properties-common > /dev/null 2>&1
-	
-	echo $?
-	
-	exit
-	
-	if [ $? != 0 ];
-	then
-	    echo "Error installing dependencies. Installation aborted."
-	    exit
-	fi
+	sudo apt-get -y -qq install dialog software-properties-common > /dev/null 2>&1
 }
 
 function fixLocaleBug()
@@ -112,12 +102,7 @@ function fixLocaleBug()
 	echo "LC_MESSAGES=\"C\"" | sudo tee -a $ENVIRONMENT_FILE > /dev/null 2>&1
 	echo "LC_ALL=\"en_US.UTF-8\"" | sudo tee -a $ENVIRONMENT_FILE > /dev/null 2>&1
 	
-	if [ $? == 0 ];
-	then
-	    showInfo "Ubuntu locale environment bug fixed"
-	else
-	    showError "ERROR: Ubuntu locale environment bug could not be fixed"
-	fi
+	showInfo "Locale environment bug fixed"
 }
 
 function applyXbmcNiceLevelPermissions()
@@ -128,13 +113,7 @@ function applyXbmcNiceLevelPermissions()
 	fi
 
 	echo "$USER             -       nice            -1" | sudo tee -a $SYSTEM_LIMITS_FILE> /dev/null 2>&1
-	
-	if [ $? == 0 ];
-	then
-	    showInfo "Allowed XBMC to prioritize threads"
-	else
-	    showError "ERROR: Failed to allow XBMC to prioritize threads"
-	fi
+	showInfo "Allowed XBMC to prioritize threads"
 }
 
 function addUserToRequiredGroups()
@@ -150,13 +129,7 @@ function addXbmcPpa()
     showInfo "Adding Wsnipex xbmc-xvba PPA..."
     sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
 	sudo add-apt-repository -y $XBMC_PPA > /dev/null 2>&1
-	
-	if [ $? == 0 ];
-	then
-	    showInfo "Wsnipex xbmc-xvba PPA added"
-	else
-	    showError "ERROR: Could not add xbmc-xvba PPA"
-	fi
+	showInfo "Wsnipex xbmc-xvba PPA added"
 }
 
 function distUpgrade()
@@ -164,13 +137,7 @@ function distUpgrade()
     showInfo "Updating Ubuntu with latest packages (may take a while)..."
 	sudo apt-get -qq update > /dev/null 2>&1
 	sudo apt-get -y -qq dist-upgrade > /dev/null 2>&1
-	
-	if [ $? == 0 ];
-	then
-	    showInfo "Ubuntu installation updated"
-	else
-	    showError "ERROR: Ubuntu dist-upgrade failed"
-	fi
+	showInfo "Ubuntu installation updated"
 }
 
 function installXinit()
@@ -181,13 +148,7 @@ function installXinit()
     if [ $? == 1 ];
     then
         sudo apt-get -y -qq install xinit > /dev/null 2>&1
-        
-        if [ $? == 0 ];
-	    then
-	        showInfo "Xinit installed"
-	    else
-	        showError "ERROR: Xinit could not be installed"
-	    fi
+	    showInfo "Xinit installed"
     else
         showInfo "Skipping. Xinit already installed"
     fi
@@ -200,29 +161,15 @@ function installPowerManagement()
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
 	sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null 2>&1
-	
-	if [ $? != 0 ];
-    then
-        showError "ERROR: A problem occured while instlling power management packages"
-    else
-        showInfo "Power management packages installed"
-    fi
-	
 	wget -q $SCRIPTS_DIR_URL"custom-actions.pkla" > /dev/null 2>&1
 	sudo mkdir -p $POWERMANAGEMENT_DIR > /dev/null 2>&1
 	
 	if [ -f ./custom-actions.pkla ];
 	then
         sudo mv custom-actions.pkla $POWERMANAGEMENT_DIR > /dev/null 2>&1
-        
-        if [ $? == 0 ];
-	    then
-	        showInfo "XBMC power management features enabled"
-	    else
-	        showError "ERROR: XBMC power management features could not be enabled"
-	    fi
+	    showInfo "Power management packages successfully installed"
 	else
-	    showError "ERROR: XBMC power management file could not be downloaded"
+	    showError "Could not enable XBMC power management features"  
 	fi
 }
 
@@ -230,27 +177,15 @@ function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
 	sudo apt-get -y -qq install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null 2>&1
-	
-	if [ $? == 0 ];
-    then
-        showInfo "Audio packages successfully installed"
-        sudo alsamixer
-    else
-        showError "ERROR: Audio packages could not be installed"
-    fi
+    sudo alsamixer
+    showInfo "Audio packages successfully installed"
 }
 
 function installLirc()
 {
     showInfo "Installing lirc"
-	sudo apt-get -y -qq install lirc
-	
-	if [ $? == 0 ];
-    then
-        showInfo "Lirc successfully installed"
-    else
-        showError "ERROR: Lirc installation failed"
-    fi
+	sudo apt-get -y install lirc
+    showInfo "Lirc successfully installed"
 }
 
 function installTvHeadend()
@@ -258,26 +193,14 @@ function installTvHeadend()
     showInfo "Adding jabbors hts-stable PPA..."
     sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
 	sudo add-apt-repository -y $HTS_TVHEADEND_PPA > /dev/null 2>&1
+	showInfo "Jabbors hts-stable PPA added"
 	
-	if [ $? == 0 ];
-    then
-        showInfo "Jabbors hts-stable tvheadend PPA added"
-        
-        distUpgrade
+    distUpgrade
     
-        showInfo "Installing hts tvheadend..."
-        sudo apt-get -y -qq install tvheadend > /dev/null 2>&1
-        sudo dpkg-reconfigure tvheadend
-        
-        if [ $? == 0 ];
-        then
-            showInfo "Hts tvheadend successfully installed"
-        else
-            showError "ERROR: Hts tvheadend could not be installed"
-        fi
-    else
-        showError "ERROR: Jabbors hts-stable tvheadend PPA could not be added"
-    fi
+    showInfo "Installing hts tvheadend..."
+    sudo apt-get -y -qq install tvheadend > /dev/null 2>&1
+    sudo dpkg-reconfigure tvheadend
+    showInfo "Hts tvheadend installed"
 }
 
 function installOscam()
@@ -285,25 +208,13 @@ function installOscam()
     showInfo "Adding oscam PPA..."
     sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
 	sudo add-apt-repository -y $OSCAM_PPA > /dev/null 2>&1
+	showInfo "Oscam PPA added"
 	
-	if [ $? == 0 ];
-    then
-        showInfo "Oscam PPA successfully added"
-    else
-        showError "ERROR: Oscam PPA could not be added"
-    fi
-
     distUpgrade
     
     showInfo "Installing oscam..."
     sudo apt-get -y -qq install oscam > /dev/null 2>&1
-    
-    if [ $? == 0 ];
-    then
-        showInfo "Oscam successfully installed"
-    else
-        showError "ERROR: Oscam could not be installed"
-    fi
+    showInfo "Oscam installed"
 }
 
 function installXbmc()
@@ -314,13 +225,7 @@ function installXbmc()
     if [ $? == 1 ];
     then
 	    sudo apt-get -y -qq install xbmc > /dev/null 2>&1
-	    
-	    if [ $? == 0 ];
-        then
-            showInfo "XBMC successfully installed"
-        else
-            showError "ERROR: XBMC could not be installed"
-        fi
+        showInfo "XBMC successfully installed"
     else
         showInfo "Skipping. XBMC already installed"
     fi
@@ -348,15 +253,9 @@ function enableDirtyRegionRendering()
 	if [ -f ./dirty_region_rendering.xml ];
 	then
         mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null 2>&1
-        
-        if [ $? == 0 ];
-        then
-            showInfo "XBMC dirty region rendering enabled"
-        else
-            showError "ERROR: XBMC dirty region rendering could not be enabled"
-        fi
+        showInfo "XBMC dirty-region-rendering enabled"
     else
-        showError "XBMC dirty region rendering file could not be downloaded"
+        showError "XBMC dirty-region-rendering could not be enabled"
     fi
 }
 
@@ -375,15 +274,9 @@ function installXbmcAddonRepositoriesInstaller()
     if [ -f ./plugin.program.repo.installer-1.0.5.tar.gz ];
     then
         tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null 2>&1
-        
-        if [ $? == 0 ];
-        then
-            showInfo "Addon Repositories Installer addon successfully installed"
-        else
-            showError "ERROR: Addon Repositories Installer addon could not be installed"
-        fi
+	    showInfo "Addon Repositories Installer addon successfully installed"
     else
-	    showError "Addon Repositories Installer addon could not be downloaded"
+	    showError "Addon Repositories Installer addon could not be installed"
     fi
 }
 
@@ -395,37 +288,26 @@ function installVideoDriver()
     if [ $? == 1 ];
     then
         sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
-        
-        if [ $? == 0 ];
+
+        if [ $VIDEO_MANUFACTURER == "ati" ];
         then
-            showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed"
-            
-            if [ $VIDEO_MANUFACTURER == "ati" ];
-            then
-	            sudo aticonfig --initial -f > /dev/null 2>&1
-	            sudo aticonfig --sync-vsync=on > /dev/null 2>&1
-	            sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
+	        sudo aticonfig --initial -f > /dev/null 2>&1
+	        sudo aticonfig --sync-vsync=on > /dev/null 2>&1
+	        sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
 
-	            dialog --title "Disable underscan" \
-		            --backtitle "$SCRIPT_TITLE" \
-		            --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
+	        dialog --title "Disable underscan" \
+		        --backtitle "$SCRIPT_TITLE" \
+		        --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
 
-	            RESPONSE=$?
-	            case $RESPONSE in
-                    0) 
-                        disbaleAtiUnderscan
-                        ;;
-                    1) 
-                        enableAtiUnderscan
-                        ;;
-                    255) 
-                        showInfo "ATI underscan configuration skipped"
-                        ;;
-	            esac
-            fi
-        else
-            showError "ERROR: $VIDEO_MANUFACTURER_NAME video drivers could not be installed"
+	        RESPONSE=$?
+	        case $RESPONSE in
+	           0) disbaleAtiUnderscan;;
+	           1) enableAtiUnderscan;;
+	           255) showInfo "ATI underscan configuration skipped";;
+	        esac
         fi
+        
+        showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed"
     else
 	    showInfo "Skipping. $VIDEO_MANUFACTURER_NAME video drivers already installed."
     fi
@@ -435,26 +317,14 @@ function disbaleAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null 2>&1
-	
-	if [ $? == 0 ];
-    then
-        showInfo "Underscan successfully disabled"
-    else
-        showError "ERROR: Underscan could not be disabled"
-    fi
+    showInfo "Underscan successfully disabled"
 }
 
 function enableAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null 2>&1
-	
-	if [ $? == 0 ];
-    then
-        showInfo "Underscan successfully enabled"
-    else
-        showError "ERROR: Underscan could not be enabled"
-    fi
+    showInfo "Underscan successfully enabled"
 }
 
 function installXbmcAutorunScript()
@@ -477,13 +347,7 @@ function installXbmcAutorunScript()
 	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null 2>&1
 	    sudo chmod a+x /etc/init.d/xbmc > /dev/null 2>&1
 	    sudo update-rc.d xbmc defaults > /dev/null 2>&1
-	    
-	    if [ $? == 0 ];
-        then
-            showInfo "XBMC autorun succesfully configured"
-        else
-            showError "ERROR: XBMC autorun could not be configured"
-        fi
+        showInfo "XBMC autorun succesfully configured"
 	fi
 }
 
@@ -495,47 +359,27 @@ function installXbmcBootScreen()
     if [ $? == 1 ];
     then
 	    sudo apt-get -y -qq install plymouth-label v86d > /dev/null 2>&1
-	    
-	    if [ $? == 0 ];
-        then
-            mkdir -p $TEMP_DIRECTORY > /dev/null
-            cd $TEMP_DIRECTORY
-            wget -q $SCRIPTS_DIR_URL"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
-            
-            if [ ! -f ./plymouth-theme-xbmc-logo.deb ];
-            then
-                showError "Download of XBMC boot screen package failed"
-            else
-                sudo dpkg -i ./plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
-                
-                if [ $? == 0 ];
-                then
-                    showInfo "XBMC boot screen successfully installed"
-                    
-                    if [ -f $INITRAMFS_SPLASH_FILE ];
-                    then
-                        sudo rm $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
-                    fi
 
-                    sudo touch $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
-                    echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
-                    sudo update-grub > /dev/null 2>&1
-                    sudo update-initramfs -u > /dev/null 2>&1
-                    
-                    if [ $? == 0 ];
-                    then
-                        showInfo "XBMC boot screen succesfully applied"
-                    else
-                        showError "ERROR: XBMC boot screen could not be applied"
-                    fi
-                else
-                    showError "ERROR: XBMC boot screen could not be installed"
-                fi
-            fi
+        mkdir -p $TEMP_DIRECTORY > /dev/null
+        cd $TEMP_DIRECTORY
+        wget -q $SCRIPTS_DIR_URL"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
         
-            showInfo "XBMC boot screen installation requirements installed"
+        if [ ! -f ./plymouth-theme-xbmc-logo.deb ];
+        then
+            showError "Download of XBMC boot screen package failed"
         else
-            showError "ERROR: XBMC boot screen installation requirements could not be installed"
+            sudo dpkg -i ./plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
+
+            if [ -f $INITRAMFS_SPLASH_FILE ];
+            then
+                sudo rm $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
+            fi
+
+            sudo touch $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
+            echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
+            sudo update-grub > /dev/null 2>&1
+            sudo update-initramfs -u > /dev/null 2>&1
+            showInfo "XBMC boot screen successfully installed"
         fi
     else
         showInfo "Skipping. XBMC boot screen already installed"
@@ -563,13 +407,7 @@ function reconfigureXServer()
 
 	sudo touch $XWRAPPER_FILE > /dev/null 2>&1
 	echo "allowed_users=anybody" | sudo tee -a $XWRAPPER_CONFIG_FILE > /dev/null 2>&1
-	
-	if [ $? == 0 ];
-    then
-        showInfo "X-server successfully configured"
-    else
-        showError "ERROR: X-server could not be configured"
-    fi
+	showInfo "X-server successfully configured"
 }
 
 function selectAdditionalOptions()
