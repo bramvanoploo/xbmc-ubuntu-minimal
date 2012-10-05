@@ -27,10 +27,6 @@ XBMC_PPA="ppa:wsnipex/xbmc-xvba"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
-GITHUB_ROOT_URL="https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/"
-ADDONS_DIR_URL=$GITHUB_ROOT_URL"addons/"
-SCRIPTS_DIR_URL=$GITHUB_ROOT_URL"12.10/"
-
 LOG_TEXT="\n"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
@@ -161,7 +157,7 @@ function installPowerManagement()
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
 	sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
-	wget -q $SCRIPTS_DIR_URL"custom-actions.pkla" > /dev/null 2>&1
+	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla" > /dev/null 2>&1
 	sudo mkdir -p $POWERMANAGEMENT_DIR > /dev/null 2>&1
 	
 	if [ -f ./custom-actions.pkla ];
@@ -256,7 +252,7 @@ function enableDirtyRegionRendering()
 	
 	mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q $SCRIPTS_DIR_URL"dirty_region_rendering.xml" 2>&1
+	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml" > /dev/null 2>&1
 	mkdir -p $XBMC_USERDATA_DIR > /dev/null 2>&1
 	
 	if [ -f ./dirty_region_rendering.xml ];
@@ -273,7 +269,7 @@ function installXbmcAddonRepositoriesInstaller()
     showInfo "Installing Addon Repositories Installer addon..."
 	mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q $ADDONS_DIR_URL"plugin.program.repo.installer-1.0.5.tar.gz" > /dev/null 2>&1
+	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz" > /dev/null 2>&1
 
 	if [ ! -d $XBMC_ADDONS_DIR ];
 	then
@@ -342,7 +338,7 @@ function installXbmcAutorunScript()
     
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q $SCRIPTS_DIR_URL"xbmc_init_script" > /dev/null 2>&1
+	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script" > /dev/null 2>&1
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ];
 	then
@@ -373,7 +369,7 @@ function installXbmcBootScreen()
 
         mkdir -p $TEMP_DIRECTORY > /dev/null
         cd $TEMP_DIRECTORY
-        wget -q $SCRIPTS_DIR_URL"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
+        wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
         
         if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
         then
