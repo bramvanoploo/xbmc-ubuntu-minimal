@@ -566,12 +566,12 @@ addXbmcPpa
 distUpgrade
 selectVideoDriver
 installXinit
-installPowerManagement
-installAudio
 installXbmc
-installXbmcAutoRunScript
+installXbmcAutorunScript
 installXbmcBootScreen
 reconfigureXServer
+installPowerManagement
+installAudio
 selectAdditionalOptions
 cleanUp
 rebootMachine
