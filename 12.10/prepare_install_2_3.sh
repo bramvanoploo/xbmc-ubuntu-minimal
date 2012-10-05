@@ -373,7 +373,6 @@ function installXbmcBootScreen()
         then
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
 
-            
             if [ -f $INITRAMFS_SPLASH_FILE ];
             then
                 sudo rm $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
