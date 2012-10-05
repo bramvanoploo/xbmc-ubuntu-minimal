@@ -184,6 +184,7 @@ function installAudio()
 function installLirc()
 {
     clear
+    echo ""
     echo "Installing lirc..."
     echo ""
     echo "------------------"
@@ -201,6 +202,7 @@ function installTvHeadend()
 	showInfo "Jabbors hts-stable PPA added"
 
     clear
+    echo ""
     echo "Installing tvheadend..."
     echo ""
     echo "------------------"
