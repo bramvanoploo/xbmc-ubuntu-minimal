@@ -55,7 +55,7 @@ function showError()
     echo "$@" >> $LOG_FILE
 	LOG_TEXT="$LOG_TEXT$@\n"
 
-    dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "\n$@" 5 $DIALOG_WIDTH
+    dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "$@" 6 $DIALOG_WIDTH
 }
 
 function showDialog()
