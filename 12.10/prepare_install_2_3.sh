@@ -184,7 +184,7 @@ function installAudio()
 function installLirc()
 {
     showInfo "Installing lirc"
-	sudo apt-get -y install lirc
+	sudo apt-get -y -qq install lirc
     showInfo "Lirc successfully installed"
 }
 
@@ -198,7 +198,7 @@ function installTvHeadend()
     distUpgrade
     
     showInfo "Installing hts tvheadend..."
-    sudo apt-get -y -qq install tvheadend > /dev/null 2>&1
+    sudo apt-get -y -qq install tvheadend > /dev/null
     sudo dpkg-reconfigure tvheadend
     showInfo "Hts tvheadend installed"
 }
