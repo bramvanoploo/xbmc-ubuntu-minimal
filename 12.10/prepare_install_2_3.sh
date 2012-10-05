@@ -82,12 +82,12 @@ function installDependencies()
 
 function fixLocaleBug()
 {
-    if [ ! -f $ENVIRONMENT_FILE ];
+    if [ ! -e $ENVIRONMENT_FILE ];
     then
         sudo touch $ENVIRONMENT_FILE
     fi
 
-	if [ -f $ENVIRONMENT_BACKUP_FILE ];
+	if [ -e $ENVIRONMENT_BACKUP_FILE ];
 	then
 		sudo rm $ENVIRONMENT_FILE > /dev/null 2>&1
 		sudo cp $ENVIRONMENT_BACKUP_FILE $ENVIRONMENT_FILE > /dev/null 2>&1
@@ -103,7 +103,7 @@ function fixLocaleBug()
 
 function applyXbmcNiceLevelPermissions()
 {
-	if [ ! -f $SYSTEM_LIMITS_FILE ];
+	if [ ! -e $SYSTEM_LIMITS_FILE ];
 	then
 		sudo touch $SYSTEM_LIMITS_FILE > /dev/null 2>&1
 	fi
@@ -160,7 +160,7 @@ function installPowerManagement()
 	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla" > /dev/null 2>&1
 	sudo mkdir -p $POWERMANAGEMENT_DIR > /dev/null 2>&1
 	
-	if [ -f ./custom-actions.pkla ];
+	if [ -e $TEMP_DIRECTORY"custom-actions.pkla" ];
 	then
         sudo mv custom-actions.pkla $POWERMANAGEMENT_DIR > /dev/null 2>&1
 	    showInfo "Power management packages successfully installed"
@@ -240,12 +240,12 @@ function enableDirtyRegionRendering()
 {
     showInfo "Enabling XBMC dirty region rendering..."    
     
-	if [ -f $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
+	if [ -e $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
 	then
 		rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null 2>&1
 	fi
 
-	if [ -f $XBMC_ADVANCEDSETTINGS_FILE ];
+	if [ -e $XBMC_ADVANCEDSETTINGS_FILE ];
 	then
 		mv $XBMC_ADVANCEDSETTINGS_FILE $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null 2>&1
 	fi
@@ -255,7 +255,7 @@ function enableDirtyRegionRendering()
 	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml" > /dev/null 2>&1
 	mkdir -p $XBMC_USERDATA_DIR > /dev/null 2>&1
 	
-	if [ -f ./dirty_region_rendering.xml ];
+	if [ -e ./dirty_region_rendering.xml ];
 	then
         mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null 2>&1
         showInfo "XBMC dirty region rendering enabled"
@@ -276,7 +276,7 @@ function installXbmcAddonRepositoriesInstaller()
 		mkdir -p $XBMC_ADDONS_DIR > /dev/null 2>&1
 	fi
 
-    if [ -f $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ];
+    if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ];
     then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C $XBMC_ADDONS_DIR > /dev/null 2>&1
 	    showInfo "Addon Repositories Installer addon successfully installed"
@@ -373,7 +373,7 @@ function installXbmcBootScreen()
         then
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
 
-            if [ -f $INITRAMFS_SPLASH_FILE ];
+            if [ -e $INITRAMFS_SPLASH_FILE ];
             then
                 sudo rm $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
             fi
@@ -395,17 +395,17 @@ function reconfigureXServer()
 {
     showInfo "Configuring X-server..."
     
-    if [ ! -f $XWRAPPER_FILE ];
+    if [ ! -e $XWRAPPER_FILE ];
     then
         sudo touch $XWRAPPER_FILE
     fi
 
-	if [ ! -f $XWRAPPER_BACKUP_FILE ];
+	if [ ! -e $XWRAPPER_BACKUP_FILE ];
 	then
 		sudo mv $XWRAPPER_FILE $XWRAPPER_BACKUP_FILE > /dev/null 2>&1
 	fi
 
-	if [ -f $XWRAPPER_FILE ];
+	if [ -e $XWRAPPER_FILE ];
 	then
 		sudo rm $XWRAPPER_FILE > /dev/null 2>&1
 	fi
@@ -524,7 +524,7 @@ function rebootMachine()
 
 function renewLogFile()
 {
-    if [ -f $LOG_FILE ];
+    if [ -e $LOG_FILE ];
     then
         rm $LOG_FILE
     fi
