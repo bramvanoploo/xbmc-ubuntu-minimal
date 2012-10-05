@@ -200,10 +200,9 @@ function installTvHeadend()
     sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
 	sudo add-apt-repository -y $HTS_TVHEADEND_PPA > /dev/null 2>&1
 	showInfo "Jabbors hts-stable PPA added"
-	
-    sudo apt-get update > /dev/null 2>&1
-    
+
     showInfo "Installing tvheadend..."
+    sudo apt-get update > /dev/null 2>&1
     clear
     echo "Installing tvheadend..."
     echo ""
@@ -220,10 +219,9 @@ function installOscam()
     sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
 	sudo add-apt-repository -y $OSCAM_PPA > /dev/null 2>&1
 	showInfo "Oscam PPA added"
-	
-    sudo apt-get update > /dev/null 2>&1
-    
+
     showInfo "Installing oscam..."
+    sudo apt-get update > /dev/null 2>&1
     sudo apt-get -y -qq install oscam-svn > /dev/null 2>&1
     showInfo "Oscam installed"
 }
