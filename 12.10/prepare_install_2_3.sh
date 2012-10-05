@@ -238,7 +238,7 @@ function installXbmc()
 
 function enableDirtyRegionRendering()
 {
-    showInfo "Enabling XBMC dirty-region-rendering..."    
+    showInfo "Enabling XBMC dirty region rendering..."    
     
 	if [ -f $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
 	then
@@ -258,9 +258,9 @@ function enableDirtyRegionRendering()
 	if [ -f ./dirty_region_rendering.xml ];
 	then
         mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null 2>&1
-        showInfo "XBMC dirty-region-rendering enabled"
+        showInfo "XBMC dirty region rendering enabled"
     else
-        showError "XBMC dirty-region-rendering could not be enabled"
+        showError "XBMC dirty region rendering could not be enabled"
     fi
 }
 
