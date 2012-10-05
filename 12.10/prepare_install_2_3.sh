@@ -85,6 +85,8 @@ function installDependencies()
 	
 	echo $?
 	
+	exit
+	
 	if [ $? != 0 ];
 	then
 	    echo "Error installing dependencies. Installation aborted."
