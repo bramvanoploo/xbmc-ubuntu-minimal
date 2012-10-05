@@ -28,13 +28,13 @@ HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
 GITHUB_ROOT_URL="https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/"
-ADDONS_DIR_URL=$GITHUB_ROOT_URL"addons"
-SCRIPTS_DIR_URL=$GITHUB_ROOT_URL"12.10"
+ADDONS_DIR_URL=$GITHUB_ROOT_URL"addons/"
+SCRIPTS_DIR_URL=$GITHUB_ROOT_URL"12.10/"
 
 LOG_TEXT="\n"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
-SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com :: https://github.com/Bram77/"
+SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
 
 ## ------ START functions ---------
 
@@ -161,7 +161,7 @@ function installPowerManagement()
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
 	sudo apt-get -y -qq install policykit-1 upower udisks acpi-support > /dev/null 2>&1
-	wget -q "$SCRIPTS_DIR_URL/custom-actions.pkla" > /dev/null 2>&1
+	wget -q $SCRIPTS_DIR_URL"custom-actions.pkla" > /dev/null 2>&1
 	sudo mkdir -p $POWERMANAGEMENT_DIR > /dev/null 2>&1
 	
 	if [ -f ./custom-actions.pkla ];
@@ -256,7 +256,7 @@ function enableDirtyRegionRendering()
 	
 	mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q "$SCRIPTS_DIR_URL/dirty_region_rendering.xml" 2>&1
+	wget -q $SCRIPTS_DIR_URL"dirty_region_rendering.xml" 2>&1
 	mkdir -p $XBMC_USERDATA_DIR > /dev/null 2>&1
 	
 	if [ -f ./dirty_region_rendering.xml ];
@@ -273,16 +273,16 @@ function installXbmcAddonRepositoriesInstaller()
     showInfo "Installing Addon Repositories Installer addon..."
 	mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q "$ADDONS_DIR_URL/plugin.program.repo.installer-1.0.5.tar.gz" > /dev/null 2>&1
+	wget -q $ADDONS_DIR_URL"plugin.program.repo.installer-1.0.5.tar.gz" > /dev/null 2>&1
 
 	if [ ! -d $XBMC_ADDONS_DIR ];
 	then
 		mkdir -p $XBMC_ADDONS_DIR > /dev/null 2>&1
 	fi
 
-    if [ -f ./plugin.program.repo.installer-1.0.5.tar.gz ];
+    if [ -f $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ];
     then
-        tar -xvzf ./plugin.program.repo.installer-1.0.5.tar.gz -C $XBMC_ADDONS_DIR > /dev/null 2>&1
+        tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C $XBMC_ADDONS_DIR > /dev/null 2>&1
 	    showInfo "Addon Repositories Installer addon successfully installed"
     else
 	    showError "Addon Repositories Installer addon could not be installed"
@@ -342,12 +342,10 @@ function installXbmcAutorunScript()
     
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q "$SCRIPTS_DIR_URL/xbmc_init_script" > /dev/null 2>&1
+	wget -q $SCRIPTS_DIR_URL"xbmc_init_script" > /dev/null 2>&1
 	
-	if [ ! -f ./xbmc_init_script ];
+	if [ -f $TEMP_DIRECTORY"xbmc_init_script" ];
 	then
-	    showError "Download of XBMC autorun script failed"
-	else
 	    if [ -f $INIT_FILE ];
 	    then
 		    sudo rm $INIT_FILE > /dev/null 2>&1
@@ -357,6 +355,8 @@ function installXbmcAutorunScript()
 	    sudo chmod a+x /etc/init.d/xbmc > /dev/null 2>&1
 	    sudo update-rc.d xbmc defaults > /dev/null 2>&1
         showInfo "XBMC autorun succesfully configured"
+	else
+	    showError "Download of XBMC autorun script failed"
 	fi
 }
 
@@ -371,13 +371,11 @@ function installXbmcBootScreen()
 
         mkdir -p $TEMP_DIRECTORY > /dev/null
         cd $TEMP_DIRECTORY
-        wget -q "$SCRIPTS_DIR_URL/plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
+        wget -q $SCRIPTS_DIR_URL"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
         
-        if [ ! -f ./plymouth-theme-xbmc-logo.deb ];
+        if [ -f $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
         then
-            showError "Download of XBMC boot screen package failed"
-        else
-            sudo dpkg -i ./plymouth-theme-xbmc-logo.deb > /dev/null 2>&1
+            sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
 
             if [ -f $INITRAMFS_SPLASH_FILE ];
             then
@@ -389,6 +387,8 @@ function installXbmcBootScreen()
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null 2>&1
             showInfo "XBMC boot screen successfully installed"
+        else
+            showError "Download of XBMC boot screen package failed"
         fi
     else
         showInfo "Skipping. XBMC boot screen already installed"
