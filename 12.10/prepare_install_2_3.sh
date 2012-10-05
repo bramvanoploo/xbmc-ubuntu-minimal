@@ -224,7 +224,7 @@ function installOscam()
     sudo apt-get update > /dev/null 2>&1
     
     showInfo "Installing oscam..."
-    sudo apt-get -y -qq install oscam > /dev/null 2>&1
+    sudo apt-get -y -qq install oscam-svn > /dev/null 2>&1
     showInfo "Oscam installed"
 }
 
