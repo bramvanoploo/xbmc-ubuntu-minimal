@@ -183,7 +183,6 @@ function installAudio()
 
 function installLirc()
 {
-    showInfo "Installing lirc..."
     clear
     echo "Installing lirc..."
     echo ""
@@ -201,14 +200,13 @@ function installTvHeadend()
 	sudo add-apt-repository -y $HTS_TVHEADEND_PPA > /dev/null 2>&1
 	showInfo "Jabbors hts-stable PPA added"
 
-    showInfo "Installing tvheadend..."
-    sudo apt-get update > /dev/null 2>&1
     clear
     echo "Installing tvheadend..."
     echo ""
     echo "------------------"
     echo ""
     
+    sudo apt-get update > /dev/null 2>&1
     sudo apt-get -y -qq install tvheadend
     showInfo "Tvheadend successfully installed"
 }
