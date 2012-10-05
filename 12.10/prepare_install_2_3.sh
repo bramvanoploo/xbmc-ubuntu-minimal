@@ -291,7 +291,7 @@ function installXbmcAddonRepositoriesInstaller()
 
 function installVideoDriver()
 {
-    showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers..."
+    showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
     sudo dpkg-query -l $VIDEO_DRIVER > /dev/null 2>&1
     
     if [ $? == 1 ];
@@ -346,11 +346,13 @@ function installXbmcAutorunScript()
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ];
 	then
+	    showError "Test 1"
+	
 	    if [ -f $INIT_FILE ];
 	    then
 		    sudo rm $INIT_FILE > /dev/null 2>&1
 	    fi
-
+	    
 	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null 2>&1
 	    sudo chmod a+x /etc/init.d/xbmc > /dev/null 2>&1
 	    sudo update-rc.d xbmc defaults > /dev/null 2>&1
@@ -375,6 +377,8 @@ function installXbmcBootScreen()
         
         if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
         then
+            showError "Test 2"
+        
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
 
             if [ -f $INITRAMFS_SPLASH_FILE ];
