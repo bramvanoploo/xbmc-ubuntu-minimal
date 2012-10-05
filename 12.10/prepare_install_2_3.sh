@@ -359,7 +359,7 @@ function installXbmcAutorunScript()
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
-    sudo dpkg-query -l plymouth-theme-xbmc-logo > /dev/null
+    sudo dpkg-query -l plymouth-theme-xbmc-logo > /dev/null 2>&1
 
     if [ $? == 1 ];
     then
@@ -371,8 +371,6 @@ function installXbmcBootScreen()
         
         if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
         then
-            showError "Test 2"
-        
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
 
             
@@ -383,8 +381,8 @@ function installXbmcBootScreen()
 
             sudo touch $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
             echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
-            sudo update-grub > /dev/null
-            sudo update-initramfs -u > /dev/null
+            sudo update-grub > /dev/null 2>&1
+            sudo update-initramfs -u > /dev/null 2>&1
             showInfo "XBMC boot screen successfully installed"
         else
             showError "Download of XBMC boot screen package failed"
