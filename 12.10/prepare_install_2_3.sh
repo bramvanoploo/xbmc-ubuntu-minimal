@@ -342,8 +342,6 @@ function installXbmcAutorunScript()
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ];
 	then
-	    showError "Test 1"
-	
 	    if [ -f $INIT_FILE ];
 	    then
 		    sudo rm $INIT_FILE > /dev/null 2>&1
@@ -362,11 +360,7 @@ function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
     sudo dpkg-query -l plymouth-theme-xbmc-logo > /dev/null
-    
-    clear
-    echo $?
-    exit
-    
+
     if [ $? == 1 ];
     then
 	    sudo apt-get -y install plymouth-label v86d > /dev/null 2>&1
@@ -377,19 +371,21 @@ function installXbmcBootScreen()
         
         if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
         then
-            showError "Test 2"
-        
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
 
+            clear
+            
             if [ -f $INITRAMFS_SPLASH_FILE ];
             then
-                sudo rm $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
+                sudo rm $INITRAMFS_SPLASH_FILE
             fi
 
-            sudo touch $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
-            echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
-            sudo update-grub > /dev/null 2>&1
-            sudo update-initramfs -u > /dev/null 2>&1
+            sudo touch $INITRAMFS_SPLASH_FILE
+            echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE
+            sudo update-grub
+            sudo update-initramfs -u
+            
+            exit
             showInfo "XBMC boot screen successfully installed"
         else
             showError "Download of XBMC boot screen package failed"
