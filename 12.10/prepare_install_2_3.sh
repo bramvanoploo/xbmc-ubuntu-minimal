@@ -83,6 +83,8 @@ function installDependencies()
 
 	sudo apt-get -y install dialog software-properties-common > /dev/null 2>&1
 	
+	echo $?
+	
 	if [ $? != 0 ];
 	then
 	    echo "Error installing dependencies. Installation aborted."
