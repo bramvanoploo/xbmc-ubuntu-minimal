@@ -183,7 +183,13 @@ function installAudio()
 
 function installLirc()
 {
-    showInfo "Installing lirc"
+    showInfo "Installing lirc..."
+    clear
+    echo "Installing lirc..."
+    echo ""
+    echo "------------------"
+    echo ""
+
 	sudo apt-get -y -qq install lirc
     showInfo "Lirc successfully installed"
 }
@@ -197,10 +203,15 @@ function installTvHeadend()
 	
     distUpgrade
     
-    showInfo "Installing hts tvheadend..."
-    sudo apt-get -y -qq install tvheadend > /dev/null
-    sudo dpkg-reconfigure tvheadend
-    showInfo "Hts tvheadend installed"
+    showInfo "Installing tvheadend..."
+    clear
+    echo "Installing tvheadend..."
+    echo ""
+    echo "------------------"
+    echo ""
+    
+    sudo apt-get -y -qq install tvheadend
+    showInfo "Tvheadend successfully installed"
 }
 
 function installOscam()
