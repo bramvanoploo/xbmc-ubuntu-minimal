@@ -342,7 +342,7 @@ function installXbmcAutorunScript()
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ];
 	then
-	    if [ -f $INIT_FILE ];
+	    if [ -e $INIT_FILE ];
 	    then
 		    sudo rm $INIT_FILE > /dev/null 2>&1
 	    fi
