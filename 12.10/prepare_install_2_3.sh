@@ -112,8 +112,6 @@ function createDirectory()
     then
         cd $DIRECTORY
     fi
-    
-    exit
 }
 
 function handleFileBackup()
@@ -128,6 +126,8 @@ function handleFileBackup()
 	else
 		sudo cp "$FILE" "$BACKUP" > /dev/null 2>&1
 	fi
+	
+	exit
 }
 
 function appendToFile()
