@@ -458,6 +458,7 @@ function installAutomaticDistUpgrade()
 	if [ "$IS_MOVED" == "1" ]; then
 	    IS_INSTALLED=$(aptInstall cron)
 	    sudo chmod +x "/etc/cron.d/dist_upgrade.sh" > /dev/null 2>&1
+	    handleFileBackup "/etc/crontab"
 	    appendToFile "/etc/crontab" "0 */4  * * * root  /etc/cron.d/dist_upgrade.sh >> /var/log/updates.log"
 	else
 	    showError "Automatic system upgrade interval could not be enabled"
