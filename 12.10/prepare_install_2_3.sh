@@ -91,8 +91,6 @@ function createFile()
             sudo touch "$FILE" > /dev/null
         fi
     fi
-    
-    exit
 }
 
 function createDirectory()
@@ -114,6 +112,8 @@ function createDirectory()
     then
         cd $DIRECTORY
     fi
+    
+    exit
 }
 
 function handleFileBackup()
