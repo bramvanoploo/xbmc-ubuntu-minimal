@@ -471,7 +471,7 @@ function installXbmcBootScreen()
             handleFileBackup "$INITRAMFS_MODULES_FILE"
 	        appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap"
             sudo update-grub > /dev/null 2>&1
-            sudo update-initramfs -u > /dev/null
+            #sudo update-initramfs -u > /dev/null
             
             if [[ $? -eq 0 ]]; then
                 showInfo "XBMC boot screen successfully activated"
