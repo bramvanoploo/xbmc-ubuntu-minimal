@@ -77,13 +77,11 @@ function update()
 function createFile()
 {
     FILE="$1"
-    IS_ROOT=$2
-    REMOVE_IF_EXISTS=$3
+    IS_ROOT="$2"
+    REMOVE_IF_EXISTS="$3"
     
-    if [ -e "$FILE" ]; then
-        if [ "$REMOVE_IF_EXISTS" -eq "1" ]; then
-            sudo rm "$FILE" > /dev/null
-        fi
+    if [ -e "$FILE" ] && [ "$REMOVE_IF_EXISTS" -eq "1" ]; then
+        sudo rm "$FILE" > /dev/null
     else
         if [ "$IS_ROOT" -eq "0" ]; then
             touch "$FILE" > /dev/null
