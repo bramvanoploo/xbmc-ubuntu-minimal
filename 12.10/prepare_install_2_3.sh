@@ -470,11 +470,11 @@ function installXbmcBootScreen()
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
             createFile "$INITRAMFS_SPLASH_FILE" 1 0
             appendToFile "$INITRAMFS_SPLASH_FILE" "FRAMEBUFFER=y"
-            handleFileBackup "$GRUB_CONFIG_FILE"
-	        appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap"
-	        appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=1366x768"
-            handleFileBackup "$INITRAMFS_MODULES_FILE"
-	        appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap"
+            #handleFileBackup "$GRUB_CONFIG_FILE"
+	        #appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap"
+	        #appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=1366x768"
+            #handleFileBackup "$INITRAMFS_MODULES_FILE"
+	        #appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap"
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null
             
