@@ -69,13 +69,6 @@ function showDialog()
 		--msgbox "\n$@" 12 $DIALOG_WIDTH
 }
 
-function showErrorDialog()
-{
-	dialog --title "ERROR" \
-		--backtitle "$SCRIPT_TITLE" \
-		--msgbox "\n$@" 8 $DIALOG_WIDTH
-}
-
 function update()
 {
     sudo apt-get update > /dev/null 2>&1
@@ -98,6 +91,8 @@ function createFile()
             sudo touch "$FILE" > /dev/null
         fi
     fi
+    
+    exit
 }
 
 function createDirectory()
@@ -637,7 +632,6 @@ showDialog "Welcome to the XBMC minimal installation script. Some parts may take
 trap control_c SIGINT
 
 fixLocaleBug
-exit
 applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
 addXbmcPpa
