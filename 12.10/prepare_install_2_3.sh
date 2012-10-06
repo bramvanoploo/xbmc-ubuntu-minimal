@@ -347,6 +347,8 @@ function enableDirtyRegionRendering()
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
 	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 	
+	echo $IS_MOVED
+	exit
 	if [[ $IS_MOVED -eq 1 ]]; then
         showInfo "XBMC dirty region rendering enabled"
     else
