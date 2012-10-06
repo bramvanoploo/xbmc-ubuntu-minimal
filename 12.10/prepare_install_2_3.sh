@@ -104,10 +104,15 @@ function createDirectory()
 {
     DIRECTORY="$1"
     GOTO_DIRECTORY=$2
+    IS_ROOT=$3
     
     if [ ! -d $DIRECTORY ];
     then
-        sudo mkdir -p "$DIRECTORY" > /dev/null 2>&1
+        if [[ $IS_ROOT -eq 0 ]]; then
+            mkdir -p "$DIRECTORY" > /dev/null 2>&1
+        else
+            sudo mkdir -p "$DIRECTORY" > /dev/null 2>&1
+        fi
     fi
     
     if [[ $GOTO_DIRECTORY -eq 1 ]];
@@ -142,7 +147,7 @@ function addRepository()
     IS_ADDED=false
     REPOSITORY=$@
     KEYSTORE_DIR=$HOME_DIRECTORY".gnupg/"
-    createDirectory "$KEYSTORE_DIR"
+    createDirectory "$KEYSTORE_DIR" 0 0
     sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
 
     if [[ $? -eq 0 ]]; then
@@ -277,7 +282,7 @@ function installXinit()
 function installPowerManagement()
 {
     showInfo "Installing power management packages..."
-    createDirectory "$TEMP_DIRECTORY" 1
+    createDirectory "$TEMP_DIRECTORY" 1 0 
 	aptInstall policykit-1 upower udisks acpi-support
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
@@ -341,9 +346,9 @@ function enableDirtyRegionRendering()
     showInfo "Enabling XBMC dirty region rendering..."
     handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE
 	
-	createDirectory $TEMP_DIRECTORY 1
+	createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml"
-	createDirectory $XBMC_USERDATA_DIR
+	createDirectory "$XBMC_USERDATA_DIR" 0 0
 	move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE"
 	
 	if [ $IS_MOVED ]; then
@@ -356,9 +361,9 @@ function enableDirtyRegionRendering()
 function installXbmcAddonRepositoriesInstaller()
 {
     showInfo "Installing Addon Repositories Installer addon..."
-	createDirectory "$TEMP_DIRECTORY" 1
+	createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz"
-    createDirectory "$XBMC_ADDONS_DIR"
+    createDirectory "$XBMC_ADDONS_DIR" 0 0
 
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
@@ -428,7 +433,7 @@ function installVideoDriver()
 function installXbmcAutorunScript()
 {
     showInfo "Installing XBMC autorun support..."
-    createDirectory "$TEMP_DIRECTORY" 1
+    createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script"
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
@@ -457,7 +462,7 @@ function installXbmcBootScreen()
 
     if [ ! $IS_INSTALLED ]; then
 	    aptInstall plymouth-label v86d
-        createDirectory $TEMP_DIRECTORY 1
+        createDirectory "$TEMP_DIRECTORY" 1 0
         download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
         
         if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
