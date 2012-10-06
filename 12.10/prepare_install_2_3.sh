@@ -271,17 +271,14 @@ function distUpgrade()
 function installXinit()
 {
     showInfo "Installing xinit..."
-    aptInstall xinit
+    sudo apt-get -y install xinit > /dev/null 2>&1
 }
 
 function installPowerManagement()
 {
     showInfo "Installing power management packages..."
-    createDirectory "$TEMP_DIRECTORY" 1 0 
-	aptInstall policykit-1 
-	aptInstall upower 
-	aptInstall udisks 
-	aptInstall acpi-support
+    createDirectory "$TEMP_DIRECTORY" 1 0
+    sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
     move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR"
@@ -290,10 +287,7 @@ function installPowerManagement()
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-	aptInstall linux-sound-base 
-	aptInstall alsa-base 
-	aptInstall alsa-utils 
-	aptInstall libasound2
+	sudo apt-get -y install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null 2>&1
     sudo alsamixer
 }
 
@@ -333,14 +327,14 @@ function installOscam()
 
     if [[ $IS_ADDED -eq 1 ]]; then
         showInfo "Installing oscam..."
-        aptInstall oscam-svn
+        sudo apt-get -y install oscam-svn > /dev/null 2>&1
     fi
 }
 
 function installXbmc()
 {
     showInfo "Installing XBMC..."
-    aptInstall xbmc
+    sudo apt-get -y install xbmc > /dev/null 2>&1
 }
 
 function enableDirtyRegionRendering()
@@ -351,9 +345,9 @@ function enableDirtyRegionRendering()
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml"
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
-	move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE"
+	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 	
-	if [ $IS_MOVED ]; then
+	if [[ $IS_MOVED -eq 1 ]]; then
         showInfo "XBMC dirty region rendering enabled"
     else
         showError "XBMC dirty region rendering could not be enabled"
@@ -404,32 +398,30 @@ function enableAtiUnderscan()
 function installVideoDriver()
 {
     showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
-    aptInstall $VIDEO_DRIVER
+    sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
 
-    if [ $INSTALLATION_SUCCESSFULL ]; then
-        if [ $VIDEO_MANUFACTURER -eq "ati" ]; then
-            configureAtiDriver
+    if [ $VIDEO_MANUFACTURER -eq "ati" ]; then
+        configureAtiDriver
 
-            dialog --title "Disable underscan" \
-	            --backtitle "$SCRIPT_TITLE" \
-	            --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
+        dialog --title "Disable underscan" \
+            --backtitle "$SCRIPT_TITLE" \
+            --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
 
-            RESPONSE=$?
-            case $RESPONSE in
-                0) 
-                    disbaleAtiUnderscan
-                    ;;
-                1) 
-                    enableAtiUnderscan
-                    ;;
-                255) 
-                    showInfo "ATI underscan configuration skipped"
-                    ;;
-            esac
-        fi
-        
-        showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed and configured"
+        RESPONSE=$?
+        case $RESPONSE in
+            0) 
+                disbaleAtiUnderscan
+                ;;
+            1) 
+                enableAtiUnderscan
+                ;;
+            255) 
+                showInfo "ATI underscan configuration skipped"
+                ;;
+        esac
     fi
+    
+    showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed and configured"
 }
 
 function installXbmcAutorunScript()
@@ -459,12 +451,11 @@ function installXbmcAutorunScript()
 
 function installXbmcBootScreen()
 {
-    showInfo "Installing XBMC boot screen (please be patient)..."
     IS_INSTALLED=$(isPackageInstalled plymouth-theme-xbmc-logo)
 
     if [[ $IS_INSTALLED -eq 0 ]]; then
-	    aptInstall plymouth-label
-	    aptInstall v86d
+        showInfo "Installing XBMC boot screen (please be patient)..."
+	    sudo apt-get -y install plymouth-label v86d > /dev/null 2>&1
         createDirectory "$TEMP_DIRECTORY" 1 0
         download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
         
