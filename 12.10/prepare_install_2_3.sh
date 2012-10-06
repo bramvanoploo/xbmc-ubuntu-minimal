@@ -87,15 +87,15 @@ function createFile()
     IS_ROOT=$2
     REMOVE_IF_EXISTS=$3
     
-    if [ -e $FILE ]; then
-        if [[ $REMOVE_IF_EXISTS -eq 1 ]]; then
-            sudo rm $FILE > /dev/null
+    if [ -e "$FILE" ]; then
+        if [ "$REMOVE_IF_EXISTS" -eq "1" ]; then
+            sudo rm "$FILE" > /dev/null
         fi
     else
-        if [[ $IS_ROOT -eq 0 ]]; then
-            touch $FILE > /dev/null
+        if [ "$IS_ROOT" -eq "0" ]; then
+            touch "$FILE" > /dev/null
         else
-            sudo touch $FILE > /dev/null
+            sudo touch "$FILE" > /dev/null
         fi
     fi
 }
@@ -106,16 +106,16 @@ function createDirectory()
     GOTO_DIRECTORY=$2
     IS_ROOT=$3
     
-    if [ ! -d $DIRECTORY ];
+    if [ ! -d "$DIRECTORY" ];
     then
-        if [[ $IS_ROOT -eq 0 ]]; then
+        if [ "$IS_ROOT" -eq "0" ]; then
             mkdir -p "$DIRECTORY" > /dev/null 2>&1
         else
             sudo mkdir -p "$DIRECTORY" > /dev/null 2>&1
         fi
     fi
     
-    if [[ $GOTO_DIRECTORY -eq 1 ]];
+    if [ "$GOTO_DIRECTORY" -eq "1" ];
     then
         cd $DIRECTORY
     fi
@@ -126,7 +126,7 @@ function handleFileBackup()
     FILE="$@"
     BACKUP="$@.bak"
 
-    if [ -e $BACKUP ];
+    if [ -e "$BACKUP" ];
 	then
 		sudo rm "$FILE" > /dev/null 2>&1
 		sudo cp "$BACKUP" "$FILE" > /dev/null 2>&1
@@ -149,13 +149,13 @@ function addRepository()
     createDirectory "$KEYSTORE_DIR" 0 0
     sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
 
-    if [[ $? -eq 0 ]]; then
+    if [ $? -eq 0 ]; then
         update
         showInfo "$REPOSITORY repository successfully added"
-        return 1
+        echo 1
     else
         showError "Repository $REPOSITORY could not be added (error code $?)"
-        return 0
+        echo 0
     fi
 }
 
@@ -164,30 +164,31 @@ function isPackageInstalled()
     PACKAGE=$@
     sudo dpkg-query -l $PACKAGE > /dev/null 2>&1
     
-    if [[ $? -eq 0 ]]; then
-        return 1
+    if [ $? -eq 0 ]; then
+        echo 1
     else
-        return 0
+        echo 0
     fi
 }
 
 function aptInstall()
 {
     PACKAGE=$@
+    IS_INSTALLED=$(isPackageInstalled $PACKAGE)
 
-    if isPackageInstalled $PACKAGE; then
+    if [ "$IS_INSTALLED" -eq "1" ]; then
         showInfo "Skipping installation of $PACKAGE. Already installed."
-        return 1
+        echo 1
     else
         sudo apt-get -f install > /dev/null 2>&1
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
-        if [[ $? -eq 0 ]]; then
+        if [ $? -eq 0 ]; then
             showInfo "$PACKAGE successfully installed"
-            return 1
+            echo 1
         else
             showError "$PACKAGE could not be installed (error code: $?)"
-            return 0
+            echo 0
         fi 
     fi
 }
@@ -203,19 +204,19 @@ function move()
     SOURCE=$1
     DESTINATION=$2
     
-    if [ -e $SOURCE ];
+    if [ -e "$SOURCE" ];
 	then
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
-	    if [[ $? -eq 0 ]]; then
-	        return 1
+	    if [ $? -eq 0 ]; then
+	        echo 1
 	    else
 	        showError "$SOURCE could not be moved to $DESTINATION (error code: $?)"
-	        return 0
+	        echo 0
 	    fi
 	else
 	    showError "$SOURCE could not be moved to $DESTINATION because the file does not exist"
-	    return 0
+	    echo 0
 	fi
 }
 
@@ -256,7 +257,7 @@ function addUserToRequiredGroups()
 function addXbmcPpa()
 {
     showInfo "Adding Wsnipex xbmc-xvba PPA..."
-	addRepository "$XBMC_PPA"
+	IS_ADDED=$(addRepository "$XBMC_PPA")
 }
 
 function distUpgrade()
@@ -280,7 +281,7 @@ function installPowerManagement()
     sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
-    move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR"
+    IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
 }
 
 function installAudio()
@@ -305,9 +306,9 @@ function installLirc()
 function installTvHeadend()
 {
     showInfo "Adding jabbors hts-stable PPA..."
-	IS_ADDED=addRepository "$HTS_TVHEADEND_PPA"
+	IS_ADDED=$(addRepository "$HTS_TVHEADEND_PPA")
 
-    if [[ $IS_ADDED -eq 1 ]]; then
+    if [ "$IS_ADDED" -eq "1" ]; then
         clear
         echo ""
         echo "Installing tvheadend..."
@@ -322,8 +323,9 @@ function installTvHeadend()
 function installOscam()
 {
     showInfo "Adding oscam PPA..."
+    IS_ADDED=$(addRepository "$OSCAM_PPA")
 
-    if addRepository "$OSCAM_PPA"; then
+    if [ "$IS_ADDED" -eq "1" ]; then
         showInfo "Installing oscam..."
         sudo apt-get -y install oscam-svn > /dev/null 2>&1
     fi
@@ -343,8 +345,9 @@ function enableDirtyRegionRendering()
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml"
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
+	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 
-	if move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE"; then
+	if [ "$IS_MOVED" -eq "1" ]; then
         showInfo "XBMC dirty region rendering enabled"
     else
         showError "XBMC dirty region rendering could not be enabled"
@@ -361,7 +364,7 @@ function installXbmcAddonRepositoriesInstaller()
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
         
-        if [[ $? -eq 0 ]]; then
+        if [ $? -eq 0 ]; then
 	        showInfo "Addon Repositories Installer addon successfully installed"
 	    else
 	        showError "Addon Repositories Installer addon could not be installed (error code: $?)"
@@ -431,12 +434,14 @@ function installXbmcAutorunScript()
 	    if [ -e $INIT_FILE ]; then
 		    sudo rm $INIT_FILE > /dev/null
 	    fi
+	    
+	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE")
 
-	    if move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE"; then
+	    if [ "$IS_MOVED" -eq "1" ]; then
 	        sudo chmod a+x "$INIT_FILE" > /dev/null
 	        sudo update-rc.d xbmc defaults > /dev/null
 	        
-	        if [[ $? -eq 0 ]]; then
+	        if [ $? -eq 0 ]; then
                 showInfo "XBMC autorun succesfully configured"
             else
                 showError "XBMC outrun script could not be activated (error code: $?)"
@@ -444,7 +449,6 @@ function installXbmcAutorunScript()
 	    else
 	        showError "XBMC autorun script could not be installed"
 	    fi
-
 	else
 	    showError "Download of XBMC autorun script failed"
 	fi
@@ -454,7 +458,7 @@ function installXbmcBootScreen()
 {
     IS_INSTALLED=$(isPackageInstalled plymouth-theme-xbmc-logo)
 
-    if isPackageInstalled plymouth-theme-xbmc-logo; then
+    if [ "$IS_INSTALLED" -eq "1" ]; then
         showInfo "Skipping XBMC boot screen installation. Already installed."
     else
         showInfo "Installing XBMC boot screen (please be patient)..."
@@ -474,7 +478,7 @@ function installXbmcBootScreen()
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null
             
-            if [[ $? -eq 0 ]]; then
+            if [ $? -eq 0 ]; then
                 showInfo "XBMC boot screen successfully activated"
             else
                 showError "XBMC boot screen could not be activated (error code: $?)"
