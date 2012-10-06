@@ -338,18 +338,18 @@ function installXbmcAutorunScript()
     
     mkdir -p $TEMP_DIRECTORY > /dev/null
 	cd $TEMP_DIRECTORY
-	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script" > /dev/null 2>&1
+	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script" > /dev/null
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ];
 	then
 	    if [ -e $INIT_FILE ];
 	    then
-		    sudo rm $INIT_FILE > /dev/null 2>&1
+		    sudo rm $INIT_FILE > /dev/null
 	    fi
 	    
-	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null 2>&1
-	    sudo chmod a+x /etc/init.d/xbmc > /dev/null 2>&1
-	    sudo update-rc.d xbmc defaults > /dev/null 2>&1
+	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null
+	    sudo chmod a+x /etc/init.d/xbmc > /dev/null
+	    sudo update-rc.d xbmc defaults > /dev/null
         showInfo "XBMC autorun succesfully configured"
 	else
 	    showError "Download of XBMC autorun script failed"
@@ -363,23 +363,23 @@ function installXbmcBootScreen()
 
     if [ $? == 1 ];
     then
-	    sudo apt-get -y install plymouth-label v86d > /dev/null 2>&1
+	    sudo apt-get -y install plymouth-label v86d > /dev/null
 
         mkdir -p $TEMP_DIRECTORY > /dev/null
         cd $TEMP_DIRECTORY
-        wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
+        wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb" > /dev/null
         
         if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
         then
-            sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null 2>&1
+            sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
 
             if [ -e $INITRAMFS_SPLASH_FILE ];
             then
-                sudo rm $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
+                sudo rm $INITRAMFS_SPLASH_FILE > /dev/null
             fi
 
-            sudo touch $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
-            echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null 2>&1
+            sudo touch $INITRAMFS_SPLASH_FILE > /dev/null
+            echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null 2>&1
             showInfo "XBMC boot screen successfully installed"
