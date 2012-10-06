@@ -314,11 +314,7 @@ function installTvHeadend()
         echo ""
         echo "------------------"
         echo ""
-        
-        clear
-	    echo $IS_ADDED
-	    exit
-        
+
         sudo apt-get -y install tvheadend
     fi
 }
