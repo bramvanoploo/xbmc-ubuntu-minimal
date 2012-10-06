@@ -173,26 +173,21 @@ function isPackageInstalled()
 function aptInstall()
 {
     INSTALLATION_SUCCESSFULL=1
-    PACKAGES="$@"
-    IFS=" " read -ra A_PACKAGES <<< "$PACKAGES"
+    PACKAGE=$@
+    isPackageInstalled $PACKAGE
     
-    for i in "${A_PACKAGES[@]}"; do
-        PACKAGE=${A_PACKAGES[$i]}
-        isPackageInstalled $PACKAGE
+    if [ $IS_INSTALLED ]; then
+        showInfo "Skipping installation of $PACKAGE. Already installed."
+    else
+        sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
-        if [ $IS_INSTALLED ]; then
-            showInfo "Skipping installation of $PACKAGE. Already installed."
+        if [[ $? -eq 0 ]]; then
+            showInfo "$PACKAGE successfully installed"
         else
-            sudo apt-get -y install $PACKAGE > /dev/null 2>&1
-            
-            if [[ $? -eq 0 ]]; then
-                showInfo "$PACKAGE successfully installed"
-            else
-                INSTALLATION_SUCCESSFULL=false
-                showError "$PACKAGE could not be installed (error code: $?)"
-            fi 
-        fi
-    done
+            INSTALLATION_SUCCESSFULL=false
+            showError "$PACKAGE could not be installed (error code: $?)"
+        fi 
+    fi
 }
 
 function download()
@@ -277,7 +272,10 @@ function installPowerManagement()
 {
     showInfo "Installing power management packages..."
     createDirectory "$TEMP_DIRECTORY" 1 0 
-	aptInstall policykit-1 upower udisks acpi-support
+	aptInstall policykit-1 
+	aptInstall upower 
+	aptInstall udisks 
+	aptInstall acpi-support
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
     move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR"
@@ -286,7 +284,10 @@ function installPowerManagement()
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-	aptInstall linux-sound-base alsa-base alsa-utils libasound2
+	aptInstall linux-sound-base 
+	aptInstall alsa-base 
+	aptInstall alsa-utils 
+	aptInstall libasound2
     sudo alsamixer
 }
 
@@ -455,7 +456,8 @@ function installXbmcBootScreen()
     isPackageInstalled plymouth-theme-xbmc-logo
 
     if [ ! $IS_INSTALLED ]; then
-	    aptInstall plymouth-label v86d
+	    aptInstall plymouth-label 
+	    aptInstall v86d
         createDirectory "$TEMP_DIRECTORY" 1 0
         download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
         
