@@ -538,7 +538,7 @@ function selectAdditionalOptions()
     cmd=(dialog --title "Optional packages and features" 
         --backtitle "$SCRIPT_TITLE" 
         --checklist "Plese select optional packages to install:" 
-        16 $DIALOG_WIDTH 5)
+        15 $DIALOG_WIDTH 6)
         
     options=(1 "Lirc (IR remote support)" off
             2 "Hts tvheadend (live TV backend)" off
