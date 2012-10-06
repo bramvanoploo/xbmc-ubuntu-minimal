@@ -149,7 +149,7 @@ function addRepository()
     createDirectory "$KEYSTORE_DIR" 0 0
     sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
 
-    if [ $? -eq 0 ]; then
+    if [ "$?" -eq "0" ]; then
         update
         showInfo "$REPOSITORY repository successfully added"
         echo 1
@@ -164,7 +164,7 @@ function isPackageInstalled()
     PACKAGE=$@
     sudo dpkg-query -l $PACKAGE > /dev/null 2>&1
     
-    if [ $? -eq 0 ]; then
+    if [ "$?" -eq "0" ]; then
         echo 1
     else
         echo 0
@@ -183,7 +183,7 @@ function aptInstall()
         sudo apt-get -f install > /dev/null 2>&1
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
-        if [ $? -eq 0 ]; then
+        if [ "$?" -eq "0" ]; then
             showInfo "$PACKAGE successfully installed"
             echo 1
         else
@@ -208,7 +208,7 @@ function move()
 	then
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
-	    if [ $? -eq 0 ]; then
+	    if [ "$?" -eq "0" ]; then
 	        echo 1
 	    else
 	        showError "$SOURCE could not be moved to $DESTINATION (error code: $?)"
@@ -364,7 +364,7 @@ function installXbmcAddonRepositoriesInstaller()
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
         
-        if [ $? -eq 0 ]; then
+        if [ "$?" -eq "0" ]; then
 	        showInfo "Addon Repositories Installer addon successfully installed"
 	    else
 	        showError "Addon Repositories Installer addon could not be installed (error code: $?)"
@@ -408,7 +408,7 @@ function installVideoDriver()
             --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
 
         RESPONSE=$?
-        case $RESPONSE in
+        case ${RESPONSE//\"/} in
             0) 
                 disbaleAtiUnderscan
                 ;;
@@ -441,7 +441,7 @@ function installXbmcAutorunScript()
 	        sudo chmod a+x "$INIT_FILE" > /dev/null
 	        sudo update-rc.d xbmc defaults > /dev/null
 	        
-	        if [ $? -eq 0 ]; then
+	        if [ "$?" -eq "0" ]; then
                 showInfo "XBMC autorun succesfully configured"
             else
                 showError "XBMC outrun script could not be activated (error code: $?)"
@@ -478,7 +478,7 @@ function installXbmcBootScreen()
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null
             
-            if [ $? -eq 0 ]; then
+            if [ "$?" -eq "0" ]; then
                 showInfo "XBMC boot screen successfully activated"
             else
                 showError "XBMC boot screen could not be activated (error code: $?)"
