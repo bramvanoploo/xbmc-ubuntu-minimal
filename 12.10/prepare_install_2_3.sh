@@ -93,7 +93,7 @@ function createFile()
         fi
     else
         if [ $IS_ROOT == false ]; then
-            touch $FILE > /de/null
+            touch $FILE > /dev/null
         else
             sudo touch $FILE > /dev/null
         fi
