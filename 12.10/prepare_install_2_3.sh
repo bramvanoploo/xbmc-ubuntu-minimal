@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# @author Bram van Oploo
+# @date   2012-10-06
+#
 
 THIS_FILE=$0
 SCRIPT_VERSION="2.3"
@@ -585,6 +589,7 @@ function cleanUp()
     showInfo "Cleaning up..."
 	sudo apt-get -y autoremove > /dev/null 2>&1
 	sudo apt-get -y autoclean > /dev/null 2>&1
+	sudo apt-get -y clean > /dev/null 2>&1
 	sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
 	rm "$HOME_DIRECTORY$THIS_FILE"
 }
