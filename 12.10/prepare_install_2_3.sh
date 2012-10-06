@@ -180,6 +180,7 @@ function aptInstall()
         showInfo "Skipping installation of $PACKAGE. Already installed."
         echo 1 > /dev/null
     else
+        sudo apt-get -f install > /dev/null 2>&1
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
         if [[ $? -eq 0 ]]; then
