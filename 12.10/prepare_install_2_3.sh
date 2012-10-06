@@ -307,10 +307,6 @@ function installTvHeadend()
 {
     showInfo "Adding jabbors hts-stable PPA..."
 	IS_ADDED=$(addRepository "$HTS_TVHEADEND_PPA")
-	
-	clear
-	echo $IS_ADDED
-	exit
 
     if [[ $IS_ADDED -eq 1 ]]; then
         clear
@@ -319,6 +315,10 @@ function installTvHeadend()
         echo ""
         echo "------------------"
         echo ""
+        
+        clear
+	    echo $IS_ADDED
+	    exit
         
         sudo apt-get -y install tvheadend
     fi
