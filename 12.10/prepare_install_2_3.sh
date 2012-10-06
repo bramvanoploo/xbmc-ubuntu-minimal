@@ -152,10 +152,10 @@ function addRepository()
     if [[ $? -eq 0 ]]; then
         update
         showInfo "$REPOSITORY repository successfully added"
-        echo 1
+        return 1
     else
         showError "Repository $REPOSITORY could not be added (error code $?)"
-        echo 0
+        return 0
     fi
 }
 
@@ -165,30 +165,29 @@ function isPackageInstalled()
     sudo dpkg-query -l $PACKAGE > /dev/null 2>&1
     
     if [[ $? -eq 0 ]]; then
-        echo 1
+        return 1
     else
-        echo 0
+        return 0
     fi
 }
 
 function aptInstall()
 {
     PACKAGE=$@
-    IS_INSTALLED=$(isPackageInstalled $PACKAGE)
-    
-    if [[ $IS_INSTALLED -eq 0 ]]; then
+
+    if isPackageInstalled $PACKAGE; then
         showInfo "Skipping installation of $PACKAGE. Already installed."
-        echo 1
+        return 1
     else
         sudo apt-get -f install > /dev/null 2>&1
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
         if [[ $? -eq 0 ]]; then
             showInfo "$PACKAGE successfully installed"
-            echo 1
+            return 1
         else
             showError "$PACKAGE could not be installed (error code: $?)"
-            echo 0
+            return 0
         fi 
     fi
 }
@@ -209,14 +208,14 @@ function move()
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
 	    if [[ $? -eq 0 ]]; then
-	        echo 1
+	        return 1
 	    else
 	        showError "$SOURCE could not be moved to $DESTINATION (error code: $?)"
-	        echo 0
+	        return 0
 	    fi
 	else
 	    showError "$SOURCE could not be moved to $DESTINATION because the file does not exist"
-	    echo 0
+	    return 0
 	fi
 }
 
@@ -257,7 +256,7 @@ function addUserToRequiredGroups()
 function addXbmcPpa()
 {
     showInfo "Adding Wsnipex xbmc-xvba PPA..."
-	IS_ADDED=$(addRepository "$XBMC_PPA")
+	addRepository "$XBMC_PPA"
 }
 
 function distUpgrade()
@@ -281,7 +280,7 @@ function installPowerManagement()
     sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
-    IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
+    move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR"
 }
 
 function installAudio()
@@ -306,7 +305,7 @@ function installLirc()
 function installTvHeadend()
 {
     showInfo "Adding jabbors hts-stable PPA..."
-	IS_ADDED=$(addRepository "$HTS_TVHEADEND_PPA")
+	IS_ADDED=addRepository "$HTS_TVHEADEND_PPA"
 
     if [[ $IS_ADDED -eq 1 ]]; then
         clear
@@ -327,9 +326,8 @@ function installTvHeadend()
 function installOscam()
 {
     showInfo "Adding oscam PPA..."
-	IS_ADDED=$(addRepository "$OSCAM_PPA")
 
-    if [[ $IS_ADDED -eq 1 ]]; then
+    if addRepository "$OSCAM_PPA"; then
         showInfo "Installing oscam..."
         sudo apt-get -y install oscam-svn > /dev/null 2>&1
     fi
@@ -349,9 +347,8 @@ function enableDirtyRegionRendering()
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml"
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
-	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 
-	if [[ $IS_MOVED -eq 1 ]]; then
+	if move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE"; then
         showInfo "XBMC dirty region rendering enabled"
     else
         showError "XBMC dirty region rendering could not be enabled"
@@ -438,10 +435,8 @@ function installXbmcAutorunScript()
 	    if [ -e $INIT_FILE ]; then
 		    sudo rm $INIT_FILE > /dev/null
 	    fi
-	    
-	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE")
-	    
-	    if [[ $IS_MOVED -eq 1 ]]; then
+
+	    if move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE"; then
 	        sudo chmod a+x "$INIT_FILE" > /dev/null
 	        sudo update-rc.d xbmc defaults > /dev/null
 	        
@@ -463,7 +458,9 @@ function installXbmcBootScreen()
 {
     IS_INSTALLED=$(isPackageInstalled plymouth-theme-xbmc-logo)
 
-    if [[ $IS_INSTALLED -eq 0 ]]; then
+    if isPackageInstalled plymouth-theme-xbmc-logo; then
+        showInfo "Skipping XBMC boot screen installation. Already installed."
+    else
         showInfo "Installing XBMC boot screen (please be patient)..."
 	    sudo apt-get -y install plymouth-label v86d > /dev/null 2>&1
         createDirectory "$TEMP_DIRECTORY" 1 0
@@ -489,8 +486,6 @@ function installXbmcBootScreen()
         else
             showError "Download of XBMC boot screen package failed"
         fi
-    else
-        showInfo "Skipping XBMC boot screen installation. Already installed."
     fi
 }
 
