@@ -1,7 +1,8 @@
 #!/bin/sh
 #
-# @author bram van Oploo
-# @date   6 Juin 2011
+# @author   Bram van Oploo
+# @date     2012-10-06
+# @version  1.0
 #
 # 0 */2 * * * /etc/cron.d/dist-upgrade.sh >> /var/log/updates.log; # 2 hour interval
 # 0 */4 * * * /etc/cron.d/dist-upgrade.sh >> /var/log/updates.log; # 4 hour interval

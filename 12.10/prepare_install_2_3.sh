@@ -1,7 +1,8 @@
 #!/bin/bash
 #
-# @author Bram van Oploo
-# @date   2012-10-06
+# @author   Bram van Oploo
+# @date     2012-10-06
+# @version  2.3
 #
 
 THIS_FILE=$0
@@ -134,7 +135,13 @@ function appendToFile()
 {
     FILE="$1"
     CONTENT="$2"
-    echo "$CONTENT" | sudo tee -a "$FILE" > /dev/null 2>&1
+    IS_ROOT="$3"
+    
+    if [ "$IS_ROOT" == "0" ]; then
+        echo "$CONTENT" | tee -a "$FILE" > /dev/null 2>&1
+    else
+        echo "$CONTENT" | sudo tee -a "$FILE" > /dev/null 2>&1
+    fi
 }
 
 function addRepository()
@@ -196,12 +203,17 @@ function download()
 
 function move()
 {
-    SOURCE=$1
-    DESTINATION=$2
+    SOURCE="$1"
+    DESTINATION="$2"
+    IS_ROOT="$3"
     
     if [ -e "$SOURCE" ];
 	then
-	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
+	    if [ "$IS_ROOT" == "1" ]; then
+	        sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
+	    else
+	        mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
+	    fi
 	    
 	    if [ "$?" == "0" ]; then
 	        echo 1
@@ -435,6 +447,23 @@ function installVideoDriver()
     fi
 }
 
+function installAutomaticDistUpgrade()
+{
+    showInfo "Enabling automatic system upgrade..."
+	
+	createDirectory "$TEMP_DIRECTORY" 1 0
+	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dist_upgrade.sh"
+	IS_MOVED=$(move $TEMP_DIRECTORY"dist_upgrade.sh" "/etc/cron.d/" 1)
+	
+	if [ "$IS_MOVED" == "1" ]; then
+	    IS_INSTALLED=$(aptInstall cron)
+	    sudo chmod +x "/etc/cron.d/dist_upgrade.sh" > /dev/null 2>&1
+	    appendToFile "/etc/crontab" "0 */4  * * * root  /etc/cron.d/dist_upgrade.sh >> /var/log/updates.log"
+	else
+	    showError "Automatic system upgrade interval could not be enabled"
+	fi
+}
+
 function installXbmcAutorunScript()
 {
     showInfo "Installing XBMC autorun support..."
@@ -521,7 +550,8 @@ function selectAdditionalOptions()
             2 "Hts tvheadend (live TV backend)" off
             3 "Oscam (live HDTV decryption tool)" off
             4 "XBMC Dirty region rendering (improved performance)" on
-            5 "XBMC Addon Repositories Installer addon" on)
+            5 "XBMC Addon Repositories Installer addon" on
+            6 "Automatic upgrades (every 4 hours)" off)
             
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
@@ -542,6 +572,9 @@ function selectAdditionalOptions()
                 ;;
             5)
                 installXbmcAddonRepositoriesInstaller 
+                ;;
+            6)
+                installAutomaticDistUpgrade
                 ;;
         esac
     done
