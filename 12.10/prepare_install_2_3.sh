@@ -209,10 +209,10 @@ function move()
     
     if [ -e "$SOURCE" ];
 	then
-	    if [ "$IS_ROOT" == "1" ]; then
-	        sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
-	    else
+	    if [ "$IS_ROOT" == "0" ]; then
 	        mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
+	    else
+	        sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    fi
 	    
 	    if [ "$?" == "0" ]; then
@@ -484,7 +484,7 @@ function installXbmcAutorunScript()
 	        if [ "$?" == "0" ]; then
                 showInfo "XBMC autorun succesfully configured"
             else
-                showError "XBMC outrun script could not be activated (error code: $?)"
+                showError "XBMC autorun script could not be activated (error code: $?)"
             fi
 	    else
 	        showError "XBMC autorun script could not be installed"
