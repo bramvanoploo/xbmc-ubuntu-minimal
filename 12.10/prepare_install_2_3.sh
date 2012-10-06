@@ -152,22 +152,22 @@ function addRepository()
     if [[ $? -eq 0 ]]; then
         update
         showInfo "$REPOSITORY repository successfully added"
-        echo 1
+        echo 1 > /dev/null
     else
         showError "Repository $REPOSITORY could not be added (error code $?)"
-        echo 0
+        echo 0 > /dev/null
     fi
 }
 
 function isPackageInstalled()
 {
-    sudo dpkg-query -l $@ > /dev/null 2>&1
+    PACKAGE=$@
+    sudo dpkg-query -l $PACKAGE > /dev/null 2>&1
     
-    if [[ $? -eq 0 ]];
-    then
-        echo 1
+    if [[ $? -eq 0 ]]; then
+        echo 1 > /dev/null
     else
-        echo 0
+        echo 0 > /dev/null
     fi
 }
 
@@ -178,16 +178,16 @@ function aptInstall()
     
     if [[ $IS_INSTALLED -eq 0 ]]; then
         showInfo "Skipping installation of $PACKAGE. Already installed."
-        echo 1
+        echo 1 > /dev/null
     else
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
         if [[ $? -eq 0 ]]; then
             showInfo "$PACKAGE successfully installed"
-            echo 1
+            echo 1 > /dev/null
         else
             showError "$PACKAGE could not be installed (error code: $?)"
-            echo 0
+            echo 0 > /dev/null
         fi 
     fi
 }
@@ -208,14 +208,14 @@ function move()
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
 	    if [[ $? -eq 0 ]]; then
-	        echo 1
+	        echo 1 > /dev/null
 	    else
 	        showError "$SOURCE could not be moved to $DESTINATION (error code: $?)"
-	        echo 0
+	        echo 0 > /dev/null
 	    fi
 	else
 	    showError "$SOURCE could not be moved to $DESTINATION because the file does not exist"
-	    echo 0
+	    echo 0 > /dev/null
 	fi
 }
 
