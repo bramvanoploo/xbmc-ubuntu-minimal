@@ -257,7 +257,7 @@ function addUserToRequiredGroups()
 function addXbmcPpa()
 {
     showInfo "Adding Wsnipex xbmc-xvba PPA..."
-	addRepository "$XBMC_PPA"
+	IS_ADDED=$(addRepository "$XBMC_PPA")
 }
 
 function distUpgrade()
@@ -281,7 +281,7 @@ function installPowerManagement()
     sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
-    move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR"
+    IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
 }
 
 function installAudio()
@@ -346,8 +346,7 @@ function enableDirtyRegionRendering()
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml"
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
 	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
-	
-	echo $IS_MOVED
+
 	exit
 	if [[ $IS_MOVED -eq 1 ]]; then
         showInfo "XBMC dirty region rendering enabled"
@@ -437,15 +436,21 @@ function installXbmcAutorunScript()
 		    sudo rm $INIT_FILE > /dev/null
 	    fi
 	    
-	    move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE"
-	    sudo chmod a+x "$INIT_FILE" > /dev/null
-	    sudo update-rc.d xbmc defaults > /dev/null
+	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE")
 	    
-	    if [[ $? -eq 0 ]]; then
-            showInfo "XBMC autorun succesfully configured"
-        else
-            showError "XBMC outrun script could not be activated (error code: $?)"
-        fi
+	    if [[ $IS_MOVED -eq 1 ]]; then
+	        sudo chmod a+x "$INIT_FILE" > /dev/null
+	        sudo update-rc.d xbmc defaults > /dev/null
+	        
+	        if [[ $? -eq 0 ]]; then
+                showInfo "XBMC autorun succesfully configured"
+            else
+                showError "XBMC outrun script could not be activated (error code: $?)"
+            fi
+	    else
+	        showError "XBMC autorun script could not be installed"
+	    fi
+
 	else
 	    showError "Download of XBMC autorun script failed"
 	fi
