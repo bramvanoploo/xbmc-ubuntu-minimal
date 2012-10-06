@@ -168,7 +168,7 @@ function isPackageInstalled()
         echo 1 > /dev/null
     else
         echo 0 > /dev/null
-    f
+    fi
 }
 
 function aptInstall()
