@@ -496,37 +496,31 @@ function installXbmcAutorunScript()
 
 function installXbmcBootScreen()
 {
-    IS_INSTALLED=$(isPackageInstalled plymouth-theme-xbmc-logo)
-
-    if [ "$IS_INSTALLED" == "1" ]; then
-        showInfo "Skipping XBMC boot screen installation. Already installed."
-    else
-        showInfo "Installing XBMC boot screen (please be patient)..."
-        IS_INSTALLED=$(aptInstall plymouth-label)
-        IS_INSTALLED=$(aptInstall v86d)
-        createDirectory "$TEMP_DIRECTORY" 1 0
-        download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
+    showInfo "Installing XBMC boot screen (please be patient)..."
+    IS_INSTALLED=$(aptInstall plymouth-label)
+    IS_INSTALLED=$(aptInstall v86d)
+    createDirectory "$TEMP_DIRECTORY" 1 0
+    download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
+    
+    if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
+        sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
+        createFile "$INITRAMFS_SPLASH_FILE" 1 0
+        appendToFile "$INITRAMFS_SPLASH_FILE" "FRAMEBUFFER=y"
+        #handleFileBackup "$GRUB_CONFIG_FILE"
+        #appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap"
+        #appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=1366x768"
+        #handleFileBackup "$INITRAMFS_MODULES_FILE"
+        #appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap"
+        sudo update-grub > /dev/null 2>&1
+        sudo update-initramfs -u > /dev/null
         
-        if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
-            sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
-            createFile "$INITRAMFS_SPLASH_FILE" 1 0
-            appendToFile "$INITRAMFS_SPLASH_FILE" "FRAMEBUFFER=y"
-            #handleFileBackup "$GRUB_CONFIG_FILE"
-	        #appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap"
-	        #appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=1366x768"
-            #handleFileBackup "$INITRAMFS_MODULES_FILE"
-	        #appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap"
-            sudo update-grub > /dev/null 2>&1
-            sudo update-initramfs -u > /dev/null
-            
-            if [ "$?" == "0" ]; then
-                showInfo "XBMC boot screen successfully activated"
-            else
-                showError "XBMC boot screen could not be activated (error code: $?)"
-            fi
+        if [ "$?" == "0" ]; then
+            showInfo "XBMC boot screen successfully activated"
         else
-            showError "Download of XBMC boot screen package failed"
+            showError "XBMC boot screen could not be activated (error code: $?)"
         fi
+    else
+        showError "Download of XBMC boot screen package failed"
     fi
 }
 
@@ -544,7 +538,7 @@ function selectAdditionalOptions()
     cmd=(dialog --title "Optional packages and features" 
         --backtitle "$SCRIPT_TITLE" 
         --checklist "Plese select optional packages to install:" 
-        15 $DIALOG_WIDTH 5)
+        16 $DIALOG_WIDTH 5)
         
     options=(1 "Lirc (IR remote support)" off
             2 "Hts tvheadend (live TV backend)" off
