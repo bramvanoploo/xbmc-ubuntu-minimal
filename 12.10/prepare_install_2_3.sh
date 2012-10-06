@@ -76,6 +76,146 @@ function showErrorDialog()
 		--msgbox "\n$@" 8 $DIALOG_WIDTH
 }
 
+function update()
+{
+    sudo apt-get update > /dev/null 2>&1
+}
+
+function createFile()
+{
+    FILE="$1"
+    IS_ROOT=$2
+    REMOVE_IF_EXISTS=$3
+    
+    if [ -e $FILE ]; then
+        if [ $REMOVE_IF_EXISTS -eq true ]; then
+            sudo rm $FILE > /dev/null
+        fi
+    else
+        if [ $IS_ROOT -eq false ]; then
+            touch $FILE > /de/null
+        else
+            sudo touch $FILE > /dev/null
+        fi
+    fi
+}
+
+function createDirectory()
+{
+    DIRECTORY="$1"
+    GOTO_DIRECTORY=$2
+    
+    if [ ! -d $DIRECTORY ];
+    then
+        sudo mkdir -p "$DIRECTORY" > /dev/null 2>&1
+    fi
+    
+    if [ $GOTO_DIRECTORY == true ];
+    then
+        cd $DIRECTORY
+    fi
+}
+
+function handleFileBackup()
+{
+    FILE="$@"
+    BACKUP="$@.bak"
+
+    if [ -e $BACKUP ];
+	then
+		sudo rm "$FILE" > /dev/null 2>&1
+		sudo cp "$BACKUP" "$FILE" > /dev/null 2>&1
+	else
+		sudo cp "$FILE" "$BACKUP" > /dev/null 2>&1
+	fi
+}
+
+function appendToFile()
+{
+    FILE="$1"
+    CONTENT="$2"
+    echo "$CONTENT" | sudo tee -a "$FILE" > /dev/null 2>&1
+}
+
+function addRepository()
+{
+    IS_ADDED=false
+    REPOSITORY=$@
+    KEYSTORE_DIR=$HOME_DIRECTORY".gnupg/"
+    createDirectory "$KEYSTORE_DIR"
+    sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
+
+    if [ $? -eq 0 ]; then
+        update
+        IS_ADDED=true
+        showInfo "$REPOSITORY repository successfully added"
+    else
+        showError "Repository $REPOSITORY could not be added (error code $?)"
+    fi
+}
+
+function isPackageInstalled()
+{
+    IS_INSTALLED=false
+    sudo dpkg-query -l $@ > /dev/null 2>&1
+    
+    if [ $? -eq 0 ];
+    then
+        IS_INSTALLED=true
+    fi
+}
+
+function aptInstall()
+{
+    INSTALLATION_SUCCESSFULL=true
+    PACKAGES="$@"
+    IFS=" " read -ra A_PACKAGES <<< "$PACKAGES"
+    
+    for i in "${A_PACKAGES[@]}"; do
+        PACKAGE=${A_PACKAGES[$i]}
+        isPackageInstalled $PACKAGE
+        
+        if [ $IS_INSTALLED ]; then
+            showInfo "Skipping installation of $PACKAGE. Already installed."
+        else
+            sudo apt-get -y install $PACKAGE > /dev/null 2>&1
+            
+            if [ $? -eq 0 ]; then
+                showInfo "$PACKAGE successfully installed"
+            else
+                INSTALLATION_SUCCESSFULL=false
+                showError "$PACKAGE could not be installed (error code: $?)"
+            fi 
+        fi
+    done
+}
+
+function download()
+{
+    URL="$@"
+    wget -q "$URL" > /dev/null 2>&1
+}
+
+function move()
+{
+    IS_MOVED=false
+    SOURCE=$1
+    DESTINATION=$2
+    
+    if [ -e $SOURCE ];
+	then
+	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
+	    
+	    if [ $? -eq 0 ]; then
+	        IS_MOVED=true
+	    fi
+	else
+	    showError "$SOURCE could not be moved to $DESTINATION because the file does not exist"
+	fi
+}
+
+------------------------------
+
 function installDependencies()
 {
     echo "-- Installing installation dependencies..."
@@ -86,33 +226,17 @@ function installDependencies()
 
 function fixLocaleBug()
 {
-    if [ ! -e $ENVIRONMENT_FILE ];
-    then
-        sudo touch $ENVIRONMENT_FILE
-    fi
-
-	if [ -e $ENVIRONMENT_BACKUP_FILE ];
-	then
-		sudo rm $ENVIRONMENT_FILE > /dev/null 2>&1
-		sudo cp $ENVIRONMENT_BACKUP_FILE $ENVIRONMENT_FILE > /dev/null 2>&1
-	else
-		sudo cp $ENVIRONMENT_FILE $ENVIRONMENT_BACKUP_FILE > /dev/null 2>&1
-	fi
-
-	echo "LC_MESSAGES=\"C\"" | sudo tee -a $ENVIRONMENT_FILE > /dev/null 2>&1
-	echo "LC_ALL=\"en_US.UTF-8\"" | sudo tee -a $ENVIRONMENT_FILE > /dev/null 2>&1
-	
+    createFile $ENVIRONMENT_FILE
+    handleFileBackup $ENVIRONMENT_FILE
+    appendToFile $ENVIRONMENT_FILE "LC_MESSAGES=\"C\""
+    appendToFile $ENVIRONMENT_FILE "LC_ALL=\"en_US.UTF-8\""
 	showInfo "Locale environment bug fixed"
 }
 
 function applyXbmcNiceLevelPermissions()
 {
-	if [ ! -e $SYSTEM_LIMITS_FILE ];
-	then
-		sudo touch $SYSTEM_LIMITS_FILE > /dev/null 2>&1
-	fi
-
-	echo "$USER             -       nice            -1" | sudo tee -a $SYSTEM_LIMITS_FILE> /dev/null 2>&1
+	createFile $SYSTEM_LIMITS_FILE
+    appendToFile $SYSTEM_LIMITS_FILE "$USER             -       nice            -1"
 	showInfo "Allowed XBMC to prioritize threads"
 }
 
@@ -127,15 +251,13 @@ function addUserToRequiredGroups()
 function addXbmcPpa()
 {
     showInfo "Adding Wsnipex xbmc-xvba PPA..."
-    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
-	sudo add-apt-repository -y $XBMC_PPA > /dev/null 2>&1
-	showInfo "Wsnipex xbmc-xvba PPA added"
+	addRepository "$XBMC_PPA"
 }
 
 function distUpgrade()
 {
     showInfo "Updating Ubuntu with latest packages (may take a while)..."
-	sudo apt-get update > /dev/null 2>&1
+	update
 	sudo apt-get -y dist-upgrade > /dev/null 2>&1
 	showInfo "Ubuntu installation updated"
 }
@@ -143,42 +265,24 @@ function distUpgrade()
 function installXinit()
 {
     showInfo "Installing xinit..."
-    sudo dpkg-query -l xinit > /dev/null 2>&1
-    
-    if [ $? == 1 ];
-    then
-        sudo apt-get -y install xinit > /dev/null 2>&1
-	    showInfo "Xinit installed"
-    else
-        showInfo "Skipping. Xinit already installed"
-    fi
+    aptInstall xinit
 }
 
 function installPowerManagement()
 {
     showInfo "Installing power management packages..."
-
-    mkdir -p $TEMP_DIRECTORY > /dev/null
-	cd $TEMP_DIRECTORY
-	sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
-	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla" > /dev/null 2>&1
-	sudo mkdir -p $POWERMANAGEMENT_DIR > /dev/null 2>&1
-	
-	if [ -e $TEMP_DIRECTORY"custom-actions.pkla" ];
-	then
-        sudo mv custom-actions.pkla $POWERMANAGEMENT_DIR > /dev/null 2>&1
-	    showInfo "Power management packages successfully installed"
-	else
-	    showError "Could not enable XBMC power management features"  
-	fi
+    createDirectory "$TEMP_DIRECTORY" true
+	aptInstall policykit-1 upower udisks acpi-support
+	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
+	createDirectory "$POWERMANAGEMENT_DIR"
+    move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR"
 }
 
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-	sudo apt-get -y install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null 2>&1
+	aptInstall linux-sound-base alsa-base alsa-utils libasound2
     sudo alsamixer
-    showInfo "Audio packages successfully installed"
 }
 
 function installLirc()
@@ -190,16 +294,13 @@ function installLirc()
     echo "------------------"
     echo ""
 
-	sudo apt-get -y install lirc
-    showInfo "Lirc successfully installed"
+	aptInstall lirc
 }
 
 function installTvHeadend()
 {
     showInfo "Adding jabbors hts-stable PPA..."
-    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
-	sudo add-apt-repository -y $HTS_TVHEADEND_PPA > /dev/null 2>&1
-	showInfo "Jabbors hts-stable PPA added"
+	addRepository "$HTS_TVHEADEND_PPA"
 
     clear
     echo ""
@@ -208,60 +309,38 @@ function installTvHeadend()
     echo "------------------"
     echo ""
     
-    sudo apt-get update > /dev/null 2>&1
-    sudo apt-get -y install tvheadend
-    showInfo "Tvheadend successfully installed"
+    aptInstall tvheadend
 }
 
 function installOscam()
 {
     showInfo "Adding oscam PPA..."
-    sudo mkdir -p $HOME_DIRECTORY".gnupg/" > /dev/null 2>&1
-	sudo add-apt-repository -y $OSCAM_PPA > /dev/null 2>&1
-	showInfo "Oscam PPA added"
+	addRepository "$OSCAM_PPA"
 
-    showInfo "Installing oscam..."
-    sudo apt-get update > /dev/null 2>&1
-    sudo apt-get -y install oscam-svn > /dev/null 2>&1
-    showInfo "Oscam installed"
+    if [ $IS_ADDED ]; then
+        showInfo "Installing oscam..."
+        aptInstall oscam-svn
+    fi
 }
 
 function installXbmc()
 {
     showInfo "Installing XBMC..."
-    sudo dpkg-query -l xbmc > /dev/null 2>&1
-    
-    if [ $? == 1 ];
-    then
-	    sudo apt-get -y install xbmc > /dev/null 2>&1
-        showInfo "XBMC successfully installed"
-    else
-        showInfo "Skipping. XBMC already installed"
-    fi
+    isPackageInstalled xbmc
+    aptInstall xbmc
 }
 
 function enableDirtyRegionRendering()
 {
-    showInfo "Enabling XBMC dirty region rendering..."    
-    
-	if [ -e $XBMC_ADVANCEDSETTINGS_BACKUP_FILE ];
-	then
-		rm $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null 2>&1
-	fi
-
-	if [ -e $XBMC_ADVANCEDSETTINGS_FILE ];
-	then
-		mv $XBMC_ADVANCEDSETTINGS_FILE $XBMC_ADVANCEDSETTINGS_BACKUP_FILE > /dev/null 2>&1
-	fi
+    showInfo "Enabling XBMC dirty region rendering..."
+    handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE
 	
-	mkdir -p $TEMP_DIRECTORY > /dev/null
-	cd $TEMP_DIRECTORY
-	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml" > /dev/null 2>&1
-	mkdir -p $XBMC_USERDATA_DIR > /dev/null 2>&1
+	createDirectory $TEMP_DIRECTORY true
+	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml"
+	createDirectory $XBMC_USERDATA_DIR
+	move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE"
 	
-	if [ -e ./dirty_region_rendering.xml ];
-	then
-        mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null 2>&1
+	if [ $IS_MOVED ]; then
         showInfo "XBMC dirty region rendering enabled"
     else
         showError "XBMC dirty region rendering could not be enabled"
@@ -271,55 +350,28 @@ function enableDirtyRegionRendering()
 function installXbmcAddonRepositoriesInstaller()
 {
     showInfo "Installing Addon Repositories Installer addon..."
-	mkdir -p $TEMP_DIRECTORY > /dev/null
-	cd $TEMP_DIRECTORY
-	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz" > /dev/null 2>&1
+	createDirectory "$TEMP_DIRECTORY" true
+	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz"
+    createDirectory "$XBMC_ADDONS_DIR"
 
-	if [ ! -d $XBMC_ADDONS_DIR ];
-	then
-		mkdir -p $XBMC_ADDONS_DIR > /dev/null 2>&1
-	fi
-
-    if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ];
-    then
-        tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C $XBMC_ADDONS_DIR > /dev/null 2>&1
-	    showInfo "Addon Repositories Installer addon successfully installed"
+    if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
+        tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
+        
+        if [ $? -eq 0 ]; then
+	        showInfo "Addon Repositories Installer addon successfully installed"
+	    else
+	        showError "Addon Repositories Installer addon could not be installed (error code: $?)"
+	    fi
     else
-	    showError "Addon Repositories Installer addon could not be installed"
+	    showError "Addon Repositories Installer addon could not be downloaded"
     fi
 }
 
-function installVideoDriver()
+function configureAtiDriver()
 {
-    showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
-    sudo dpkg-query -l $VIDEO_DRIVER > /dev/null 2>&1
-    
-    if [ $? == 1 ];
-    then
-        sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
-
-        if [ $VIDEO_MANUFACTURER == "ati" ];
-        then
-	        sudo aticonfig --initial -f > /dev/null 2>&1
-	        sudo aticonfig --sync-vsync=on > /dev/null 2>&1
-	        sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
-
-	        dialog --title "Disable underscan" \
-		        --backtitle "$SCRIPT_TITLE" \
-		        --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
-
-	        RESPONSE=$?
-	        case $RESPONSE in
-	           0) disbaleAtiUnderscan;;
-	           1) enableAtiUnderscan;;
-	           255) showInfo "ATI underscan configuration skipped";;
-	        esac
-        fi
-        
-        showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed"
-    else
-	    showInfo "Skipping. $VIDEO_MANUFACTURER_NAME video drivers already installed."
-    fi
+    sudo aticonfig --initial -f > /dev/null 2>&1
+    sudo aticonfig --sync-vsync=on > /dev/null 2>&1
+    sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
 }
 
 function disbaleAtiUnderscan()
@@ -336,25 +388,57 @@ function enableAtiUnderscan()
     showInfo "Underscan successfully enabled"
 }
 
+function installVideoDriver()
+{
+    showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
+    aptInstall $VIDEO_DRIVER
+
+    if [ $INSTALLATION_SUCCESSFULL ]; then
+        if [ $VIDEO_MANUFACTURER == "ati" ]; then
+            configureAtiDriver
+
+            dialog --title "Disable underscan" \
+	            --backtitle "$SCRIPT_TITLE" \
+	            --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
+
+            RESPONSE=$?
+            case $RESPONSE in
+                0) 
+                    disbaleAtiUnderscan
+                    ;;
+                1) 
+                    enableAtiUnderscan
+                    ;;
+                255) 
+                    showInfo "ATI underscan configuration skipped"
+                    ;;
+            esac
+        fi
+        
+        showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed and configured"
+    fi
+}
+
 function installXbmcAutorunScript()
 {
     showInfo "Installing XBMC autorun support..."
-    
-    mkdir -p $TEMP_DIRECTORY > /dev/null
-	cd $TEMP_DIRECTORY
-	wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script" > /dev/null
+    createDirectory "$TEMP_DIRECTORY" true
+	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script"
 	
-	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ];
-	then
-	    if [ -e $INIT_FILE ];
-	    then
+	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
+	    if [ -e $INIT_FILE ]; then
 		    sudo rm $INIT_FILE > /dev/null
 	    fi
 	    
-	    sudo mv ./xbmc_init_script $INIT_FILE > /dev/null
-	    sudo chmod a+x /etc/init.d/xbmc > /dev/null
+	    move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE"
+	    sudo chmod a+x "$INIT_FILE" > /dev/null
 	    sudo update-rc.d xbmc defaults > /dev/null
-        showInfo "XBMC autorun succesfully configured"
+	    
+	    if [ $? -eq 0 ]; then
+            showInfo "XBMC autorun succesfully configured"
+        else
+            showError "XBMC outrun script could not be activated (error code: $?)"
+        fi
 	else
 	    showError "Download of XBMC autorun script failed"
 	fi
@@ -363,52 +447,30 @@ function installXbmcAutorunScript()
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
-    sudo dpkg-query -l plymouth-theme-xbmc-logo > /dev/null 2>&1
+    isPackageInstalled plymouth-theme-xbmc-logo
 
-    if [ $? == 1 ];
-    then
-	    sudo apt-get -y install plymouth-label v86d > /dev/null
-
-        mkdir -p $TEMP_DIRECTORY > /dev/null
-        cd $TEMP_DIRECTORY
-        wget -q "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb" > /dev/null
+    if [ ! $IS_INSTALLED ]; then
+	    aptInstall plymouth-label v86d
+        createDirectory $TEMP_DIRECTORY true
+        download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
         
-        if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ];
-        then
+        if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
-
-            if [ -e $INITRAMFS_SPLASH_FILE ];
-            then
-                sudo rm $INITRAMFS_SPLASH_FILE > /dev/null
-            fi
-
-            sudo touch $INITRAMFS_SPLASH_FILE > /dev/null
-            echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null
-            
-            if [ -e $GRUB_CONFIG_BACKUP_FILE ];
-	        then
-	            sudo rm $GRUB_CONFIG_FILE > /dev/null
-	            sudo cp $GRUB_CONFIG_BACKUP_FILE $GRUB_CONFIG_FILE > /dev/null
-	        else
-	            sudo cp $GRUB_CONFIG_FILE $GRUB_CONFIG_BACKUP_FILE > /dev/null
-	        fi
-	        
-	        echo "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap" | sudo tee -a $GRUB_CONFIG_FILE > /dev/null
-	        echo "GRUB_GFXMODE=1366x768" | sudo tee -a $GRUB_CONFIG_FILE > /dev/null
-	        
-	        if [ -e $INITRAMFS_MODULES_BACKUP_FILE ];
-	        then
-	            sudo rm $INITRAMFS_MODULES_FILE > /dev/null
-	            sudo cp $INITRAMFS_MODULES_BACKUP_FILE $INITRAMFS_MODULES_FILE > /dev/null
-	        else
-	            sudo cp $INITRAMFS_MODULES_FILE $INITRAMFS_MODULES_BACKUP_FILE > /dev/null
-	        fi
-	        
-	        echo "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap" | sudo tee -a $INITRAMFS_MODULES_FILE > /dev/null
-
+            createFile "$INITRAMFS_SPLASH_FILE" true false
+            appendToFile "$INITRAMFS_SPLASH_FILE" "FRAMEBUFFER=y"
+            handleFileBackup "$GRUB_CONFIG_FILE"
+	        appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap"
+	        appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=1366x768"
+            handleFileBackup "$INITRAMFS_MODULES_FILE"
+	        appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap"
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null
-            showInfo "XBMC boot screen successfully installed"
+            
+            if [ $? -eq 0 ]; then
+                showInfo "XBMC boot screen successfully activated"
+            else
+                showError "XBMC boot screen could not be activated (error code: $?)"
+            fi
         else
             showError "Download of XBMC boot screen package failed"
         fi
@@ -420,24 +482,9 @@ function installXbmcBootScreen()
 function reconfigureXServer()
 {
     showInfo "Configuring X-server..."
-    
-    if [ ! -e $XWRAPPER_FILE ];
-    then
-        sudo touch $XWRAPPER_FILE
-    fi
-
-	if [ ! -e $XWRAPPER_BACKUP_FILE ];
-	then
-		sudo mv $XWRAPPER_FILE $XWRAPPER_BACKUP_FILE > /dev/null 2>&1
-	fi
-
-	if [ -e $XWRAPPER_FILE ];
-	then
-		sudo rm $XWRAPPER_FILE > /dev/null 2>&1
-	fi
-
-	sudo touch $XWRAPPER_FILE > /dev/null 2>&1
-	echo "allowed_users=anybody" | sudo tee -a $XWRAPPER_CONFIG_FILE > /dev/null 2>&1
+    handleFileBackup "$XWRAPPER_FILE"
+    createFile "$XWRAPPER_FILE" true true
+	appendToFile "$XWRAPPER_FILE" "allowed_users=anybody"
 	showInfo "X-server successfully configured"
 }
 
@@ -520,8 +567,8 @@ function cleanUp()
     showInfo "Cleaning up..."
 	sudo apt-get -y autoclean > /dev/null 2>&1
 	sudo apt-get -y autoremove > /dev/null 2>&1
-	sudo rm -R $TEMP_DIRECTORY > /dev/null 2>&1
-	rm $HOME_DIRECTORY$THIS_FILE
+	sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
+	rm "$HOME_DIRECTORY$THIS_FILE"
 }
 
 function rebootMachine()
@@ -548,16 +595,6 @@ function rebootMachine()
 	esac
 }
 
-function renewLogFile()
-{
-    if [ -e $LOG_FILE ];
-    then
-        rm $LOG_FILE
-    fi
-
-    touch $LOG_FILE
-}
-
 function quit()
 {
 	clear
@@ -573,7 +610,7 @@ control_c()
 
 clear
 
-renewLogFile
+createFile "$LOG_FILE" false true
 
 echo ""
 installDependencies
