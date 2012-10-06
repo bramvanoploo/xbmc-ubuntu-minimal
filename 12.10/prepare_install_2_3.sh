@@ -88,14 +88,11 @@ function createFile()
     REMOVE_IF_EXISTS=$3
     
     if [ -e $FILE ]; then
-        if [ $REMOVE_IF_EXISTS -eq true ]; then
+        if [ $REMOVE_IF_EXISTS == true ]; then
             sudo rm $FILE > /dev/null
         fi
     else
-        echo $IS_ROOT
-        exit
-    
-        if [ $IS_ROOT -eq false ]; then
+        if [ $IS_ROOT == false ]; then
             touch $FILE > /de/null
         else
             sudo touch $FILE > /dev/null
@@ -148,7 +145,7 @@ function addRepository()
     createDirectory "$KEYSTORE_DIR"
     sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
 
-    if [ $? -eq 0 ]; then
+    if [ $? == 0 ]; then
         update
         IS_ADDED=true
         showInfo "$REPOSITORY repository successfully added"
@@ -162,7 +159,7 @@ function isPackageInstalled()
     IS_INSTALLED=false
     sudo dpkg-query -l $@ > /dev/null 2>&1
     
-    if [ $? -eq 0 ];
+    if [ $? == 0 ];
     then
         IS_INSTALLED=true
     fi
@@ -183,7 +180,7 @@ function aptInstall()
         else
             sudo apt-get -y install $PACKAGE > /dev/null 2>&1
             
-            if [ $? -eq 0 ]; then
+            if [ $? == 0 ]; then
                 showInfo "$PACKAGE successfully installed"
             else
                 INSTALLATION_SUCCESSFULL=false
@@ -209,7 +206,7 @@ function move()
 	then
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
-	    if [ $? -eq 0 ]; then
+	    if [ $? == 0 ]; then
 	        IS_MOVED=true
 	    fi
 	else
@@ -360,7 +357,7 @@ function installXbmcAddonRepositoriesInstaller()
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
         
-        if [ $? -eq 0 ]; then
+        if [ $? == 0 ]; then
 	        showInfo "Addon Repositories Installer addon successfully installed"
 	    else
 	        showError "Addon Repositories Installer addon could not be installed (error code: $?)"
@@ -437,7 +434,7 @@ function installXbmcAutorunScript()
 	    sudo chmod a+x "$INIT_FILE" > /dev/null
 	    sudo update-rc.d xbmc defaults > /dev/null
 	    
-	    if [ $? -eq 0 ]; then
+	    if [ $? == 0 ]; then
             showInfo "XBMC autorun succesfully configured"
         else
             showError "XBMC outrun script could not be activated (error code: $?)"
@@ -469,7 +466,7 @@ function installXbmcBootScreen()
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null
             
-            if [ $? -eq 0 ]; then
+            if [ $? == 0 ]; then
                 showInfo "XBMC boot screen successfully activated"
             else
                 showError "XBMC boot screen could not be activated (error code: $?)"
