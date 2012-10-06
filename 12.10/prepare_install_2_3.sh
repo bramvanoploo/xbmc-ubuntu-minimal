@@ -94,8 +94,8 @@ function createFile()
 function createDirectory()
 {
     DIRECTORY="$1"
-    GOTO_DIRECTORY=$2
-    IS_ROOT=$3
+    GOTO_DIRECTORY="$2"
+    IS_ROOT="$3"
     
     if [ ! -d "$DIRECTORY" ];
     then
@@ -262,14 +262,17 @@ function distUpgrade()
 function installXinit()
 {
     showInfo "Installing xinit..."
-    sudo apt-get -y install xinit > /dev/null 2>&1
+    IS_INSTALLED=$(aptInstall xinit)
 }
 
 function installPowerManagement()
 {
     showInfo "Installing power management packages..."
     createDirectory "$TEMP_DIRECTORY" 1 0
-    sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null 2>&1
+    IS_INSTALLED=$(aptInstall policykit-1)
+    IS_INSTALLED=$(aptInstall upower)
+    IS_INSTALLED=$(aptInstall udisks)
+    IS_INSTALLED=$(aptInstall acpi-support)
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
     IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
@@ -278,7 +281,10 @@ function installPowerManagement()
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-	sudo apt-get -y install linux-sound-base alsa-base alsa-utils libasound2 > /dev/null 2>&1
+    IS_INSTALLED=$(aptInstall linux-sound-base)
+    IS_INSTALLED=$(aptInstall alsa-base)
+    IS_INSTALLED=$(aptInstall alsa-utils)
+    IS_INSTALLED=$(aptInstall libasound2)
     sudo alsamixer
 }
 
@@ -290,7 +296,7 @@ function installLirc()
     echo ""
     echo "------------------"
     echo ""
-
+    
 	sudo apt-get -y install lirc
 	
 	if [ "$?" == "0" ]; then
@@ -333,7 +339,7 @@ function installOscam()
 function installXbmc()
 {
     showInfo "Installing XBMC..."
-    sudo apt-get -y install xbmc > /dev/null 2>&1
+    IS_INSTALLED=$(aptInstall xbmc)
 }
 
 function enableDirtyRegionRendering()
@@ -397,30 +403,32 @@ function enableAtiUnderscan()
 function installVideoDriver()
 {
     showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
-    sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
+    IS_INSTALLED=$(aptInstall $VIDEO_DRIVER)
 
-    if [ "$VIDEO_MANUFACTURER" == "ati" ]; then
-        configureAtiDriver
+    if [ "$IS_INSTALLED" == "1"]; then
+        if [ "$VIDEO_MANUFACTURER" == "ati" ]; then
+            configureAtiDriver
 
-        dialog --title "Disable underscan" \
-            --backtitle "$SCRIPT_TITLE" \
-            --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
+            dialog --title "Disable underscan" \
+                --backtitle "$SCRIPT_TITLE" \
+                --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
 
-        RESPONSE=$?
-        case ${RESPONSE//\"/} in
-            0) 
-                disbaleAtiUnderscan
-                ;;
-            1) 
-                enableAtiUnderscan
-                ;;
-            255) 
-                showInfo "ATI underscan configuration skipped"
-                ;;
-        esac
+            RESPONSE=$?
+            case ${RESPONSE//\"/} in
+                0) 
+                    disbaleAtiUnderscan
+                    ;;
+                1) 
+                    enableAtiUnderscan
+                    ;;
+                255) 
+                    showInfo "ATI underscan configuration skipped"
+                    ;;
+            esac
+        fi
+        
+        showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed and configured"
     fi
-    
-    showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed and configured"
 }
 
 function installXbmcAutorunScript()
@@ -461,7 +469,8 @@ function installXbmcBootScreen()
         showInfo "Skipping XBMC boot screen installation. Already installed."
     else
         showInfo "Installing XBMC boot screen (please be patient)..."
-	    sudo apt-get -y install plymouth-label v86d > /dev/null 2>&1
+        IS_INSTALLED=$(aptInstall plymouth-label)
+        IS_INSTALLED=$(aptInstall v86d)
         createDirectory "$TEMP_DIRECTORY" 1 0
         download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
         
