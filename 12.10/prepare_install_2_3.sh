@@ -80,10 +80,10 @@ function createFile()
     IS_ROOT="$2"
     REMOVE_IF_EXISTS="$3"
     
-    if [ -e "$FILE" ] && [ "$REMOVE_IF_EXISTS" -eq "1" ]; then
+    if [ -e "$FILE" ] && [ "$REMOVE_IF_EXISTS" == "1" ]; then
         sudo rm "$FILE" > /dev/null
     else
-        if [ "$IS_ROOT" -eq "0" ]; then
+        if [ "$IS_ROOT" == "0" ]; then
             touch "$FILE" > /dev/null
         else
             sudo touch "$FILE" > /dev/null
@@ -99,14 +99,14 @@ function createDirectory()
     
     if [ ! -d "$DIRECTORY" ];
     then
-        if [ "$IS_ROOT" -eq "0" ]; then
+        if [ "$IS_ROOT" == "0" ]; then
             mkdir -p "$DIRECTORY" > /dev/null 2>&1
         else
             sudo mkdir -p "$DIRECTORY" > /dev/null 2>&1
         fi
     fi
     
-    if [ "$GOTO_DIRECTORY" -eq "1" ];
+    if [ "$GOTO_DIRECTORY" == "1" ];
     then
         cd $DIRECTORY
     fi
@@ -142,7 +142,7 @@ function addRepository()
     createDirectory "$KEYSTORE_DIR" 0 0
     sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
 
-    if [ "$?" -eq "0" ]; then
+    if [ "$?" == "0" ]; then
         update
         showInfo "$REPOSITORY repository successfully added"
         echo 1
@@ -157,7 +157,7 @@ function isPackageInstalled()
     PACKAGE=$@
     sudo dpkg-query -l $PACKAGE > /dev/null 2>&1
     
-    if [ "$?" -eq "0" ]; then
+    if [ "$?" == "0" ]; then
         echo 1
     else
         echo 0
@@ -169,14 +169,14 @@ function aptInstall()
     PACKAGE=$@
     IS_INSTALLED=$(isPackageInstalled $PACKAGE)
 
-    if [ "$IS_INSTALLED" -eq "1" ]; then
+    if [ "$IS_INSTALLED" == "1" ]; then
         showInfo "Skipping installation of $PACKAGE. Already installed."
         echo 1
     else
         sudo apt-get -f install > /dev/null 2>&1
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
-        if [ "$?" -eq "0" ]; then
+        if [ "$?" == "0" ]; then
             showInfo "$PACKAGE successfully installed"
             echo 1
         else
@@ -201,7 +201,7 @@ function move()
 	then
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
-	    if [ "$?" -eq "0" ]; then
+	    if [ "$?" == "0" ]; then
 	        echo 1
 	    else
 	        showError "$SOURCE could not be moved to $DESTINATION (error code: $?)"
@@ -295,7 +295,7 @@ function installLirc()
 
 	sudo apt-get -y install lirc
 	
-	if [ "$?" -eq "0" ]; then
+	if [ "$?" == "0" ]; then
         showInfo "Lirc successfully installed"
     else
         showError "Lirc could not be installed (error code: $?)"
@@ -316,7 +316,7 @@ function installTvHeadend()
 
     sudo apt-get -y install tvheadend
     
-    if [ "$?" -eq "0" ]; then
+    if [ "$?" == "0" ]; then
         showInfo "TvHeadend successfully installed"
     else
         showError "TvHeadend could not be installed (error code: $?)"
@@ -348,7 +348,7 @@ function enableDirtyRegionRendering()
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
 	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 
-	if [ "$IS_MOVED" -eq "1" ]; then
+	if [ "$IS_MOVED" == "1" ]; then
         showInfo "XBMC dirty region rendering enabled"
     else
         showError "XBMC dirty region rendering could not be enabled"
@@ -365,7 +365,7 @@ function installXbmcAddonRepositoriesInstaller()
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
         
-        if [ "$?" -eq "0" ]; then
+        if [ "$?" == "0" ]; then
 	        showInfo "Addon Repositories Installer addon successfully installed"
 	    else
 	        showError "Addon Repositories Installer addon could not be installed (error code: $?)"
@@ -401,7 +401,7 @@ function installVideoDriver()
     showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
     sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
 
-    if [ "$VIDEO_MANUFACTURER" -eq "ati" ]; then
+    if [ "$VIDEO_MANUFACTURER" == "ati" ]; then
         configureAtiDriver
 
         dialog --title "Disable underscan" \
@@ -438,11 +438,11 @@ function installXbmcAutorunScript()
 	    
 	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_init_script" "$INIT_FILE")
 
-	    if [ "$IS_MOVED" -eq "1" ]; then
+	    if [ "$IS_MOVED" == "1" ]; then
 	        sudo chmod a+x "$INIT_FILE" > /dev/null
 	        sudo update-rc.d xbmc defaults > /dev/null
 	        
-	        if [ "$?" -eq "0" ]; then
+	        if [ "$?" == "0" ]; then
                 showInfo "XBMC autorun succesfully configured"
             else
                 showError "XBMC outrun script could not be activated (error code: $?)"
@@ -459,7 +459,7 @@ function installXbmcBootScreen()
 {
     IS_INSTALLED=$(isPackageInstalled plymouth-theme-xbmc-logo)
 
-    if [ "$IS_INSTALLED" -eq "1" ]; then
+    if [ "$IS_INSTALLED" == "1" ]; then
         showInfo "Skipping XBMC boot screen installation. Already installed."
     else
         showInfo "Installing XBMC boot screen (please be patient)..."
@@ -479,7 +479,7 @@ function installXbmcBootScreen()
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null
             
-            if [ "$?" -eq "0" ]; then
+            if [ "$?" == "0" ]; then
                 showInfo "XBMC boot screen successfully activated"
             else
                 showError "XBMC boot screen could not be activated (error code: $?)"
