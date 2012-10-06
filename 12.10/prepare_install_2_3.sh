@@ -92,6 +92,9 @@ function createFile()
             sudo rm $FILE > /dev/null
         fi
     else
+        echo $IS_ROOT
+        exit
+    
         if [ $IS_ROOT -eq false ]; then
             touch $FILE > /de/null
         else
