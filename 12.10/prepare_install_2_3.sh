@@ -193,7 +193,13 @@ function aptInstall()
 function download()
 {
     URL="$@"
-    wget -q "$URL" > /dev/null 2>&1
+    
+    echo $URL
+    wget "$URL"
+    
+    ls -la ./
+    
+    exit
 }
 
 function move()
