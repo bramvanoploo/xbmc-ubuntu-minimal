@@ -152,10 +152,10 @@ function addRepository()
     if [[ $? -eq 0 ]]; then
         update
         showInfo "$REPOSITORY repository successfully added"
-        echo 1 > /dev/null
+        echo 1
     else
         showError "Repository $REPOSITORY could not be added (error code $?)"
-        echo 0 > /dev/null
+        echo 0
     fi
 }
 
@@ -165,9 +165,9 @@ function isPackageInstalled()
     sudo dpkg-query -l $PACKAGE > /dev/null 2>&1
     
     if [[ $? -eq 0 ]]; then
-        echo 1 > /dev/null
+        echo 1
     else
-        echo 0 > /dev/null
+        echo 0
     fi
 }
 
@@ -178,17 +178,17 @@ function aptInstall()
     
     if [[ $IS_INSTALLED -eq 0 ]]; then
         showInfo "Skipping installation of $PACKAGE. Already installed."
-        echo 1 > /dev/null
+        echo 1
     else
         sudo apt-get -f install > /dev/null 2>&1
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
         if [[ $? -eq 0 ]]; then
             showInfo "$PACKAGE successfully installed"
-            echo 1 > /dev/null
+            echo 1
         else
             showError "$PACKAGE could not be installed (error code: $?)"
-            echo 0 > /dev/null
+            echo 0
         fi 
     fi
 }
@@ -209,14 +209,14 @@ function move()
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
 	    if [[ $? -eq 0 ]]; then
-	        echo 1 > /dev/null
+	        echo 1
 	    else
 	        showError "$SOURCE could not be moved to $DESTINATION (error code: $?)"
-	        echo 0 > /dev/null
+	        echo 0
 	    fi
 	else
 	    showError "$SOURCE could not be moved to $DESTINATION because the file does not exist"
-	    echo 0 > /dev/null
+	    echo 0
 	fi
 }
 
@@ -482,7 +482,7 @@ function installXbmcBootScreen()
             showError "Download of XBMC boot screen package failed"
         fi
     else
-        showInfo "Skipping. XBMC boot screen already installed"
+        showInfo "Skipping XBMC boot screen installation. Already installed."
     fi
 }
 
