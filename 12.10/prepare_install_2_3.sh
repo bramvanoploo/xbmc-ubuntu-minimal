@@ -168,7 +168,7 @@ function isPackageInstalled()
         echo 1 > /dev/null
     else
         echo 0 > /dev/null
-    fi
+    f
 }
 
 function aptInstall()
@@ -270,17 +270,14 @@ function distUpgrade()
 function installXinit()
 {
     showInfo "Installing xinit..."
-    aptInstall xinit
+    sudo apt-get install -y xinit > /dev/null
 }
 
 function installPowerManagement()
 {
     showInfo "Installing power management packages..."
     createDirectory "$TEMP_DIRECTORY" 1 0 
-	aptInstall policykit-1 
-	aptInstall upower 
-	aptInstall udisks 
-	aptInstall acpi-support
+	sudo apt-get install -y policykit-1 upower udisks acpi-support > /dev/null
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
     move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR"
@@ -289,10 +286,7 @@ function installPowerManagement()
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-	aptInstall linux-sound-base 
-	aptInstall alsa-base 
-	aptInstall alsa-utils 
-	aptInstall libasound2
+	sudo apt-get install -y linux-sound-base alsa-base alsa-utils libasound2 > /dev/null
     sudo alsamixer
 }
 
@@ -305,7 +299,7 @@ function installLirc()
     echo "------------------"
     echo ""
 
-	aptInstall lirc
+	sudo apt-get install -y lirc > /dev/null
 }
 
 function installTvHeadend()
@@ -321,7 +315,7 @@ function installTvHeadend()
         echo "------------------"
         echo ""
         
-        aptInstall tvheadend
+        sudo apt-get install -y tvheadend > /dev/null
     fi
 }
 
@@ -332,14 +326,14 @@ function installOscam()
 
     if [[ $IS_ADDED -eq 1 ]]; then
         showInfo "Installing oscam..."
-        aptInstall oscam-svn
+        sudo apt-get install -y oscam-svn > /dev/null
     fi
 }
 
 function installXbmc()
 {
     showInfo "Installing XBMC..."
-    aptInstall xbmc
+    sudo apt-get install -y xbmc > /dev/null
 }
 
 function enableDirtyRegionRendering()
@@ -403,7 +397,7 @@ function enableAtiUnderscan()
 function installVideoDriver()
 {
     showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
-    aptInstall $VIDEO_DRIVER
+    sudo apt-get install -y $VIDEO_DRIVER > /dev/null
 
     if [ $INSTALLATION_SUCCESSFULL ]; then
         if [ $VIDEO_MANUFACTURER -eq "ati" ]; then
@@ -462,8 +456,7 @@ function installXbmcBootScreen()
     IS_INSTALLED=$(isPackageInstalled plymouth-theme-xbmc-logo)
 
     if [[ $IS_INSTALLED -eq 0 ]]; then
-	    aptInstall plymouth-label 
-	    aptInstall v86d
+	    sudo apt-get install -y plymouth-label v86d > /dev/null
         createDirectory "$TEMP_DIRECTORY" 1 0
         download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
         
