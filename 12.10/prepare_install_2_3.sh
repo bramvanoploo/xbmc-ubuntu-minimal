@@ -301,34 +301,42 @@ function installLirc()
     echo ""
 
 	sudo apt-get -y install lirc
+	
+	if [ "$?" -eq "0" ]; then
+        showInfo "Lirc successfully installed"
+    else
+        showError "Lirc could not be installed (error code: $?)"
+    fi
 }
 
 function installTvHeadend()
 {
     showInfo "Adding jabbors hts-stable PPA..."
-	IS_ADDED=$(addRepository "$HTS_TVHEADEND_PPA")
+	addRepository "$HTS_TVHEADEND_PPA"
 
-    if [ "$IS_ADDED" -eq "1" ]; then
-        clear
-        echo ""
-        echo "Installing tvheadend..."
-        echo ""
-        echo "------------------"
-        echo ""
+    clear
+    echo ""
+    echo "Installing tvheadend..."
+    echo ""
+    echo "------------------"
+    echo ""
 
-        sudo apt-get -y install tvheadend
+    sudo apt-get -y install tvheadend
+    
+    if [ "$?" -eq "0" ]; then
+        showInfo "TvHeadend successfully installed"
+    else
+        showError "TvHeadend could not be installed (error code: $?)"
     fi
 }
 
 function installOscam()
 {
     showInfo "Adding oscam PPA..."
-    IS_ADDED=$(addRepository "$OSCAM_PPA")
+    addRepository "$OSCAM_PPA"
 
-    if [ "$IS_ADDED" -eq "1" ]; then
-        showInfo "Installing oscam..."
-        sudo apt-get -y install oscam-svn > /dev/null 2>&1
-    fi
+    showInfo "Installing oscam..."
+    IS_INSTALLED=$(aptInstall oscam-svn)
 }
 
 function installXbmc()
@@ -400,7 +408,7 @@ function installVideoDriver()
     showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
     sudo apt-get -y install $VIDEO_DRIVER > /dev/null 2>&1
 
-    if [ $VIDEO_MANUFACTURER -eq "ati" ]; then
+    if [ "$VIDEO_MANUFACTURER" -eq "ati" ]; then
         configureAtiDriver
 
         dialog --title "Disable underscan" \
