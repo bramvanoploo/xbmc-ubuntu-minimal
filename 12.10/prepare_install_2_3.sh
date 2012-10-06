@@ -144,7 +144,6 @@ function appendToFile()
 
 function addRepository()
 {
-    IS_ADDED=false
     REPOSITORY=$@
     KEYSTORE_DIR=$HOME_DIRECTORY".gnupg/"
     createDirectory "$KEYSTORE_DIR" 0 0
@@ -152,40 +151,43 @@ function addRepository()
 
     if [[ $? -eq 0 ]]; then
         update
-        IS_ADDED=1
         showInfo "$REPOSITORY repository successfully added"
+        echo 1
     else
         showError "Repository $REPOSITORY could not be added (error code $?)"
+        echo 0
     fi
 }
 
 function isPackageInstalled()
 {
-    IS_INSTALLED=false
     sudo dpkg-query -l $@ > /dev/null 2>&1
     
     if [[ $? -eq 0 ]];
     then
-        IS_INSTALLED=1
+        echo 1
+    else
+        echo 0
     fi
 }
 
 function aptInstall()
 {
-    INSTALLATION_SUCCESSFULL=1
     PACKAGE=$@
-    isPackageInstalled $PACKAGE
+    IS_INSTALLED=$(isPackageInstalled $PACKAGE)
     
-    if [ $IS_INSTALLED ]; then
+    if [[ $IS_INSTALLED -eq 0 ]]; then
         showInfo "Skipping installation of $PACKAGE. Already installed."
+        echo 1
     else
         sudo apt-get -y install $PACKAGE > /dev/null 2>&1
         
         if [[ $? -eq 0 ]]; then
             showInfo "$PACKAGE successfully installed"
+            echo 1
         else
-            INSTALLATION_SUCCESSFULL=false
             showError "$PACKAGE could not be installed (error code: $?)"
+            echo 0
         fi 
     fi
 }
@@ -198,7 +200,6 @@ function download()
 
 function move()
 {
-    IS_MOVED=false
     SOURCE=$1
     DESTINATION=$2
     
@@ -207,10 +208,14 @@ function move()
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
 	    if [[ $? -eq 0 ]]; then
-	        IS_MOVED=1
+	        echo 1
+	    else
+	        showError "$SOURCE could not be moved to $DESTINATION (error code: $?)"
+	        echo 0
 	    fi
 	else
 	    showError "$SOURCE could not be moved to $DESTINATION because the file does not exist"
+	    echo 0
 	fi
 }
 
@@ -306,24 +311,26 @@ function installLirc()
 function installTvHeadend()
 {
     showInfo "Adding jabbors hts-stable PPA..."
-	addRepository "$HTS_TVHEADEND_PPA"
+	IS_ADDED=$(addRepository "$HTS_TVHEADEND_PPA")
 
-    clear
-    echo ""
-    echo "Installing tvheadend..."
-    echo ""
-    echo "------------------"
-    echo ""
-    
-    aptInstall tvheadend
+    if [[ $IS_ADDED -eq 1 ]]; then
+        clear
+        echo ""
+        echo "Installing tvheadend..."
+        echo ""
+        echo "------------------"
+        echo ""
+        
+        aptInstall tvheadend
+    fi
 }
 
 function installOscam()
 {
     showInfo "Adding oscam PPA..."
-	addRepository "$OSCAM_PPA"
+	IS_ADDED=$(addRepository "$OSCAM_PPA")
 
-    if [ $IS_ADDED ]; then
+    if [[ $IS_ADDED -eq 1 ]]; then
         showInfo "Installing oscam..."
         aptInstall oscam-svn
     fi
@@ -332,7 +339,6 @@ function installOscam()
 function installXbmc()
 {
     showInfo "Installing XBMC..."
-    isPackageInstalled xbmc
     aptInstall xbmc
 }
 
@@ -453,9 +459,9 @@ function installXbmcAutorunScript()
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
-    isPackageInstalled plymouth-theme-xbmc-logo
+    IS_INSTALLED=$(isPackageInstalled plymouth-theme-xbmc-logo)
 
-    if [ ! $IS_INSTALLED ]; then
+    if [[ $IS_INSTALLED -eq 0 ]]; then
 	    aptInstall plymouth-label 
 	    aptInstall v86d
         createDirectory "$TEMP_DIRECTORY" 1 0
@@ -574,7 +580,7 @@ function cleanUp()
     showInfo "Cleaning up..."
 	sudo apt-get -y autoclean > /dev/null 2>&1
 	sudo apt-get -y autoremove > /dev/null 2>&1
-	#sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
+	sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
 	rm "$HOME_DIRECTORY$THIS_FILE"
 }
 
