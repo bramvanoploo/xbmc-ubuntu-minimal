@@ -637,6 +637,7 @@ showDialog "Welcome to the XBMC minimal installation script. Some parts may take
 trap control_c SIGINT
 
 fixLocaleBug
+exit
 applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
 addXbmcPpa
