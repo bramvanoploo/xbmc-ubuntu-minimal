@@ -88,11 +88,11 @@ function createFile()
     REMOVE_IF_EXISTS=$3
     
     if [ -e $FILE ]; then
-        if [ $REMOVE_IF_EXISTS == true ]; then
+        if [[ $REMOVE_IF_EXISTS -eq 1 ]]; then
             sudo rm $FILE > /dev/null
         fi
     else
-        if [ $IS_ROOT == false ]; then
+        if [[ $IS_ROOT -eq 0 ]]; then
             touch $FILE > /dev/null
         else
             sudo touch $FILE > /dev/null
@@ -110,7 +110,7 @@ function createDirectory()
         sudo mkdir -p "$DIRECTORY" > /dev/null 2>&1
     fi
     
-    if [ $GOTO_DIRECTORY == true ];
+    if [[ $GOTO_DIRECTORY -eq 1 ]];
     then
         cd $DIRECTORY
     fi
@@ -145,9 +145,9 @@ function addRepository()
     createDirectory "$KEYSTORE_DIR"
     sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
 
-    if [ $? == 0 ]; then
+    if [[ $? -eq 0 ]]; then
         update
-        IS_ADDED=true
+        IS_ADDED=1
         showInfo "$REPOSITORY repository successfully added"
     else
         showError "Repository $REPOSITORY could not be added (error code $?)"
@@ -159,15 +159,15 @@ function isPackageInstalled()
     IS_INSTALLED=false
     sudo dpkg-query -l $@ > /dev/null 2>&1
     
-    if [ $? == 0 ];
+    if [[ $? -eq 0 ]];
     then
-        IS_INSTALLED=true
+        IS_INSTALLED=1
     fi
 }
 
 function aptInstall()
 {
-    INSTALLATION_SUCCESSFULL=true
+    INSTALLATION_SUCCESSFULL=1
     PACKAGES="$@"
     IFS=" " read -ra A_PACKAGES <<< "$PACKAGES"
     
@@ -180,7 +180,7 @@ function aptInstall()
         else
             sudo apt-get -y install $PACKAGE > /dev/null 2>&1
             
-            if [ $? == 0 ]; then
+            if [[ $? -eq 0 ]]; then
                 showInfo "$PACKAGE successfully installed"
             else
                 INSTALLATION_SUCCESSFULL=false
@@ -206,8 +206,8 @@ function move()
 	then
 	    sudo mv "$SOURCE" "$DESTINATION" > /dev/null 2>&1
 	    
-	    if [ $? == 0 ]; then
-	        IS_MOVED=true
+	    if [[ $? -eq 0 ]]; then
+	        IS_MOVED=1
 	    fi
 	else
 	    showError "$SOURCE could not be moved to $DESTINATION because the file does not exist"
@@ -271,7 +271,7 @@ function installXinit()
 function installPowerManagement()
 {
     showInfo "Installing power management packages..."
-    createDirectory "$TEMP_DIRECTORY" true
+    createDirectory "$TEMP_DIRECTORY" 1
 	aptInstall policykit-1 upower udisks acpi-support
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
@@ -335,7 +335,7 @@ function enableDirtyRegionRendering()
     showInfo "Enabling XBMC dirty region rendering..."
     handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE
 	
-	createDirectory $TEMP_DIRECTORY true
+	createDirectory $TEMP_DIRECTORY 1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml"
 	createDirectory $XBMC_USERDATA_DIR
 	move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE"
@@ -350,14 +350,14 @@ function enableDirtyRegionRendering()
 function installXbmcAddonRepositoriesInstaller()
 {
     showInfo "Installing Addon Repositories Installer addon..."
-	createDirectory "$TEMP_DIRECTORY" true
+	createDirectory "$TEMP_DIRECTORY" 1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz"
     createDirectory "$XBMC_ADDONS_DIR"
 
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
         
-        if [ $? == 0 ]; then
+        if [[ $? -eq 0 ]]; then
 	        showInfo "Addon Repositories Installer addon successfully installed"
 	    else
 	        showError "Addon Repositories Installer addon could not be installed (error code: $?)"
@@ -394,7 +394,7 @@ function installVideoDriver()
     aptInstall $VIDEO_DRIVER
 
     if [ $INSTALLATION_SUCCESSFULL ]; then
-        if [ $VIDEO_MANUFACTURER == "ati" ]; then
+        if [ $VIDEO_MANUFACTURER -eq "ati" ]; then
             configureAtiDriver
 
             dialog --title "Disable underscan" \
@@ -422,7 +422,7 @@ function installVideoDriver()
 function installXbmcAutorunScript()
 {
     showInfo "Installing XBMC autorun support..."
-    createDirectory "$TEMP_DIRECTORY" true
+    createDirectory "$TEMP_DIRECTORY" 1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script"
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
@@ -434,7 +434,7 @@ function installXbmcAutorunScript()
 	    sudo chmod a+x "$INIT_FILE" > /dev/null
 	    sudo update-rc.d xbmc defaults > /dev/null
 	    
-	    if [ $? == 0 ]; then
+	    if [[ $? -eq 0 ]]; then
             showInfo "XBMC autorun succesfully configured"
         else
             showError "XBMC outrun script could not be activated (error code: $?)"
@@ -451,12 +451,12 @@ function installXbmcBootScreen()
 
     if [ ! $IS_INSTALLED ]; then
 	    aptInstall plymouth-label v86d
-        createDirectory $TEMP_DIRECTORY true
+        createDirectory $TEMP_DIRECTORY 1
         download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb"
         
         if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
             sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
-            createFile "$INITRAMFS_SPLASH_FILE" true false
+            createFile "$INITRAMFS_SPLASH_FILE" 1 0
             appendToFile "$INITRAMFS_SPLASH_FILE" "FRAMEBUFFER=y"
             handleFileBackup "$GRUB_CONFIG_FILE"
 	        appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap"
@@ -466,7 +466,7 @@ function installXbmcBootScreen()
             sudo update-grub > /dev/null 2>&1
             sudo update-initramfs -u > /dev/null
             
-            if [ $? == 0 ]; then
+            if [[ $? -eq 0 ]]; then
                 showInfo "XBMC boot screen successfully activated"
             else
                 showError "XBMC boot screen could not be activated (error code: $?)"
@@ -483,7 +483,7 @@ function reconfigureXServer()
 {
     showInfo "Configuring X-server..."
     handleFileBackup "$XWRAPPER_FILE"
-    createFile "$XWRAPPER_FILE" true true
+    createFile "$XWRAPPER_FILE" 1 1
 	appendToFile "$XWRAPPER_FILE" "allowed_users=anybody"
 	showInfo "X-server successfully configured"
 }
@@ -567,7 +567,7 @@ function cleanUp()
     showInfo "Cleaning up..."
 	sudo apt-get -y autoclean > /dev/null 2>&1
 	sudo apt-get -y autoremove > /dev/null 2>&1
-	sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
+	#sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
 	rm "$HOME_DIRECTORY$THIS_FILE"
 }
 
@@ -610,7 +610,7 @@ control_c()
 
 clear
 
-createFile "$LOG_FILE" false true
+createFile "$LOG_FILE" 0 1
 
 echo ""
 installDependencies
