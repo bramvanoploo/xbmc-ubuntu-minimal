@@ -18,8 +18,12 @@ XBMC_ADVANCEDSETTINGS_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml"
 XBMC_ADVANCEDSETTINGS_BACKUP_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml.bak"
 XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
+GRUB_CONFIG_FILE="/etc/default/grub"
+GRUB_CONFIG_BACKUP_FILE="/etc/default/grub.bak"
 SYSTEM_LIMITS_FILE="/etc/security/limits.conf"
 INITRAMFS_SPLASH_FILE="/etc/initramfs-tools/conf.d/splash"
+INITRAMFS_MODULES_FILE="/etc/initramfs-tools/modules"
+INITRAMFS_MODULES_BACKUP_FILE="/etc/initramfs-tools/modules.bak"
 XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 
@@ -380,8 +384,30 @@ function installXbmcBootScreen()
 
             sudo touch $INITRAMFS_SPLASH_FILE > /dev/null
             echo "FRAMEBUFFER=y" | sudo tee -a $INITRAMFS_SPLASH_FILE > /dev/null
+            
+            if [ -e $GRUB_CONFIG_BACKUP_FILE ];
+	        then
+	            sudo rm $GRUB_CONFIG_FILE > /dev/null
+	            sudo cp $GRUB_CONFIG_BACKUP_FILE $GRUB_CONFIG_FILE > /dev/null
+	        else
+	            sudo cp $GRUB_CONFIG_FILE $GRUB_CONFIG_BACKUP_FILE > /dev/null
+	        fi
+	        
+	        echo "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap" | sudo tee -a $GRUB_CONFIG_FILE > /dev/null
+	        echo "GRUB_GFXMODE=1366x768" | sudo tee -a $GRUB_CONFIG_FILE > /dev/null
+	        
+	        if [ -e $INITRAMFS_MODULES_BACKUP_FILE ];
+	        then
+	            sudo rm $INITRAMFS_MODULES_FILE > /dev/null
+	            sudo cp $INITRAMFS_MODULES_BACKUP_FILE $INITRAMFS_MODULES_FILE > /dev/null
+	        else
+	            sudo cp $INITRAMFS_MODULES_FILE $INITRAMFS_MODULES_BACKUP_FILE > /dev/null
+	        fi
+	        
+	        echo "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap" | sudo tee -a $INITRAMFS_MODULES_FILE > /dev/null
+
             sudo update-grub > /dev/null 2>&1
-            sudo update-initramfs -u > /dev/null 2>&1
+            sudo update-initramfs -u > /dev/null
             showInfo "XBMC boot screen successfully installed"
         else
             showError "Download of XBMC boot screen package failed"
