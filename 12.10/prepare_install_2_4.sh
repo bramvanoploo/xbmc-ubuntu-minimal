@@ -2,11 +2,11 @@
 #
 # @author   Bram van Oploo
 # @date     2012-10-06
-# @version  2.3
+# @version  2.4
 #
 
 THIS_FILE=$0
-SCRIPT_VERSION="2.3"
+SCRIPT_VERSION="2.4"
 
 VIDEO_MANUFACTURER=""
 VIDEO_DRIVER=""
