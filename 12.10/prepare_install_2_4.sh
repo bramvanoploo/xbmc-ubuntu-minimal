@@ -47,7 +47,7 @@ SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram
 function log()
 {
     echo "$@" >> $LOG_FILE
-	LOG_TEXT="$LOG_TEXT$@\n"
+	LOG_TEXT="`eval date +%Y%m%d":"%H:%M` - $LOG_TEXT$@\n"
 	
 	dialog --title "Ubuntu configuration and XBMC installation in progress..." --backtitle "$SCRIPT_TITLE" --infobox "$LOG_TEXT" 34 $DIALOG_WIDTH
 }
@@ -55,7 +55,7 @@ function log()
 function showInfo()
 {
     echo "$@" >> $LOG_FILE
-	LOG_TEXT="$LOG_TEXT$@\n"
+	LOG_TEXT="`eval date +%Y%m%d":"%H:%M` - $LOG_TEXT$@\n"
 
     dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
 }
@@ -63,7 +63,7 @@ function showInfo()
 function showError()
 {
     echo "$@" >> $LOG_FILE
-	LOG_TEXT="$LOG_TEXT$@\n"
+	LOG_TEXT="`eval date +%Y%m%d":"%H:%M` - $LOG_TEXT$@\n"
 
     dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "$@" 8 $DIALOG_WIDTH
 }
