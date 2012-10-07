@@ -502,6 +502,7 @@ function installNyxBoardKeymap()
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/nyxboard.tar.gz"
     createDirectory "$XBMC_KEYMAPS_DIR" 0 0
+    handleFileBackup $XBMC_KEYMAPS_DIR"keyboard.xml"
 
     if [ -e $TEMP_DIRECTORY"nyxboard.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"nyxboard.tar.gz" -C "$XBMC_KEYMAPS_DIR" > /dev/null 2>&1
