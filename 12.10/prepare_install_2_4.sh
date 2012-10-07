@@ -45,14 +45,14 @@ SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram
 
 function showInfo()
 {
-    CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
+    CUR_DATE=$(date +%Y-%m-%d" "%H:%M)
     echo "$CUR_DATE - $@" >> $LOG_FILE
     dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
 }
 
 function showError()
 {
-    CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
+    CUR_DATE=$(date +%Y-%m-%d" "%H:%M)
     echo "$CUR_DATE - $@" >> $LOG_FILE
     dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "$@" 8 $DIALOG_WIDTH
 }
