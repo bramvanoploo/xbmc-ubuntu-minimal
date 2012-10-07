@@ -19,6 +19,7 @@ ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
 INIT_FILE="/etc/init.d/xbmc"
 XBMC_ADDONS_DIR=$HOME_DIRECTORY".xbmc/addons/"
 XBMC_USERDATA_DIR=$HOME_DIRECTORY".xbmc/userdata/"
+XBMC_KEYMAPS_DIR=$XBMC_USERDATA_DIR"keymaps/"
 XBMC_ADVANCEDSETTINGS_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml"
 XBMC_ADVANCEDSETTINGS_BACKUP_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml.bak"
 XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
@@ -495,6 +496,26 @@ function installXbmcAutorunScript()
 	fi
 }
 
+function installNyxBoardKeymap()
+{
+    showInfo "Applying Pulse-Eight Motorola NYXboard advanced keymap..."
+	createDirectory "$TEMP_DIRECTORY" 1 0
+	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/nyxboard.tar.gz"
+    createDirectory "$XBMC_KEYMAPS_DIR" 0 0
+
+    if [ -e $TEMP_DIRECTORY"nyxboard.tar.gz" ]; then
+        tar -xvzf $TEMP_DIRECTORY"nyxboard.tar.gz" -C "$XBMC_KEYMAPS_DIR" > /dev/null 2>&1
+        
+        if [ "$?" == "0" ]; then
+	        showInfo "Pulse-Eight Motorola NYXboard advanced keymap successfully applied"
+	    else
+	        showError "Pulse-Eight Motorola NYXboard advanced keymap could not be applied (error code: $?)"
+	    fi
+    else
+	    showError "Pulse-Eight Motorola NYXboard advanced keymap could not be downloaded"
+    fi
+}
+
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
@@ -525,6 +546,29 @@ function installXbmcBootScreen()
     fi
 }
 
+function installLmSensors()
+{
+    showInfo "Installing temperature monitoring package (press \"ENTER\" to confirm when asked)..."
+    aptInstall lm-sensors
+    clear
+    sudo sensors-detect
+    
+    if [ ! -e "$XBMC_ADVANCEDSETTINGS_FILE" ]; then
+	    createDirectory "$TEMP_DIRECTORY" 1 0
+	    download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/temperature_monitoring.xml"
+	    createDirectory "$XBMC_USERDATA_DIR" 0 0
+	    IS_MOVED=$(move $TEMP_DIRECTORY"temperature_monitoring.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
+
+	    if [ "$IS_MOVED" == "1" ]; then
+            showInfo "Temperature monitoring successfully enabled in XBMC"
+        else
+            showError "Temperature monitoring could not be enabled in XBMC"
+        fi
+    fi
+    
+    showInfo "Temperature monitoring successfully configured"
+}
+
 function reconfigureXServer()
 {
     showInfo "Configuring X-server..."
@@ -534,19 +578,50 @@ function reconfigureXServer()
 	showInfo "X-server successfully configured"
 }
 
-function selectAdditionalOptions()
+function selectXbmcTweaks()
 {
-    cmd=(dialog --title "Optional packages and features" 
+    cmd=(dialog --title "Optional XBMC tweaks and additions" 
         --backtitle "$SCRIPT_TITLE" 
-        --checklist "Plese select optional packages to install:" 
+        --checklist "Plese select to install or apply:" 
+        15 $DIALOG_WIDTH 6)
+        
+    options=(1 "Enable dirty region rendering (improved performance)" on
+            2 "Enable temperature monitoring" on
+            3 "Install Addon Repositories Installer addon" on
+            4 "Apply improved Pulse-Eight Motorola NYXboard keymap" off)
+            
+    choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+    for choice in $choices
+    do
+        case ${choice//\"/} in
+            1)
+                enableDirtyRegionRendering
+                ;;
+            2)
+                installLmSensors
+                ;;
+            3)
+                installXbmcAddonRepositoriesInstaller 
+                ;;
+            4)
+                installNyxBoardKeymap 
+                ;;
+        esac
+    done
+}
+
+function selectAdditionalPackages()
+{
+    cmd=(dialog --title "Other optional packages and features" 
+        --backtitle "$SCRIPT_TITLE" 
+        --checklist "Plese select to install:" 
         15 $DIALOG_WIDTH 6)
         
     options=(1 "Lirc (IR remote support)" off
             2 "Hts tvheadend (live TV backend)" off
             3 "Oscam (live HDTV decryption tool)" off
-            4 "XBMC Dirty region rendering (improved performance)" on
-            5 "XBMC Addon Repositories Installer addon" on
-            6 "Automatic upgrades (every 4 hours)" off)
+            4 "Automatic upgrades (every 4 hours)" off)
             
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
@@ -563,12 +638,6 @@ function selectAdditionalOptions()
                 installOscam 
                 ;;
             4)
-                enableDirtyRegionRendering 
-                ;;
-            5)
-                installXbmcAddonRepositoriesInstaller 
-                ;;
-            6)
                 installAutomaticDistUpgrade
                 ;;
         esac
@@ -682,6 +751,7 @@ installXbmcBootScreen
 reconfigureXServer
 installPowerManagement
 installAudio
-selectAdditionalOptions
+selectXbmcTweaks
+selectAdditionalPackages
 cleanUp
 rebootMachine
