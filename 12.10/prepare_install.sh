@@ -98,7 +98,7 @@ echo ""
 echo "$(tput setaf 3)$(tput bold)Installing power management packages...$(tput sgr0)"
 
 sudo apt-get -y install policykit-1 upower udisks acpi-support > /dev/null
-wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/custom-actions.pkla
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/custom-actions.pkla
 sudo mkdir -p /var/lib/polkit-1/localauthority/50-local.d/
 sudo mv custom-actions.pkla /var/lib/polkit-1/localauthority/50-local.d/
 
@@ -155,7 +155,7 @@ then
     
     mkdir -p $TEMP_DIRECTORY > /dev/null
     cd $TEMP_DIRECTORY > /dev/null
-    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/dirty_region_rendering.xml
+    wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/dirty_region_rendering.xml
     mkdir -p $XBMC_USERDATA_DIR > /dev/null
     mv dirty_region_rendering.xml $XBMC_ADVANCEDSETTINGS_FILE > /dev/null
 
@@ -170,7 +170,7 @@ echo "$(tput setaf 3)$(tput bold)Downloading and installing Addon repositories i
 
 mkdir -p $TEMP_DIRECTORY > /dev/null
 cd $TEMP_DIRECTORY > /dev/null
-wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/addons/plugin.program.repo.installer-1.0.5.tar.gz
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/plugin.program.repo.installer-1.0.5.tar.gz
 
 if [ ! -d $XBMC_ADDONS_DIR ];
 then
@@ -212,7 +212,7 @@ echo "$(tput setaf 2)$(tput bold)* $VIDEO_MANUFACTURER video drivers successfull
 echo ""
 echo "$(tput setaf 3)$(tput bold)Downloading and applying xbmc auto-run script$(tput sgr0)"
 
-wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/xbmc_init_script > /dev/null
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/xbmc_init_script > /dev/null
 
 if [ -f $INIT_FILE ];
 then
@@ -229,7 +229,7 @@ echo "$(tput setaf 3)$(tput bold)Installing XBMC boot screen...$(tput sgr0)"
 
 sudo apt-get -y install plymouth-label v86d > /dev/null
 cd $TEMP_DIRECTORY
-wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/plymouth-theme-xbmc-logo.deb
+wget -q https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/plymouth-theme-xbmc-logo.deb
 sudo dpkg -i plymouth-theme-xbmc-logo.deb > /dev/null
 
 if [ -f /etc/initramfs-tools/conf.d/splash ];
