@@ -47,7 +47,8 @@ SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram
 function log()
 {
     echo "$@" >> $LOG_FILE
-	LOG_TEXT="`eval date +%Y%m%d":"%H:%M` - $LOG_TEXT$@\n"
+    CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
+	LOG_TEXT="$CUR_DATE - $LOG_TEXT$@\n"
 	
 	dialog --title "Ubuntu configuration and XBMC installation in progress..." --backtitle "$SCRIPT_TITLE" --infobox "$LOG_TEXT" 34 $DIALOG_WIDTH
 }
@@ -55,7 +56,8 @@ function log()
 function showInfo()
 {
     echo "$@" >> $LOG_FILE
-	LOG_TEXT="`eval date +%Y%m%d":"%H:%M` - $LOG_TEXT$@\n"
+    CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
+	LOG_TEXT="$CUR_DATE - $LOG_TEXT$@\n"
 
     dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
 }
@@ -63,7 +65,8 @@ function showInfo()
 function showError()
 {
     echo "$@" >> $LOG_FILE
-	LOG_TEXT="`eval date +%Y%m%d":"%H:%M` - $LOG_TEXT$@\n"
+    CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
+	LOG_TEXT="$CUR_DATE - $LOG_TEXT$@\n"
 
     dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "$@" 8 $DIALOG_WIDTH
 }
@@ -604,7 +607,7 @@ function selectXbmcTweaks()
         15 $DIALOG_WIDTH 6)
         
     options=(1 "Enable dirty region rendering (improved performance)" on
-            2 "Enable temperature monitoring" on
+            2 "Enable temperature monitoring (press Enter for in all cases asked)" on
             3 "Install Addon Repositories Installer addon" on
             4 "Apply improved Pulse-Eight Motorola NYXboard keymap" off)
             
