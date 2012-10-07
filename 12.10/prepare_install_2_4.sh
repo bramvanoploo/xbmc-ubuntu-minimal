@@ -32,6 +32,7 @@ INITRAMFS_MODULES_FILE="/etc/initramfs-tools/modules"
 INITRAMFS_MODULES_BACKUP_FILE="/etc/initramfs-tools/modules.bak"
 XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
+DOWNLOAD_URL="https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/"
 
 XBMC_PPA="ppa:wsnipex/xbmc-xvba"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
@@ -46,14 +47,14 @@ SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram
 function showInfo()
 {
     CUR_DATE=$(date +%Y-%m-%d" "%H:%M)
-    echo "$CUR_DATE - $@" >> $LOG_FILE
+    echo "$CUR_DATE - INFO :: $@" >> $LOG_FILE
     dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
 }
 
 function showError()
 {
     CUR_DATE=$(date +%Y-%m-%d" "%H:%M)
-    echo "$CUR_DATE - $@" >> $LOG_FILE
+    echo "$CUR_DATE - ERROR :: $@" >> $LOG_FILE
     dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "$@" 8 $DIALOG_WIDTH
 }
 
@@ -294,7 +295,7 @@ function installPowerManagement()
     IS_INSTALLED=$(aptInstall upower)
     IS_INSTALLED=$(aptInstall udisks)
     IS_INSTALLED=$(aptInstall acpi-support)
-	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/custom-actions.pkla"
+	download "$DOWNLOAD_URLcustom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
     IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
 }
@@ -368,7 +369,7 @@ function enableDirtyRegionRendering()
     showInfo "Enabling XBMC dirty region rendering..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE 0 1
-	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/dirty_region_rendering.xml"
+	download "$DOWNLOAD_URLdirty_region_rendering.xml"
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
 	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 
@@ -383,7 +384,7 @@ function installXbmcAddonRepositoriesInstaller()
 {
     showInfo "Installing Addon Repositories Installer addon..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
-	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/plugin.program.repo.installer-1.0.5.tar.gz"
+	download "$DOWNLOAD_URLplugin.program.repo.installer-1.0.5.tar.gz"
     createDirectory "$XBMC_ADDONS_DIR" 0 0
 
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
@@ -456,7 +457,7 @@ function installAutomaticDistUpgrade()
     showInfo "Enabling automatic system upgrade..."
 	
 	createDirectory "$TEMP_DIRECTORY" 1 0
-	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/dist_upgrade.sh"
+	download "$DOWNLOAD_URLdist_upgrade.sh"
 	IS_MOVED=$(move $TEMP_DIRECTORY"dist_upgrade.sh" "/etc/cron.d/" 1)
 	
 	if [ "$IS_MOVED" == "1" ]; then
@@ -473,7 +474,7 @@ function installXbmcAutorunScript()
 {
     showInfo "Installing XBMC autorun support..."
     createDirectory "$TEMP_DIRECTORY" 1 0
-	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/xbmc_init_script"
+	download "$DOWNLOAD_URLxbmc_init_script"
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
 	    if [ -e $INIT_FILE ]; then
@@ -503,7 +504,7 @@ function installNyxBoardKeymap()
 {
     showInfo "Applying Pulse-Eight Motorola NYXboard advanced keymap..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
-	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/nyxboard.tar.gz"
+	download "$DOWNLOAD_URLnyxboard.tar.gz"
     createDirectory "$XBMC_KEYMAPS_DIR" 0 0
 
     if [ -e $XBMC_KEYMAPS_DIR"keyboard.xml" ]; then
@@ -529,7 +530,7 @@ function installXbmcBootScreen()
     IS_INSTALLED=$(aptInstall plymouth-label)
     IS_INSTALLED=$(aptInstall v86d)
     createDirectory "$TEMP_DIRECTORY" 1 0
-    download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/plymouth-theme-xbmc-logo.deb"
+    download "$DOWNLOAD_URLplymouth-theme-xbmc-logo.deb"
     
     if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
         sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
@@ -555,14 +556,14 @@ function installXbmcBootScreen()
 
 function installLmSensors()
 {
-    showInfo "Installing temperature monitoring package (press \"ENTER\" to confirm when asked)..."
+    showInfo "Installing temperature monitoring package (apply all defaults)..."
     aptInstall lm-sensors
     clear
     sudo sensors-detect
     
     if [ ! -e "$XBMC_ADVANCEDSETTINGS_FILE" ]; then
 	    createDirectory "$TEMP_DIRECTORY" 1 0
-	    download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/temperature_monitoring.xml"
+	    download "$DOWNLOAD_URLtemperature_monitoring.xml"
 	    createDirectory "$XBMC_USERDATA_DIR" 0 0
 	    IS_MOVED=$(move $TEMP_DIRECTORY"temperature_monitoring.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 
