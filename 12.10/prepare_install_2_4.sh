@@ -120,15 +120,30 @@ function createDirectory()
 
 function handleFileBackup()
 {
-    FILE="$@"
-    BACKUP="$@.bak"
+    FILE="$1"
+    BACKUP="$1.bak"
+    IS_ROOT="$2"
+    DELETE_ORIGINAL="$3"
 
     if [ -e "$BACKUP" ];
 	then
-		sudo rm "$FILE" > /dev/null 2>&1
-		sudo cp "$BACKUP" "$FILE" > /dev/null 2>&1
+	    if [ "$IS_ROOT" == "1" ]; then
+	        sudo rm "$FILE" > /dev/null 2>&1
+		    sudo cp "$BACKUP" "$FILE" > /dev/null 2>&1
+	    else
+		    rm "$FILE" > /dev/null 2>&1
+		    cp "$BACKUP" "$FILE" > /dev/null 2>&1
+		fi
 	else
-		sudo cp "$FILE" "$BACKUP" > /dev/null 2>&1
+	    if [ "$IS_ROOT" == "1" ]; then
+		    sudo cp "$FILE" "$BACKUP" > /dev/null 2>&1
+		else
+		    cp "$FILE" "$BACKUP" > /dev/null 2>&1
+		fi
+	fi
+	
+	if [ "$DELETE_ORIGINAL" == "1" ]; then
+	    sudo rm "$FILE" > /dev/null 2>&1
 	fi
 }
 
@@ -241,7 +256,7 @@ function installDependencies()
 function fixLocaleBug()
 {
     createFile $ENVIRONMENT_FILE
-    handleFileBackup $ENVIRONMENT_FILE
+    handleFileBackup $ENVIRONMENT_FILE 1
     appendToFile $ENVIRONMENT_FILE "LC_MESSAGES=\"C\""
     appendToFile $ENVIRONMENT_FILE "LC_ALL=\"en_US.UTF-8\""
 	showInfo "Locale environment bug fixed"
@@ -362,9 +377,8 @@ function installXbmc()
 function enableDirtyRegionRendering()
 {
     showInfo "Enabling XBMC dirty region rendering..."
-    handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE
-	
 	createDirectory "$TEMP_DIRECTORY" 1 0
+	handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE 0 1
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/dirty_region_rendering.xml"
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
 	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
@@ -459,7 +473,7 @@ function installAutomaticDistUpgrade()
 	if [ "$IS_MOVED" == "1" ]; then
 	    IS_INSTALLED=$(aptInstall cron)
 	    sudo chmod +x "/etc/cron.d/dist_upgrade.sh" > /dev/null 2>&1
-	    handleFileBackup "/etc/crontab"
+	    handleFileBackup "/etc/crontab" 1
 	    appendToFile "/etc/crontab" "0 */4  * * * root  /etc/cron.d/dist_upgrade.sh >> /var/log/updates.log"
 	else
 	    showError "Automatic system upgrade interval could not be enabled"
@@ -502,7 +516,10 @@ function installNyxBoardKeymap()
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/nyxboard.tar.gz"
     createDirectory "$XBMC_KEYMAPS_DIR" 0 0
-    handleFileBackup $XBMC_KEYMAPS_DIR"keyboard.xml"
+
+    if [ -e $XBMC_KEYMAPS_DIR"keyboard.xml" ]; then
+        handleFileBackup $XBMC_KEYMAPS_DIR"keyboard.xml" 0 1
+    fi
 
     if [ -e $TEMP_DIRECTORY"nyxboard.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"nyxboard.tar.gz" -C "$XBMC_KEYMAPS_DIR" > /dev/null 2>&1
@@ -573,7 +590,7 @@ function installLmSensors()
 function reconfigureXServer()
 {
     showInfo "Configuring X-server..."
-    handleFileBackup "$XWRAPPER_FILE"
+    handleFileBackup "$XWRAPPER_FILE" 1
     createFile "$XWRAPPER_FILE" 1 1
 	appendToFile "$XWRAPPER_FILE" "allowed_users=anybody"
 	showInfo "X-server successfully configured"
