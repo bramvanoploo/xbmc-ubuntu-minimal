@@ -37,37 +37,23 @@ XBMC_PPA="ppa:wsnipex/xbmc-xvba"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
-LOG_TEXT="\n"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
 SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
 
 ## ------ START functions ---------
 
-function log()
-{
-    echo "$@" >> $LOG_FILE
-    CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
-	LOG_TEXT="$CUR_DATE - $LOG_TEXT$@\n"
-	
-	dialog --title "Ubuntu configuration and XBMC installation in progress..." --backtitle "$SCRIPT_TITLE" --infobox "$LOG_TEXT" 34 $DIALOG_WIDTH
-}
-
 function showInfo()
 {
-    echo "$@" >> $LOG_FILE
     CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
-	LOG_TEXT="$CUR_DATE - $LOG_TEXT$@\n"
-
+    echo "$CUR_DATE - $@" >> $LOG_FILE
     dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
 }
 
 function showError()
 {
-    echo "$@" >> $LOG_FILE
     CUR_DATE=$(date +%Y-%m-%d" : "%H:%M)
-	LOG_TEXT="$CUR_DATE - $LOG_TEXT$@\n"
-
+    echo "$CUR_DATE - $@" >> $LOG_FILE
     dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "$@" 8 $DIALOG_WIDTH
 }
 
