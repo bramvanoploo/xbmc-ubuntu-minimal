@@ -295,7 +295,7 @@ function installPowerManagement()
     IS_INSTALLED=$(aptInstall upower)
     IS_INSTALLED=$(aptInstall udisks)
     IS_INSTALLED=$(aptInstall acpi-support)
-	download "$DOWNLOAD_URLcustom-actions.pkla"
+	download $DOWNLOAD_URL"custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
     IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
 }
@@ -369,7 +369,7 @@ function enableDirtyRegionRendering()
     showInfo "Enabling XBMC dirty region rendering..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE 0 1
-	download "$DOWNLOAD_URLdirty_region_rendering.xml"
+	download $DOWNLOAD_URL"dirty_region_rendering.xml"
 	createDirectory "$XBMC_USERDATA_DIR" 0 0
 	IS_MOVED=$(move $TEMP_DIRECTORY"dirty_region_rendering.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 
@@ -384,7 +384,7 @@ function installXbmcAddonRepositoriesInstaller()
 {
     showInfo "Installing Addon Repositories Installer addon..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
-	download "$DOWNLOAD_URLplugin.program.repo.installer-1.0.5.tar.gz"
+	download $DOWNLOAD_URL"plugin.program.repo.installer-1.0.5.tar.gz"
     createDirectory "$XBMC_ADDONS_DIR" 0 0
 
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
@@ -457,7 +457,7 @@ function installAutomaticDistUpgrade()
     showInfo "Enabling automatic system upgrade..."
 	
 	createDirectory "$TEMP_DIRECTORY" 1 0
-	download "$DOWNLOAD_URLdist_upgrade.sh"
+	download $DOWNLOAD_URL"dist_upgrade.sh"
 	IS_MOVED=$(move $TEMP_DIRECTORY"dist_upgrade.sh" "/etc/cron.d/" 1)
 	
 	if [ "$IS_MOVED" == "1" ]; then
@@ -474,7 +474,7 @@ function installXbmcAutorunScript()
 {
     showInfo "Installing XBMC autorun support..."
     createDirectory "$TEMP_DIRECTORY" 1 0
-	download "$DOWNLOAD_URLxbmc_init_script"
+	download $DOWNLOAD_URL"xbmc_init_script"
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
 	    if [ -e $INIT_FILE ]; then
@@ -504,7 +504,7 @@ function installNyxBoardKeymap()
 {
     showInfo "Applying Pulse-Eight Motorola NYXboard advanced keymap..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
-	download "$DOWNLOAD_URLnyxboard.tar.gz"
+	download $DOWNLOAD_URL"nyxboard.tar.gz"
     createDirectory "$XBMC_KEYMAPS_DIR" 0 0
 
     if [ -e $XBMC_KEYMAPS_DIR"keyboard.xml" ]; then
@@ -530,17 +530,17 @@ function installXbmcBootScreen()
     IS_INSTALLED=$(aptInstall plymouth-label)
     IS_INSTALLED=$(aptInstall v86d)
     createDirectory "$TEMP_DIRECTORY" 1 0
-    download "$DOWNLOAD_URLplymouth-theme-xbmc-logo.deb"
+    download $DOWNLOAD_URL"plymouth-theme-xbmc-logo.deb"
     
     if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
         sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
         handleFileBackup "$INITRAMFS_SPLASH_FILE" 1 1
         createFile "$INITRAMFS_SPLASH_FILE" 1 1
         appendToFile "$INITRAMFS_SPLASH_FILE" "FRAMEBUFFER=y"
-        #handleFileBackup "$GRUB_CONFIG_FILE"
+        #handleFileBackup "$GRUB_CONFIG_FILE" 1 0
         #appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=1366x768-24,mtrr=3,scroll=ywrap"
         #appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=1366x768"
-        #handleFileBackup "$INITRAMFS_MODULES_FILE"
+        #handleFileBackup "$INITRAMFS_MODULES_FILE" 1 0
         #appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=1366x768-24 mtrr=3 scroll=ywrap"
         sudo update-grub > /dev/null 2>&1
         sudo update-initramfs -u > /dev/null
@@ -564,7 +564,7 @@ function installLmSensors()
     
     if [ ! -e "$XBMC_ADVANCEDSETTINGS_FILE" ]; then
 	    createDirectory "$TEMP_DIRECTORY" 1 0
-	    download "$DOWNLOAD_URLtemperature_monitoring.xml"
+	    download $DOWNLOAD_URL"temperature_monitoring.xml"
 	    createDirectory "$XBMC_USERDATA_DIR" 0 0
 	    IS_MOVED=$(move $TEMP_DIRECTORY"temperature_monitoring.xml" "$XBMC_ADVANCEDSETTINGS_FILE")
 
