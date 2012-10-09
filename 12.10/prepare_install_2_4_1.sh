@@ -638,7 +638,7 @@ function selectScreenResolution()
     options=(1 "720 x 480 (NTSC)" off
             2 "720 x 576 (PAL)" off
             3 "1280 × 720 (HD Ready)" off
-            4 "1366 x 768 (HD Ready)" off
+            4 "1366 x 768 (HD Ready)" on
             5 "1920 x 1080 (Full HD)" off)
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
