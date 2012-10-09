@@ -532,7 +532,7 @@ function installXbmcBootScreen()
     createDirectory "$TEMP_DIRECTORY" 1 0
     download $DOWNLOAD_URL"plymouth-theme-xbmc-logo.deb"
     
-    if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ] && [ "$IS_INSTALLED" == "1" ]; then
+    if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
         sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
         handleFileBackup "$INITRAMFS_SPLASH_FILE" 1 1
         createFile "$INITRAMFS_SPLASH_FILE" 1 1
