@@ -527,12 +527,12 @@ function installNyxBoardKeymap()
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
-    IS_INSTALLED=$(aptInstall plymouth-label)
     IS_INSTALLED=$(aptInstall v86d)
+    IS_INSTALLED=$(aptInstall plymouth-label)
     createDirectory "$TEMP_DIRECTORY" 1 0
     download $DOWNLOAD_URL"plymouth-theme-xbmc-logo.deb"
     
-    if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ]; then
+    if [ -e $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" ] && [ "$IS_INSTALLED" == "1" ]; then
         sudo dpkg -i $TEMP_DIRECTORY"plymouth-theme-xbmc-logo.deb" > /dev/null
         handleFileBackup "$INITRAMFS_SPLASH_FILE" 1 1
         createFile "$INITRAMFS_SPLASH_FILE" 1 1
@@ -549,7 +549,7 @@ function applyScreenResolution()
     
     showInfo "Applying screen resultion of $RESOLUTION..."
     handleFileBackup "$GRUB_CONFIG_FILE" 1 0
-    appendToFile "$GRUB_CONFIG_FILE" "video=uvesafb:mode_option=$RESOLUTION-24,mtrr=3,scroll=ywrap"
+    appendToFile "$GRUB_CONFIG_FILE" "GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash nomodeset video=uvesafb:mode_option=$RESOLUTION-24,mtrr=3,scroll=ywrap\""
     appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=$RESOLUTION"
     handleFileBackup "$INITRAMFS_MODULES_FILE" 1 0
     appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=$RESOLUTION-24 mtrr=3 scroll=ywrap"
@@ -801,7 +801,7 @@ installXinit
 installXbmc
 installXbmcAutorunScript
 installXbmcBootScreen
-selectScreenResolution
+applyScreenResolution "1366x768"
 reconfigureXServer
 installPowerManagement
 installAudio
