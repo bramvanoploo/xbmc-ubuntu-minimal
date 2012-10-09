@@ -548,7 +548,7 @@ function applyScreenResolution()
 {
     RESOLUTION="$1"
     
-    showInfo "Applying screen resultion of $RESOLUTION..."
+    showInfo "Applying bootscreen resultion..."
     handleFileBackup "$GRUB_CONFIG_FILE" 1 0
     appendToFile "$GRUB_CONFIG_FILE" "GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash nomodeset video=uvesafb:mode_option=$RESOLUTION-24,mtrr=3,scroll=ywrap\""
     appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=$RESOLUTION"
@@ -558,9 +558,9 @@ function applyScreenResolution()
     sudo update-initramfs -u > /dev/null
     
     if [ "$?" == "0" ]; then
-        showInfo "Screen resultion of $RESOLUTION successfully applied"
+        showInfo "Bootscreen resultion successfully applied"
     else
-        showError "Screen resultion of $RESOLUTION could not be applied"
+        showError "Bootscreen resultion could not be applied"
     fi
 }
 
@@ -631,7 +631,7 @@ function selectXbmcTweaks()
 
 function selectScreenResolution()
 {
-    cmd=(dialog --backtitle "Select screen resolution (required)"
+    cmd=(dialog --backtitle "Select bootscreen resolution (required)"
         --radiolist "Please select your screen resolution or the one sligtly lower then it can handle if an exact match isn't availabel:" 
         15 $DIALOG_WIDTH 6)
         
@@ -802,7 +802,7 @@ installXinit
 installXbmc
 installXbmcAutorunScript
 installXbmcBootScreen
-applyScreenResolution "1366x768"
+selectScreenResolution
 reconfigureXServer
 installPowerManagement
 installAudio
