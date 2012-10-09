@@ -2,11 +2,11 @@
 #
 # @author   Bram van Oploo
 # @date     2012-10-06
-# @version  2.4
+# @version  2.4.1
 #
 
 THIS_FILE=$0
-SCRIPT_VERSION="2.4"
+SCRIPT_VERSION="2.4.1"
 
 VIDEO_MANUFACTURER=""
 VIDEO_DRIVER=""
@@ -48,7 +48,7 @@ function showInfo()
 {
     CUR_DATE=$(date +%Y-%m-%d" "%H:%M)
     echo "$CUR_DATE - INFO :: $@" >> $LOG_FILE
-    dialog --title "Installing..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
+    dialog --title "Installing & configuring..." --backtitle "$SCRIPT_TITLE" --infobox "\n$@" 5 $DIALOG_WIDTH
 }
 
 function showError()
@@ -603,7 +603,7 @@ function selectXbmcTweaks()
         15 $DIALOG_WIDTH 6)
         
     options=(1 "Enable dirty region rendering (improved performance)" on
-            2 "Enable temperature monitoring (press Enter for in all cases asked)" on
+            2 "Enable temperature monitoring (confirm with ENTER)" on
             3 "Install Addon Repositories Installer addon" on
             4 "Apply improved Pulse-Eight Motorola NYXboard keymap" off)
             
@@ -632,7 +632,7 @@ function selectScreenResolution()
 {
     cmd=(dialog --backtitle "Select screen resolution (required)"
         --radiolist "Please select your screen resolution or the one sligtly lower then it can handle if an exact match isn't availabel:" 
-        10 $DIALOG_WIDTH 5)
+        15 $DIALOG_WIDTH 6)
         
     options=(1 "720 x 480 (NTSC)" off
             2 "720 x 576 (PAL)" off
