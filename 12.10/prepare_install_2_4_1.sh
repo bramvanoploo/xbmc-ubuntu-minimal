@@ -527,8 +527,9 @@ function installNyxBoardKeymap()
 function installXbmcBootScreen()
 {
     showInfo "Installing XBMC boot screen (please be patient)..."
-    IS_INSTALLED=$(aptInstall v86d)
-    IS_INSTALLED=$(aptInstall plymouth-label)
+    #IS_INSTALLED=$(aptInstall v86d)
+    #IS_INSTALLED=$(aptInstall plymouth-label)
+    sudo apt-get install plymouth-label v86d > /dev/null
     createDirectory "$TEMP_DIRECTORY" 1 0
     download $DOWNLOAD_URL"plymouth-theme-xbmc-logo.deb"
     
