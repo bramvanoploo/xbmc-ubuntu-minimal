@@ -869,6 +869,7 @@ function rebootMachine()
 
 	case $? in
         0)
+            showInfo "Installation complete. Rebooting..."
             clear
             echo ""
             echo "Installation complete. Rebooting..."
@@ -876,9 +877,11 @@ function rebootMachine()
             sudo reboot now > /dev/null 2>&1
 	        ;;
 	    1) 
+	        showInfo "Installation complete. Not rebooting."
             quit
 	        ;;
 	    255) 
+	        showInfo "Installation complete. Not rebooting."
 	        quit
 	        ;;
 	esac
