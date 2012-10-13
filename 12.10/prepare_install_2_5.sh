@@ -454,6 +454,7 @@ function installVideoDriver()
     elif [ $GFX_CARD == INTEL ]; then
         VIDEO_DRIVER="i965-va-driver"
     else
+        cleanUp
         clear
         echo "ERROR: Installation aborted. No compatible videocard found." 
         echo "Only NVIDIA, ATI/AMD or INTEL videocards are supported by the script."
@@ -874,7 +875,9 @@ function rebootMachine()
 
 function quit()
 {
+    cleanUp
 	clear
+	echo "Installation aborted..."
 	exit
 }
 
