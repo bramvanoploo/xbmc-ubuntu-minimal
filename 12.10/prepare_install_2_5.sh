@@ -645,7 +645,7 @@ function applyScreenResolution()
 {
     RESOLUTION="$1"
     
-    showInfo "Applying bootscreen resultion (will take a minute or so)..."
+    showInfo "Applying bootscreen resolution (will take a minute or so)..."
     handleFileBackup "$GRUB_HEADER_FILE" 1 0
     sudo sed -i '/gfxmode=/ a\  set gfxpayload=keep' "$GRUB_HEADER_FILE" > /dev/null 2>&1
     
@@ -660,9 +660,9 @@ function applyScreenResolution()
     sudo update-initramfs -u > /dev/null
     
     if [ "$?" == "0" ]; then
-        showInfo "Bootscreen resultion successfully applied"
+        showInfo "Bootscreen resolution successfully applied"
     else
-        showError "Bootscreen resultion could not be applied"
+        showError "Bootscreen resolution could not be applied"
     fi
 }
 
@@ -671,6 +671,11 @@ function installLmSensors()
     showInfo "Installing temperature monitoring package (apply all defaults)..."
     aptInstall lm-sensors
     clear
+    echo "$(tput setaf 2)$(tput bold)INSTALLATION INFO: Please confirm all questions with ENTER (applying the suggested option)."
+    echo "$(tput setaf 2)The XBMC installation will continue automatically when finished.$(tput sgr0)"
+    echo ""
+    echo ""
+    
     sudo sensors-detect
     
     if [ ! -e "$XBMC_ADVANCEDSETTINGS_FILE" ]; then
