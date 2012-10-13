@@ -886,13 +886,13 @@ function rebootMachine()
 
 function quit()
 {
-    cleanUp
 	clear
 	exit
 }
 
 control_c()
 {
+    cleanUp
     echo "Installation aborted..."
     quit
 }
