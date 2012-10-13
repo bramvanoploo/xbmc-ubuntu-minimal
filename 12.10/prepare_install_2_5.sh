@@ -450,10 +450,11 @@ function installVideoDriver()
     else
         cleanUp
         clear
-        echo "ERROR: Installation aborted." 
-        echo "Only NVIDIA, ATI/AMD or INTEL videocards are supported. Please install a compatible videocard and run the script again."
         echo ""
-        echo "You have a $GFX_CARD videocard."
+        echo "$(tput setaf 2)$(tput bold)Installation aborted...$(tput sgr0)" 
+        echo "$(tput setaf 2)Only NVIDIA, ATI/AMD or INTEL videocards are supported. Please install a compatible videocard and run the script again.$(tput sgr0)"
+        echo ""
+        echo "$(tput setaf 2)You have a $GFX_CARD videocard.$(tput sgr0)"
         echo ""
         exit
     fi
@@ -672,6 +673,7 @@ function installLmSensors()
     showInfo "Installing temperature monitoring package (apply all defaults)..."
     aptInstall lm-sensors
     clear
+    echo ""
     echo "$(tput setaf 2)$(tput bold)INSTALLATION INFO: Please confirm all questions with ENTER (applying the suggested option)."
     echo "$(tput setaf 2)The XBMC installation will continue automatically when finished.$(tput sgr0)"
     echo ""
