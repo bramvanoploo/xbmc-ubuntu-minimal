@@ -30,6 +30,7 @@ INITRAMFS_SPLASH_FILE="/etc/initramfs-tools/conf.d/splash"
 INITRAMFS_MODULES_FILE="/etc/initramfs-tools/modules"
 XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 REMOTE_WAKEUP_RULS_FILE="/etc/udev/rules.d/90-enable-remote-wakeup.rules"
+SYSCTL_CONF_FILE="/etc/sysctl.conf"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/"
 XBMC_PPA="ppa:wsnipex/xbmc-xvba"
@@ -834,11 +835,11 @@ function optimizeInstallation()
     showInfo "Optimizing installation..."
     sudo service apparmor stop > /dev/null &2>1
     sudo service apparmor teardown > /dev/null &2>1
-    sudo apt-get -y purge apparmor > /dev/null &2>1
-    handleFileBackup "/etc/sysctl.conf" 1 0
-    createFile "/etc/sysctl.conf" 1 0
-    appendToFile "/etc/sysctl.conf" "dev.cdrom.lock=0"
-    appendToFile "/etc/sysctl.conf" "vm.swappiness=10"
+    sudo apt-get -y remove apparmor > /dev/null &2>1
+    handleFileBackup "$SYSCTL_CONF_FILE" 1 0
+    createFile "$SYSCTL_CONF_FILE" 1 0
+    appendToFile "$SYSCTL_CONF_FILE" "dev.cdrom.lock=0"
+    appendToFile "$SYSCTL_CONF_FILE" "vm.swappiness=10"
 }
 
 function cleanUp()
@@ -853,7 +854,7 @@ function cleanUp()
 	fi
 	
 	if [ -e "$HOME_DIRECTORY$THIS_FILE" ]; then
-	    rm "$HOME_DIRECTORY$THIS_FILE"
+	    rm "$HOME_DIRECTORY$THIS_FILE" > /dev/null 2>&1
 	fi
 }
 
