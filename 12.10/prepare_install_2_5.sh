@@ -885,13 +885,13 @@ function quit()
 {
     cleanUp
 	clear
-	echo "Installation aborted..."
 	exit
 }
 
 control_c()
 {
-  quit
+    echo "Installation aborted..."
+    quit
 }
 
 ## ------- END functions -------
