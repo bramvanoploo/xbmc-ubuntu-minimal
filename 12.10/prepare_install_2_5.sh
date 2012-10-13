@@ -529,7 +529,7 @@ function installXbmcRunFile()
     createDirectory "$TEMP_DIRECTORY" 1 0
     download $DOWNLOAD_URL"xbmc_run_script"
     
-    if [ -e $DOWNLOAD_URL"xbmc_run_script" ]; then
+    if [ -e $TEMP_DIRECTORY"xbmc_run_script" ]; then
         IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_run_script" "$XBMC_CUSTOM_EXEC")
     
         if [ "$IS_MOVED" == "1" ]; then
