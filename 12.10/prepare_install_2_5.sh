@@ -477,15 +477,15 @@ function removeAutorunFiles()
 {
     if [ -e "$XBMC_INIT_FILE" ]; then
         showInfo "Removing existing autorun script..."
-        sudo update-rc.d xbmc remove > /dev/null
-        sudo rm "$XBMC_INIT_FILE" > /dev/null
+        sudo update-rc.d xbmc remove > /dev/null 2>&1
+        sudo rm "$XBMC_INIT_FILE" > /dev/null 2>&1
 
         if [ -e "$XBMC_INIT_CONF_FILE" ]; then
-		    sudo rm "$XBMC_INIT_CONF_FILE" > /dev/null
+		    sudo rm "$XBMC_INIT_CONF_FILE" > /dev/null 2>&1
 	    fi
 	    
 	    if [ -e "$XBMC_CUSTOM_EXEC" ]; then
-	        sudo rm "$XBMC_CUSTOM_EXEC" > /dev/null
+	        sudo rm "$XBMC_CUSTOM_EXEC" > /dev/null 2>&1
 	    fi
 	    
 	    showInfo "Old autorun script successfully removed"
