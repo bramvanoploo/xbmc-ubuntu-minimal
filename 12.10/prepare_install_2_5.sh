@@ -668,7 +668,7 @@ function selectXbmcStartupMethod()
 {
     cmd=(dialog --backtitle "XBMC autorun method"
         --radiolist "Please select the method used to start XBMC (default recommended):" 
-        15 $DIALOG_WIDTH 6)
+        15 $DIALOG_WIDTH 3)
         
     options=(1 "init.d" on
             2 "upstart (restart XBMC after crash; expirimental)" off)
