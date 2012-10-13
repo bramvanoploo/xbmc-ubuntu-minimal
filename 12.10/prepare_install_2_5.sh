@@ -7,11 +7,7 @@
 
 THIS_FILE=$0
 SCRIPT_VERSION="2.5.0"
-
-VIDEO_MANUFACTURER=""
 VIDEO_DRIVER=""
-VIDEO_MANUFACTURER_NAME=""
-
 HOME_DIRECTORY="/home/$USER/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
 ENVIRONMENT_FILE="/etc/environment"
@@ -36,7 +32,6 @@ XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 REMOTE_WAKEUP_RULS_FILE="/etc/udev/rules.d/90-enable-remote-wakeup.rules"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/"
-
 XBMC_PPA="ppa:wsnipex/xbmc-xvba"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
@@ -447,11 +442,11 @@ function installVideoDriver()
 {
     showInfo "Installing $GFX_CARD video drivers (may take a while)..."
     
-    if [ $GFX_CARD == NVIDIA]; then
+    if [[ $GFX_CARD == NVIDIA ]]; then
         VIDEO_DRIVER="nvidia-current"
-    elif [ $GFX_CARD == ATI ] || [ $GFX_CARD == AMD ]; then
+    elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]]; then
         VIDEO_DRIVER="fglrx"
-    elif [ $GFX_CARD == INTEL ]; then
+    elif [[ $GFX_CARD == INTEL ]]; then
         VIDEO_DRIVER="i965-va-driver"
     else
         cleanUp
