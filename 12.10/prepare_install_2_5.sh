@@ -671,7 +671,7 @@ function selectXbmcStartupMethod()
         15 $DIALOG_WIDTH 3)
         
     options=(1 "init.d" on
-            2 "upstart (restart XBMC after crash; expirimental)" off)
+            2 "upstart (expirimental)" off)
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
