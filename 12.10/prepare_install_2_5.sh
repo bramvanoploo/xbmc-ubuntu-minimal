@@ -23,7 +23,7 @@ XBMC_KEYMAPS_DIR=$XBMC_USERDATA_DIR"keymaps/"
 XBMC_ADVANCEDSETTINGS_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml"
 XBMC_ADVANCEDSETTINGS_BACKUP_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml.bak"
 XBMC_INIT_CONF_FILE="/etc/init/xbmc.conf"
-XBMC_UPSTART_RUN_FILE="/usr/bin/runXBMC"
+XBMC_CUSTOM_EXEC="/usr/bin/runXBMC"
 UPSTART_JOB_FILE="/lib/init/upstart-job"
 XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
@@ -484,8 +484,8 @@ function removeAutorunFiles()
 		    sudo rm "$XBMC_INIT_CONF_FILE" > /dev/null
 	    fi
 	    
-	    if [ -e "$XBMC_UPSTART_RUN_FILE" ]; then
-	        sudo rm "$XBMC_UPSTART_RUN_FILE" > /dev/null
+	    if [ -e "$XBMC_CUSTOM_EXEC" ]; then
+	        sudo rm "$XBMC_CUSTOM_EXEC" > /dev/null
 	    fi
 	    
 	    showInfo "Old autorun script successfully removed"
@@ -527,14 +527,13 @@ function installXbmcRunFile()
 {
     showInfo "Installing custom XBMC startup executable..."
     createDirectory "$TEMP_DIRECTORY" 1 0
-    sudo ln -s "$UPSTART_JOB_FILE" "$XBMC_INIT_FILE" > /dev/null
     download $DOWNLOAD_URL"xbmc_run_script"
     
-    if [ -e "$XBMC_UPSTART_RUN_FILE" ]; then
-        IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_run_script" "$XBMC_UPSTART_RUN_FILE")
+    if [ -e $DOWNLOAD_URL"xbmc_run_script" ]; then
+        IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_run_script" "$XBMC_CUSTOM_EXEC")
     
         if [ "$IS_MOVED" == "1" ]; then
-            sudo chmod a+x "$XBMC_UPSTART_RUN_FILE" > /dev/null
+            sudo chmod a+x "$XBMC_CUSTOM_EXEC" > /dev/null
             showInfo "Installation of custom XBMC startup executable successfull"
         else
             showError "Installation of custom XBMC startup executable failed"
@@ -550,7 +549,7 @@ function installXbmcUpstartScript()
     showInfo "Installing XBMC upstart autorun support..."
     createDirectory "$TEMP_DIRECTORY" 1 0
 	download $DOWNLOAD_URL"xbmc_upstart_script"
-	
+
 	if [ -e $TEMP_DIRECTORY"xbmc_upstart_script" ]; then
 	    if [ -e "$XBMC_INIT_CONF_FILE" ]; then
 		    sudo rm "$XBMC_INIT_CONF_FILE" > /dev/null
@@ -559,6 +558,7 @@ function installXbmcUpstartScript()
 	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_upstart_script" "$XBMC_INIT_CONF_FILE")
 
 	    if [ "$IS_MOVED" == "1" ]; then
+	        sudo ln -s "$UPSTART_JOB_FILE" "$XBMC_INIT_FILE" > /dev/null
 	        installXbmcRunFile
 	    else
 	        showError "XBMC upstart configuration failed"
