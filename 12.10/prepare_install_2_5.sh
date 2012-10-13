@@ -832,9 +832,11 @@ function selectAdditionalPackages()
 function optimizeInstallation()
 {
     showInfo "Optimizing installation..."
-    sudo service apparmor stop
-    sudo service apparmor teardown
+    sudo service apparmor stop > /dev/null &2>1
+    sudo service apparmor teardown > /dev/null &2>1
     sudo apt-get -y purge apparmor > /dev/null &2>1
+    handleFileBackup "/etc/sysctl.conf" 1 0
+    createFile "/etc/sysctl.conf" 1 0
     appendToFile "/etc/sysctl.conf" "dev.cdrom.lock=0"
     appendToFile "/etc/sysctl.conf" "vm.swappiness=10"
 }
@@ -845,8 +847,14 @@ function cleanUp()
 	sudo apt-get -y autoremove > /dev/null 2>&1
 	sudo apt-get -y autoclean > /dev/null 2>&1
 	sudo apt-get -y clean > /dev/null 2>&1
-	sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
-	rm "$HOME_DIRECTORY$THIS_FILE"
+	
+	if [ -e "$TEMP_DIRECTORY" ]; then
+	    sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
+	fi
+	
+	if [ -e "$HOME_DIRECTORY$THIS_FILE" ]; then
+	    rm "$HOME_DIRECTORY$THIS_FILE"
+	fi
 }
 
 function rebootMachine()
