@@ -1,0 +1,44 @@
+#!/bin/bash
+#/usr/bin/runXBMC
+
+USER="xbmc"
+
+if [ "$(pidof X)" ] ; then
+	/usr/share/$USER/xbmc.bin  --standalone
+	exit
+fi
+
+while true
+do
+	echo "#!/bin/bash" >  /home/$USER/.xsession
+	echo "/usr/bin/xbmc --standalone" >>  /home/$USER/.xsession
+	echo "case \"\$?\" in" >>  /home/$USER/.xsession
+	echo "    0 ) # Quit" >>  /home/$USER/.xsession
+	echo "        touch /tmp/noRestartXBMC" >> /home/$USER/.xsession
+	echo "        break ;;"  >>  /home/$USER/.xsession
+	echo "    64 ) # Shutdown System"  >>  /home/$USER/.xsession
+	echo "        sleep 10 ;;"  >>  /home/$USER/.xsession
+	echo "    65 ) # Warm Reboot"  >>  /home/$USER/.xsession
+	echo "        echo "Restarting XBMC ..." ;;"  >>  /home/$USER/.xsession
+	echo "    66 ) # Reboot System"  >>  /home/$USER/.xsession
+	echo "        sleep 10 ;;"  >>  /home/$USER/.xsession
+	echo "     * ) ;;"  >>  /home/$USER/.xsession
+	echo "esac"  >>  /home/$USER/.xsession
+
+	chown $USER:$USER /home/$USER/.xsession
+
+	initctl emit starting-x
+
+	if [ "$(whoami)" == "root" ] ; then
+		su xbmc -c "startx -- -br > /dev/null 2>&1" -l
+	else
+		startx -- -br > /dev/null 2>&1
+	fi
+
+	if [ -e /tmp/noRestartXBMC ] ; then
+		rm /tmp/noRestartXBMC
+		rm /home/$USER/.xsession
+		break
+	fi
+done
+
