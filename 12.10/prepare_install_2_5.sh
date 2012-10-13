@@ -335,8 +335,8 @@ function allowRemoteWakeup()
 	handleFileBackup "$REMOTE_WAKEUP_RULS_FILE" 1 1
 	download $DOWNLOAD_URL"remote_wakeup_rules"
 	
-	if [ -e $DOWNLOAD_URL"remote_wakeup_rules" ]; then
-	    sudo mv $DOWNLOAD_URL"remote_wakeup_rules" "$REMOTE_WAKEUP_RULS_FILE" > /dev/null 2>&1
+	if [ -e $TEMP_DIRECTORY"remote_wakeup_rules" ]; then
+	    sudo mv $TEMP_DIRECTORY"remote_wakeup_rules" "$REMOTE_WAKEUP_RULS_FILE" > /dev/null 2>&1
 	    showInfo "Remote wakeup rules successfully applied"
 	else
 	    showError "Remote wakeup rules could not be downloaded"
@@ -449,9 +449,11 @@ function installVideoDriver()
     else
         cleanUp
         clear
-        echo "ERROR: Installation aborted. No compatible videocard found." 
+        echo "ERROR: Installation aborted." 
         echo "Only NVIDIA, ATI/AMD or INTEL videocards are supported. Please install a compatible videocard and run the script again."
+        echo ""
         echo "You have a $GFX_CARD videocard."
+        echo ""
         exit
     fi
     
