@@ -297,9 +297,7 @@ function installPowerManagement()
     IS_INSTALLED=$(aptInstall acpi-support)
 	download $DOWNLOAD_URL"custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
-	createDirectory "/etc/polkit-1/localauthority/50-local.d/"
     IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
-    IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "/etc/polkit-1/localauthority/50-local.d/xbmc_rule.pkla")
 }
 
 function installAudio()
@@ -452,7 +450,7 @@ function installVideoDriver()
         cleanUp
         clear
         echo "ERROR: Installation aborted. No compatible videocard found." 
-        echo "Only NVIDIA, ATI/AMD or INTEL videocards are supported by the script."
+        echo "Only NVIDIA, ATI/AMD or INTEL videocards are supported. Please install a compatible videocard and run the script again."
         echo "You have a $GFX_CARD videocard."
         exit
     fi
