@@ -501,14 +501,14 @@ function installXbmcInitScript()
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
 	    if [ -e $XBMC_INIT_FILE ]; then
-		    sudo rm $XBMC_INIT_FILE > /dev/null
+		    sudo rm $XBMC_INIT_FILE > /dev/null 2>&1
 	    fi
 	    
 	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_init_script" "$XBMC_INIT_FILE")
 
 	    if [ "$IS_MOVED" == "1" ]; then
-	        sudo chmod a+x "$XBMC_INIT_FILE" > /dev/null
-	        sudo update-rc.d xbmc defaults > /dev/null
+	        sudo chmod a+x "$XBMC_INIT_FILE" > /dev/null 2>&1
+	        sudo update-rc.d xbmc defaults > /dev/null 2>&1
 	        
 	        if [ "$?" == "0" ]; then
                 showInfo "XBMC autorun succesfully configured"
@@ -533,7 +533,7 @@ function installXbmcRunFile()
         IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_run_script" "$XBMC_CUSTOM_EXEC")
     
         if [ "$IS_MOVED" == "1" ]; then
-            sudo chmod a+x "$XBMC_CUSTOM_EXEC" > /dev/null
+            sudo chmod a+x "$XBMC_CUSTOM_EXEC" > /dev/null 2>&1
             showInfo "Installation of custom XBMC startup executable successfull"
         else
             showError "Installation of custom XBMC startup executable failed"
@@ -552,13 +552,13 @@ function installXbmcUpstartScript()
 
 	if [ -e $TEMP_DIRECTORY"xbmc_upstart_script" ]; then
 	    if [ -e "$XBMC_INIT_CONF_FILE" ]; then
-		    sudo rm "$XBMC_INIT_CONF_FILE" > /dev/null
+		    sudo rm "$XBMC_INIT_CONF_FILE" > /dev/null &2>1
 	    fi
 	    
 	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_upstart_script" "$XBMC_INIT_CONF_FILE")
 
 	    if [ "$IS_MOVED" == "1" ]; then
-	        sudo ln -s "$UPSTART_JOB_FILE" "$XBMC_INIT_FILE" > /dev/null
+	        sudo ln -s "$UPSTART_JOB_FILE" "$XBMC_INIT_FILE" > /dev/null 2>&1
 	        installXbmcRunFile
 	    else
 	        showError "XBMC upstart configuration failed"
@@ -724,7 +724,7 @@ function selectXbmcTweaks()
 function selectScreenResolution()
 {
     cmd=(dialog --backtitle "Select bootscreen resolution (required)"
-        --radiolist "Please select your screen resolution or the one sligtly lower then it can handle if an exact match isn't availabel:" 
+        --radiolist "Please select your screen resolution, or the one sligtly lower then it can handle if an exact match isn't availabel:" 
         15 $DIALOG_WIDTH 6)
         
     options=(1 "720 x 480 (NTSC)" off
