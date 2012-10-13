@@ -451,10 +451,10 @@ function installVideoDriver()
         cleanUp
         clear
         echo ""
-        echo "$(tput setaf 2)$(tput bold)Installation aborted...$(tput sgr0)" 
-        echo "$(tput setaf 2)Only NVIDIA, ATI/AMD or INTEL videocards are supported. Please install a compatible videocard and run the script again.$(tput sgr0)"
+        echo "$(tput setaf 1)$(tput bold)Installation aborted...$(tput sgr0)" 
+        echo "$(tput setaf 1)Only NVIDIA, ATI/AMD or INTEL videocards are supported. Please install a compatible videocard and run the script again.$(tput sgr0)"
         echo ""
-        echo "$(tput setaf 2)You have a $GFX_CARD videocard.$(tput sgr0)"
+        echo "$(tput setaf 1)You have a $GFX_CARD videocard.$(tput sgr0)"
         echo ""
         exit
     fi
