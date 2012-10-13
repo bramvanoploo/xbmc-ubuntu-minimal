@@ -14,26 +14,26 @@ VIDEO_MANUFACTURER_NAME=""
 
 HOME_DIRECTORY="/home/$USER/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
-ENVIRONMENT_FILE="/etc/environment" 
-ENVIRONMENT_BACKUP_FILE="/etc/environment.bak"
+ENVIRONMENT_FILE="/etc/environment"
+CRONTAB_FILE="/etc/crontab"
+DIST_UPGRADE_FILE="/etc/cron.d/dist_upgrade.sh"
+DIST_UPGRADE_LOG_FILE="/var/log/updates.log"
 XBMC_INIT_FILE="/etc/init.d/xbmc"
 XBMC_ADDONS_DIR=$HOME_DIRECTORY".xbmc/addons/"
 XBMC_USERDATA_DIR=$HOME_DIRECTORY".xbmc/userdata/"
 XBMC_KEYMAPS_DIR=$XBMC_USERDATA_DIR"keymaps/"
 XBMC_ADVANCEDSETTINGS_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml"
-XBMC_ADVANCEDSETTINGS_BACKUP_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml.bak"
 XBMC_INIT_CONF_FILE="/etc/init/xbmc.conf"
 XBMC_CUSTOM_EXEC="/usr/bin/runXBMC"
 UPSTART_JOB_FILE="/lib/init/upstart-job"
-XWRAPPER_BACKUP_FILE="/etc/X11/Xwrapper.config.bak"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 GRUB_CONFIG_FILE="/etc/default/grub"
-GRUB_CONFIG_BACKUP_FILE="/etc/default/grub.bak"
+GRUB_HEADER_FILE="/etc/grub.d/00_header"
 SYSTEM_LIMITS_FILE="/etc/security/limits.conf"
 INITRAMFS_SPLASH_FILE="/etc/initramfs-tools/conf.d/splash"
 INITRAMFS_MODULES_FILE="/etc/initramfs-tools/modules"
-INITRAMFS_MODULES_BACKUP_FILE="/etc/initramfs-tools/modules.bak"
 XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
+REMOTE_WAKEUP_RULS_FILE="/etc/udev/rules.d/90-enable-remote-wakeup.rules"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/"
 
@@ -44,6 +44,8 @@ OSCAM_PPA="ppa:oscam/ppa"
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
 SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
+
+GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'})
 
 ## ------ START functions ---------
 
@@ -300,7 +302,9 @@ function installPowerManagement()
     IS_INSTALLED=$(aptInstall acpi-support)
 	download $DOWNLOAD_URL"custom-actions.pkla"
 	createDirectory "$POWERMANAGEMENT_DIR"
+	createDirectory "/etc/polkit-1/localauthority/50-local.d/"
     IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
+    IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "/etc/polkit-1/localauthority/50-local.d/xbmc_rule.pkla")
 }
 
 function installAudio()
@@ -329,6 +333,21 @@ function installLirc()
     else
         showError "Lirc could not be installed (error code: $?)"
     fi
+}
+
+function allowRemoteWakeup()
+{
+    showInfo "Allowing for remote wakeup (won't work for all remotes)..."
+	createDirectory "$TEMP_DIRECTORY" 1 0
+	handleFileBackup "$REMOTE_WAKEUP_RULS_FILE" 1 1
+	download $DOWNLOAD_URL"remote_wakeup_rules"
+	
+	if [ -e $DOWNLOAD_URL"remote_wakeup_rules" ]; then
+	    sudo mv $DOWNLOAD_URL"remote_wakeup_rules" "$REMOTE_WAKEUP_RULS_FILE" > /dev/null 2>&1
+	    showInfo "Remote wakeup rules successfully applied"
+	else
+	    showError "Remote wakeup rules could not be downloaded"
+	fi
 }
 
 function installTvHeadend()
@@ -426,11 +445,26 @@ function enableAtiUnderscan()
 
 function installVideoDriver()
 {
-    showInfo "Installing $VIDEO_MANUFACTURER_NAME video drivers (may take a while)..."
+    showInfo "Installing $GFX_CARD video drivers (may take a while)..."
+    
+    if [ "$GFX_CARD" == "NVIDIA"]; then
+        VIDEO_DRIVER="nvidia-current"
+    elif [ "$GFX_CARD" == "ATI" ] || [ "$GFX_CARD" == "AMD" ]; then
+        VIDEO_DRIVER="fglrx"
+    elif [ "$GFX_CARD" == "INTEL" ]; then
+        VIDEO_DRIVER="i965-va-driver"
+    else
+        clear
+        echo "ERROR: Installation aborted. No compatible videocard found." 
+        echo "Only NVIDIA, ATI/AMD or INTEL videocards are supported by the script."
+        echo "You have a $GFX_CARD videocard."
+        exit
+    fi
+    
     IS_INSTALLED=$(aptInstall $VIDEO_DRIVER)
 
     if [ "$IS_INSTALLED" == "1"]; then
-        if [ "$VIDEO_MANUFACTURER" == "ati" ]; then
+        if [ "$GFX_CARD" == "ATI" ] || [ "$GFX_CARD" == "AMD" ]; then
             configureAtiDriver
 
             dialog --title "Disable underscan" \
@@ -451,23 +485,22 @@ function installVideoDriver()
             esac
         fi
         
-        showInfo "$VIDEO_MANUFACTURER_NAME video drivers successfully installed and configured"
+        showInfo "$GFX_CARD video drivers successfully installed and configured"
     fi
 }
 
 function installAutomaticDistUpgrade()
 {
     showInfo "Enabling automatic system upgrade..."
-	
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download $DOWNLOAD_URL"dist_upgrade.sh"
-	IS_MOVED=$(move $TEMP_DIRECTORY"dist_upgrade.sh" "/etc/cron.d/" 1)
+	IS_MOVED=$(move $TEMP_DIRECTORY"dist_upgrade.sh" "$DIST_UPGRADE_FILE" 1)
 	
 	if [ "$IS_MOVED" == "1" ]; then
 	    IS_INSTALLED=$(aptInstall cron)
-	    sudo chmod +x "/etc/cron.d/dist_upgrade.sh" > /dev/null 2>&1
-	    handleFileBackup "/etc/crontab" 1
-	    appendToFile "/etc/crontab" "0 */4  * * * root  /etc/cron.d/dist_upgrade.sh >> /var/log/updates.log"
+	    sudo chmod +x "$DIST_UPGRADE_FILE" > /dev/null 2>&1
+	    handleFileBackup "$CRONTAB_FILE" 1
+	    appendToFile "$CRONTAB_FILE" "0 */4  * * * root  $DIST_UPGRADE_FILE >> $DIST_UPGRADE_LOG_FILE"
 	else
 	    showError "Automatic system upgrade interval could not be enabled"
 	fi
@@ -617,11 +650,16 @@ function applyScreenResolution()
     RESOLUTION="$1"
     
     showInfo "Applying bootscreen resultion (will take a minute or so)..."
+    handleFileBackup "$GRUB_HEADER_FILE" 1 0
+    sudo sed -i '/gfxmode=/ a\  set gfxpayload=keep' "$GRUB_HEADER_FILE" > /dev/null 2>&1
+    
     handleFileBackup "$GRUB_CONFIG_FILE" 1 0
     appendToFile "$GRUB_CONFIG_FILE" "GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash nomodeset video=uvesafb:mode_option=$RESOLUTION-24,mtrr=3,scroll=ywrap\""
     appendToFile "$GRUB_CONFIG_FILE" "GRUB_GFXMODE=$RESOLUTION"
+    
     handleFileBackup "$INITRAMFS_MODULES_FILE" 1 0
     appendToFile "$INITRAMFS_MODULES_FILE" "uvesafb mode_option=$RESOLUTION-24 mtrr=3 scroll=ywrap"
+    
     sudo update-grub > /dev/null 2>&1
     sudo update-initramfs -u > /dev/null
     
@@ -790,41 +828,14 @@ function selectAdditionalPackages()
     done
 }
 
-function selectVideoDriver()
+function optimizeInstallation()
 {
-    cmd=(dialog --backtitle "Select video driver (required)"
-        --radiolist "Select your video chipset manufacturer:" 
-        10 $DIALOG_WIDTH 3)
-        
-    options=(1 "NVIDIA" on
-         2 "ATI (series >= 5xxx)" off
-         3 "Intel" off)
-         
-    choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-
-    case ${choice//\"/} in
-        1)
-            VIDEO_MANUFACTURER="nvidia"
-		    VIDEO_DRIVER="nvidia-current"
-		    VIDEO_MANUFACTURER_NAME="NVIDIA"
-		    installVideoDriver
-            ;;
-        2)
-            VIDEO_MANUFACTURER="ati"
-		    VIDEO_DRIVER="fglrx"
-		    VIDEO_MANUFACTURER_NAME="ATI"
-		    installVideoDriver
-            ;;
-        3)
-            VIDEO_MANUFACTURER="intel"
-		    VIDEO_DRIVER="i965-va-driver"
-		    VIDEO_MANUFACTURER_NAME="Intel"
-		    installVideoDriver
-            ;;
-        *)
-            selectVideoDriver
-            ;;
-    esac
+    showInfo "Optimizing installation..."
+    sudo /etc/init.d/apparmor stop
+    sudo /etc/init.d/apparmor teardown
+    sudo apt-get -y remove apparmor > /dev/null &2>1
+    appendToFile "/etc/sysctl.conf" "dev.cdrom.lock=0"
+    appendToFile "/etc/sysctl.conf" "vm.swappiness=10"
 }
 
 function cleanUp()
@@ -889,7 +900,7 @@ applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
 addXbmcPpa
 distUpgrade
-selectVideoDriver
+installVideoDriver
 installXinit
 installXbmc
 selectXbmcStartupMethod
