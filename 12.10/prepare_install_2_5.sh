@@ -831,9 +831,9 @@ function selectAdditionalPackages()
 function optimizeInstallation()
 {
     showInfo "Optimizing installation..."
-    sudo /etc/init.d/apparmor stop
-    sudo /etc/init.d/apparmor teardown
-    sudo apt-get -y remove apparmor > /dev/null &2>1
+    sudo service apparmor stop
+    sudo service apparmor teardown
+    sudo apt-get -y purge apparmor > /dev/null &2>1
     appendToFile "/etc/sysctl.conf" "dev.cdrom.lock=0"
     appendToFile "/etc/sysctl.conf" "vm.swappiness=10"
 }
@@ -911,5 +911,7 @@ installPowerManagement
 installAudio
 selectXbmcTweaks
 selectAdditionalPackages
+allowRemoteWakeup
+optimizeInstallation
 cleanUp
 rebootMachine
