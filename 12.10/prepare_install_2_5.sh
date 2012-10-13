@@ -447,11 +447,11 @@ function installVideoDriver()
 {
     showInfo "Installing $GFX_CARD video drivers (may take a while)..."
     
-    if [ "$GFX_CARD" == "NVIDIA"]; then
+    if [ $GFX_CARD == NVIDIA]; then
         VIDEO_DRIVER="nvidia-current"
-    elif [ "$GFX_CARD" == "ATI" ] || [ "$GFX_CARD" == "AMD" ]; then
+    elif [ $GFX_CARD == ATI ] || [ $GFX_CARD == AMD ]; then
         VIDEO_DRIVER="fglrx"
-    elif [ "$GFX_CARD" == "INTEL" ]; then
+    elif [ $GFX_CARD == INTEL ]; then
         VIDEO_DRIVER="i965-va-driver"
     else
         clear
