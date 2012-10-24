@@ -443,7 +443,7 @@ function installVideoDriver()
     
     if [[ $GFX_CARD == NVIDIA ]]; then
         VIDEO_DRIVER="nvidia-current"
-    elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]]; then
+    elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]] || [[ $GFX_CARD == Advanced ]]; then
         VIDEO_DRIVER="fglrx"
     elif [[ $GFX_CARD == INTEL ]]; then
         VIDEO_DRIVER="i965-va-driver"
