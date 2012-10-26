@@ -264,11 +264,11 @@ function fixUsbAutomount()
     createDirectory "$TEMP_DIRECTORY" 1 0
     download $DOWNLOAD_URL"media-by-label-auto-mount.rules"
 
-    if [ -e $TEMP_DIRECTORY"remote_wakeup_rules" ]; then
+    if [ -e $TEMP_DIRECTORY"media-by-label-auto-mount.rules" ]; then
 	    IS_MOVED=$(move $TEMP_DIRECTORY"media-by-label-auto-mount.rules" "$AUTO_MOUNT_RULES_FILE")
-	    showInfo "USB Automount successfully fixed"
+	    showInfo "USB automount successfully fixed"
 	else
-	    showError "USB automaount could not be fixed"
+	    showError "USB automount could not be fixed"
 	fi
 }
 
