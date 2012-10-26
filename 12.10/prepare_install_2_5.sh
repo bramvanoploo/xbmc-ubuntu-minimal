@@ -41,7 +41,7 @@ LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
 SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
 
-GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'})
+GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'} |tr [a-z] [A-Z])
 
 ## ------ START functions ---------
 
@@ -443,7 +443,7 @@ function installVideoDriver()
     
     if [[ $GFX_CARD == NVIDIA ]]; then
         VIDEO_DRIVER="nvidia-current"
-    elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]] || [[ $GFX_CARD == Advanced ]]; then
+    elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]] || [[ $GFX_CARD == ADVANCED ]]; then
         VIDEO_DRIVER="fglrx"
     elif [[ $GFX_CARD == INTEL ]]; then
         VIDEO_DRIVER="i965-va-driver"
