@@ -1,0 +1,16 @@
+-- 26-10-2012 --
+
+TODO
+* Add libcec installation support
+* Add option to install XBMC stable
+* Look into tty1/tty7 questions
+
+DONE
+* Change $USER to static variable $XBMC_USER="xbmc"
+* Modify video card manufaturer detection to always return uppercase
+* Remove 'nomodeset' from grub configuration for INTEL videocards (expirimental)
+* Apply USB automount fix and reduce power consumption
+* Fix typo in grub resolution selection causing problems
+* Added plymouth boot logo configuration fix
+* Switched to new upstart script which is more efficient
+* Added XBMC user to some more groups for accessto extra system functionalities
