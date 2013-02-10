@@ -1,13 +1,13 @@
 #!/bin/bash
 #
-# @author   Bram van Oploo
-# @date     2012-10-06
-# @version  2.6.0
+# @author   Bram van Oploo / Edited by uNiversal
+# @date     2013-02-10
+# @version  2.6.1
 #
 
 XBMC_USER="xbmc"
 THIS_FILE=$0
-SCRIPT_VERSION="2.6.0"
+SCRIPT_VERSION="2.6.1"
 VIDEO_DRIVER=""
 HOME_DIRECTORY="/home/$XBMC_USER/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
@@ -864,7 +864,8 @@ function optimizeInstallation()
     showInfo "Optimizing installation..."
     sudo service apparmor stop > /dev/null &2>1
     sudo service apparmor teardown > /dev/null &2>1
-    sudo apt-get -y remove apparmor > /dev/null &2>1
+    sudo update-rc.d -f apparmor remove > /dev/null &2>1
+    sudo apt-get remove --purge apparmor -y > /dev/null &2>1
     handleFileBackup "$SYSCTL_CONF_FILE" 1 0
     createFile "$SYSCTL_CONF_FILE" 1 0
     appendToFile "$SYSCTL_CONF_FILE" "dev.cdrom.lock=0"
