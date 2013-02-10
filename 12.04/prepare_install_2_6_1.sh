@@ -43,7 +43,7 @@ OSCAM_PPA="ppa:oscam/ppa"
 
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
-SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
+SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.04 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
 
 GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'} |tr [a-z] [A-Z])
 
@@ -245,7 +245,7 @@ function installDependencies()
     echo "-- Installing installation dependencies..."
     echo ""
 
-	sudo apt-get -y install dialog software-properties-common > /dev/null 2>&1
+	sudo apt-get -y install dialog software-properties-common pastebinit > /dev/null 2>&1
 }
 
 function fixLocaleBug()
@@ -292,7 +292,7 @@ function addUserToRequiredGroups()
 
 function addXbmcPpa()
 {
-    showInfo "Adding Wsnipex xbmc-xvba PPA..."
+    showInfo "Adding wsnipex xbmc-xvba PPA..."
 	IS_ADDED=$(addRepository "$XBMC_PPA")
 }
 
