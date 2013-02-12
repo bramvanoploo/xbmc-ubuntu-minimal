@@ -13,5 +13,5 @@ stop on runlevel [016]
 respawn
 
 script
-  exec su -c "xinit /usr/bin/xbmc --standalone :0" $USER
+  exec su -c "xinit /usr/bin/xbmc -d --standalone -- -nocursor :0" $USER
 end script
