@@ -34,6 +34,7 @@ XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 MODULES_FILE="/etc/modules"
 REMOTE_WAKEUP_RULES_FILE="/etc/udev/rules.d/90-enable-remote-wakeup.rules"
 AUTO_MOUNT_RULES_FILE="/etc/udev/rules.d/media-by-label-auto-mount.rules"
+#RSYSLOG="/etc/init/rsyslog.conf" ##unsure how to add this
 SYSCTL_CONF_FILE="/etc/sysctl.conf"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://raw.github.com/uNiversaI/xbmc-ubuntu-minimal/master/12.04/download/"
