@@ -1,0 +1,4 @@
+<advancedsettings>
+    <gputempcommand>echo "$(nvidia-settings -c :0 -tq GPUCoreTemp) C"</gputempcommand>
+    <cputempcommand>echo "$(sensors -u | head -6 |grep "temp2_input"| awk '{print $2 }' |awk '{printf("%d\n",$1 + 0.5);}') C"</cputempcommand>
+</advancedsettings>

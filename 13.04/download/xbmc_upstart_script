@@ -1,0 +1,32 @@
+# xbmc-minimal
+# init XBMC environment and starts XBMC in fullscreen (if asked to do so)
+description     "XBMC-minimal"
+author          "Luigi Capriotti - Modified by Alanwww1, wakeup stuff: Mianos"
+
+start on (filesystem and stopped udevtrigger)
+
+stop on runlevel [06]
+
+pre-start script
+  if [ -f /home/xbmc/.xsession ] ; then
+    rm /home/xbmc/.xsession
+  fi
+  if [ -f /tmp/noRestartXBMC ] ; then
+    rm /tmp/noRestartXBMC
+  fi
+end script
+
+script
+  exec /usr/bin/runXBMC
+end script
+
+post-start script
+# here we enable the usb and cir ports to wakeup the machine
+  for device in `cat /proc/acpi/wakeup | grep "^[C,U,E][U,H,I,S][R,S,B,C,0-9]" | grep "*disabled" | cut -f1 -d " "`; do
+    echo -n $device > /proc/acpi/wakeup
+  done
+end script
+
+pre-stop script
+  touch /tmp/noRestartXBMC
+end script

@@ -1,0 +1,137 @@
+# Enabling USB wakeup in kernel for certain remote types
+# Feel free to add yor Vendor- and Product Id cheked with lsusb
+# Sources:
+# - Linux kernel: https://github.com/mirrors/linux-2.6/tree/master/drivers/media/rc
+# - Openelec: https://github.com/OpenELEC/OpenELEC.tv/blob/master/packages/sysutils/remote/eventlircd/udev.d/98-eventlircd.rules
+
+# X10 remote
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0bc7", ATTRS{idProduct}=="0006" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+
+# Nuvoton
+SUBSYSTEM=="usb", ATTRS{idVendor}=="195d", ATTRS{idProduct}=="7002" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+
+# Samsung IrDA Remote Controller
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0419", ATTRS{idProduct}=="0001" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+
+# Cypress Receiver support
+SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="0101" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+
+# USB HID Remote Controls (eg. Hama, Auvisio)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="05a4", ATTRS{idProduct}=="9881" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+
+# MCE USB remotes
+# Microsoft MCE 
+SUBSYSTEM=="usb", ATTRS{idVendor}=="045e", ATTRS{idProduct}=="006d" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="045e", ATTRS{idProduct}=="00a0" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Philips
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="0608" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="060c" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="060d" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="060f" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="0613" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="0815" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="206c" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="2088" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0471", ATTRS{idProduct}=="2093" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Realtek
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="0161" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# SMK
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0609", ATTRS{idProduct}=="031d" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0609", ATTRS{idProduct}=="0322" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0609", ATTRS{idProduct}=="0334" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0609", ATTRS{idProduct}=="0338" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0609", ATTRS{idProduct}=="0353" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Tatung
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1460", ATTRS{idProduct}=="9150" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Shuttle
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1308", ATTRS{idProduct}=="c001" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Shuttle2
+SUBSYSTEM=="usb", ATTRS{idVendor}=="051c", ATTRS{idProduct}=="c001" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Gateway
+SUBSYSTEM=="usb", ATTRS{idVendor}=="107b", ATTRS{idProduct}=="3009" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Mitsumi
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03ee", ATTRS{idProduct}=="2501" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# TOPSEED
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1784", ATTRS{idProduct}=="0001" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1784", ATTRS{idProduct}=="0006" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1784", ATTRS{idProduct}=="0007" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1784", ATTRS{idProduct}=="0008" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1784", ATTRS{idProduct}=="000a" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1784", ATTRS{idProduct}=="0011" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Ricavision
+SUBSYSTEM=="usb", ATTRS{idVendor}=="179d", ATTRS{idProduct}=="0010" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Itron
+SUBSYSTEM=="usb", ATTRS{idVendor}=="195d", ATTRS{idProduct}=="7002" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# FIC
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1509", ATTRS{idProduct}=="9242" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# LG
+SUBSYSTEM=="usb", ATTRS{idVendor}=="043e", ATTRS{idProduct}=="9803" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Formosa
+SUBSYSTEM=="usb", ATTRS{idVendor}=="147a", ATTRS{idProduct}=="e015" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="147a", ATTRS{idProduct}=="e016" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="147a", ATTRS{idProduct}=="e017" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="147a", ATTRS{idProduct}=="e018" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="147a", ATTRS{idProduct}=="e03a" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="147a", ATTRS{idProduct}=="e03c" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="147a", ATTRS{idProduct}=="e03e" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Fintek
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1934", ATTRS{idProduct}=="5168" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1934", ATTRS{idProduct}=="0602" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1934", ATTRS{idProduct}=="0702" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Pinnacle
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2304", ATTRS{idProduct}=="0225" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# ECS
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1019", ATTRS{idProduct}=="0f38" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Wistron
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0fb8", ATTRS{idProduct}=="0002" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Compro
+SUBSYSTEM=="usb", ATTRS{idVendor}=="185b", ATTRS{idProduct}=="3020" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="185b", ATTRS{idProduct}=="3082" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Northstar
+SUBSYSTEM=="usb", ATTRS{idVendor}=="04eb", ATTRS{idProduct}=="e004" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Tivo
+SUBSYSTEM=="usb", ATTRS{idVendor}=="105a", ATTRS{idProduct}=="2000" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Conexant
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0572", ATTRS{idProduct}=="58a1" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0572", ATTRS{idProduct}=="58a5" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Other MCE compatible
+SUBSYSTEM=="usb", ATTRS{idVendor}=="046e", ATTRS{idProduct}=="5577" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="046e", ATTRS{idProduct}=="5578" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="04f2", ATTRS{idProduct}=="0618" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0766", ATTRS{idProduct}=="0204" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+
+# Imon USB remotes
+# SoundGraph iMON OEM Touch LCD (IR & 7inch VGA LCD)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0034" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# SoundGraph iMON OEM Touch LCD (IR & 4.3" VGA LCD)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0035" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# SoundGraph iMON OEM VFD (IR & VFD)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0036" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# device specifics unknown
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0037" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# SoundGraph iMON OEM LCD (IR & LCD)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0038" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# SoundGraph iMON UltraBay (IR & LCD)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0039" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# device specifics unknown
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="003a" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="003b" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# SoundGraph iMON OEM Inside (IR only)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="003c" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# device specifics unknown
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="003d" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="003e" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="003f" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0040" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# SoundGraph iMON MINI (IR only)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0041" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Antec Veris Multimedia Station EZ External (IR only)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0042" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Antec Veris Multimedia Station Basic Internal (IR only)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0043" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Antec Veris Multimedia Station Elite (IR & VFD)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0044" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# Antec Veris Multimedia Station Premiere (IR & LCD)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0045" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
+# device specifics unknown
+SUBSYSTEM=="usb", ATTRS{idVendor}=="15c2", ATTRS{idProduct}=="0046" RUN+="/bin/sh -c 'echo enabled > /sys$env{DEVPATH}/../power/wakeup'"
