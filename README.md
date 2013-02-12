@@ -11,6 +11,6 @@ x64: http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-amd64/current
 
 ```
 cd ~ 
-wget https://github.com/uNiversal/xbmc-ubuntu-minimal/raw/master/12.10/prepare_install_2_6_1.sh
+wget https://github.com/uNiversaI/xbmc-ubuntu-minimal/blob/master/12.04/prepare_install_2_6_1.sh
 bash ./prepare_install_2_6_1.sh
 ```
