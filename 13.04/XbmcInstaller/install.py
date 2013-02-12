@@ -8,6 +8,8 @@ import sys
 import os
 import stat
 import urlparse
+import subprocess
+import curses
 import VideoDrivers
 import Repositories
 import Database
