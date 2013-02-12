@@ -34,7 +34,7 @@ XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 MODULES_FILE="/etc/modules"
 REMOTE_WAKEUP_RULES_FILE="/etc/udev/rules.d/90-enable-remote-wakeup.rules"
 AUTO_MOUNT_RULES_FILE="/etc/udev/rules.d/media-by-label-auto-mount.rules"
-#RSYSLOG="/etc/init/rsyslog.conf" ##unsure how to add this
+RSYSLOG="/etc/init/rsyslog.conf"
 SYSCTL_CONF_FILE="/etc/sysctl.conf"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://raw.github.com/uNiversaI/xbmc-ubuntu-minimal/master/12.04/download/"
@@ -867,6 +867,12 @@ function optimizeInstallation()
     sudo service apparmor teardown > /dev/null &2>1
     sudo update-rc.d -f apparmor remove > /dev/null &2>1
     sudo apt-get remove --purge apparmor -y > /dev/null &2>1
+    
+    createDirectory "$TEMP_DIRECTORY" 1 0
+    handleFileBackup $RSYSLOG_FILE 0 1
+    download $DOWNLOAD_URL"rsyslog.conf"
+    move $TEMP_DIRECTORY"rsyslog.conf" "$RSYSLOG_FILE" 1
+    
     handleFileBackup "$SYSCTL_CONF_FILE" 1 0
     createFile "$SYSCTL_CONF_FILE" 1 0
     appendToFile "$SYSCTL_CONF_FILE" "dev.cdrom.lock=0"
