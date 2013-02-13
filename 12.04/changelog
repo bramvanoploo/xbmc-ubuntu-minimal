@@ -1,4 +1,4 @@
--- 26-10-2012 --
+-- 13-02-2013 --
 
 TODO
 * Add option to install XBMC stable
@@ -6,6 +6,7 @@ TODO
 * Add support to exit xbmc to terminal
 * Fix all errors around install.
 DONE
+* Fix some errors and bugs
 * Change $USER to static variable $XBMC_USER="xbmc"
 * Modify video card manufaturer detection to always return uppercase
 * Remove 'nomodeset' from grub configuration for INTEL videocards (experimental)
