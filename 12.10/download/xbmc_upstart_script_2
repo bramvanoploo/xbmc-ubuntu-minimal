@@ -14,4 +14,5 @@ respawn
 
 script
   exec su -c "xinit /usr/bin/xbmc --standalone :0" $USER
+  #exec su -c "xinit /usr/bin/xbmc -d --standalone -- -nocursor :0" $USER ##Kill Cursor/Console X and mouse pointer on XBMC start.
 end script
