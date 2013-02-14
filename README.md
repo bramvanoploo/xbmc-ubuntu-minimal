@@ -7,7 +7,7 @@ i386: http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-i386/current
 
 x64: http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-amd64/current/images/netboot/mini.iso
 
-* ...and run the follwing on the machine afterwards to install and configure XBMC (NVIDIA, ATI and Intel video cards supported):
+* ...and run the following on the machine afterwards to install and configure XBMC (NVIDIA, ATI and Intel video cards supported):
 
 ```
 cd ~ 
