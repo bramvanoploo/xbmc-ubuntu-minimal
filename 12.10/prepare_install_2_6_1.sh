@@ -470,6 +470,8 @@ function installVideoDriver()
         VIDEO_DRIVER="fglrx"
     elif [[ $GFX_CARD == INTEL ]]; then
         VIDEO_DRIVER="i965-va-driver"
+    elif [[ $GFX_CARD == VMWARE ]]; then
+        VIDEO_DRIVER="i965-va-driver"
     else
         cleanUp
         clear
