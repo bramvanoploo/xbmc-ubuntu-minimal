@@ -14,31 +14,6 @@ import Repositories
 import Database
 import System
 import XbmcAddons
+import Gui
 
-def exit_on_q(key):
-    if key in ('q', 'Q'):
-        raise urwid.ExitMainLoop()
-
-palette = [
-    ('banner', '', '', '', '#ffa', '#888'),
-    ('streak', '', '', '', 'g50', '#555'),
-    ('inside', '', '', '', 'g38', '#666'),
-    ('outside', '', '', '', 'g27', '#444'),
-    ('bg', '', '', '', 'g7', '#777'),]
-
-placeholder = urwid.SolidFill()
-loop = urwid.MainLoop(placeholder, palette, unhandled_input=exit_on_q)
-loop.screen.set_terminal_properties(colors=256)
-loop.widget = urwid.AttrMap(placeholder, 'bg')
-loop.widget.original_widget = urwid.Filler(urwid.Pile([]))
-
-div = urwid.Divider()
-outside = urwid.AttrMap(div, 'outside')
-inside = urwid.AttrMap(div, 'inside')
-txt = urwid.Text(('banner', u" Ubuntu 13.04 minimal XBMC installation "), align='center')
-streak = urwid.AttrMap(txt, 'streak')
-pile = loop.widget.base_widget # .base_widget skips the decorations
-for item in [outside, inside, streak, inside, outside]:
-    pile.contents.append((item, pile.options()))
-
-loop.run()
+Gui.dialog.do_msgbox("Test", 400, 400).main()
