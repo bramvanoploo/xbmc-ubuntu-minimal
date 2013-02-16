@@ -1,0 +1,12 @@
+html, body {
+                        
+}
+
+#main_container {
+    border: 1px solid #a5a5a5;
+    width: 800px;
+    height: 600px;
+    background-color: #efefef;
+    margin: 0 auto;
+    padding: 8px;
+}
