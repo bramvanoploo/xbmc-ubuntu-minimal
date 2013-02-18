@@ -8,7 +8,7 @@
 clear
 
 echo "* Preparing ubuntu..."
-sudo apt-get -y install dialog software-properties-common python python-bottle python-jinja2 python-apt tar wget > /dev/null 2>&1
+sudo apt-get -y install software-properties-common python python-flask lm-sensors python-apt tar wget > /dev/null 2>&1
 
 #echo "* Downloading and installing installer requirements..."
 #Download and install urwid
@@ -25,4 +25,4 @@ sudo apt-get -y install dialog software-properties-common python python-bottle p
 #sudo python /media/storage_linux/Development/Personal/xbmc-ubuntu-minimal/13.04/XbmcInstaller/install.py
 
 echo "* Starting installer..."
-sudo python /media/storage_linux/Development/Personal/xbmc-ubuntu-minimal/13.04/XbmcInstaller/webServer.py
+sudo python /media/storage_linux/Development/Personal/xbmc-ubuntu-minimal/13.04/InstallXbmc/server.py

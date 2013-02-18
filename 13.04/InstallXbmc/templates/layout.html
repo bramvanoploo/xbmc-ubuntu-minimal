@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <head>
+        {% block head %}
+        <title>
+            {% block title %}{% endblock %} - XBMC Minimal Installation
+        </title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kendoui/kendo.common.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kendoui/kendo.uniform.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/kendoui/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/kendoui/kendo.web.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/application.js') }}"></script>
+        {% endblock %}
+    </head>
+<body>
+    <br />
+    <br />
+    <center>
+        <table width="990" cellspacing="0" cellpadding="0" class="main_structure">
+            <tr>
+                <td id="steps">
+                    <h4>
+                        Installation steps
+                    </h4>
+                    <ul>
+                        <li>
+                            <a href="/">Welcome</a>
+                        </li>
+                        <li>
+                            &nbsp;
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">System preparation</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">Video driver</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">MySQL Database</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">Live TV</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">XBMC</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">Remote Controllers</a>
+                        </li>
+                        <li>
+                            &nbsp;
+                        </li>
+                        <li>
+                            <a href="/update">Manual system update</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" id="openSystemInfo">System information</a>
+                        </li>
+                        <li>
+                            <a href="/about">About</a>
+                        </li>
+                    </ul>
+                </td>
+                <td id="content">
+                    {% block content %}{% endblock %}
+                </td>
+            </tr>
+        </table>
+    </center>
+    
+    <div id="systemInfo"></div>
+    <div id="systemConsole"></div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+html, body {
+    font-size: 14px;
+    padding: 0px;
+    margin: 0px;
+    background-color: #efefef;
+    overflow: hidden;
+}
+
+td {
+    padding: 4px;
+}
+
+a {
+    text-decoration: none;
+    color: #70C510;
+    font-size: 15px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+table.main_structure {
+    -moz-box-shadow: 4px 4px 10px 1px #aaa;
+	-webkit-box-shadow: 4px 4px 10px 1px #aaa;
+	box-shadow: 4px 4px 10px 1px #aaa;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#aaaaaa')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#aaaaaa');
+}
+
+td#steps h4 {
+    font-size: 20px;
+    color: #3E4967;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 10px;
+}
+
+td#steps {
+    width: 200px;
+    border: 1px solid #a5a5a5;
+    padding: 20px;
+    background: url('../images/xbmc_logo.png') no-repeat bottom left #fff;
+    vertical-align: top;
+    text-align: right;
+}
+
+td#content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-right: 1px solid #a5a5a5;
+    border-bottom: 1px solid #a5a5a5;
+    border-top: 1px solid #a5a5a5;
+    height: 500px;
+    vertical-align: top;
+}
+
+td.title {
+    text-align: right;
+    border-right: 1px solid #eee;
+    color: #3E4967;
+    width: 150px;
+}
+
+a.active {
+    font-weight: bold;
+}
+
+th {
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    padding-top: 5px;
+    color: #70C510;
+}
+
+div.console {
+    font-family: "courier new";
+    height: 100%;
+    cursor: default;
+}
+
+ul {
+    margin: 0px;
+    padding: 0px;
+    margin-left: 20px;
+    list-style-type: none;
+}
