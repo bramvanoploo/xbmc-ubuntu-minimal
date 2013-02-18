@@ -1,26 +1,14 @@
 from bottle import route, static_file, run
-from jinja2 import Template
+from jinja2 import Template, Environment, PackageLoader
 import system
 
+env = Environment(loader=PackageLoader('XbmcInstaller', 'templates'))
+
 @route('/')
+@route('/index')
 def index():
-    return '''
-        <html>
-            <head>
-                <title>
-                    XBMC Minimal installation script version 3.0.0
-                </title>
-                <script type="text/javascript" src="/javascript/jquery-1.9.1.min.js"></script>
-                <script type="text/javascript" src="/javascript/application.js"></script>
-                <link rel="stylesheet" type="text/css" href="/css/main.css" />
-            </head>
-            <body>
-                <div id="main_container">
-                    tester
-                </div>
-            </body>
-        </html>
-    '''
+    template = env.get_template('index.html')
+    print template.render()
 
 @route('/repositories')
 def repositories():
@@ -29,6 +17,10 @@ def repositories():
 @route('/video_drivers/<name>')
 def videoDrivers(name):
     return "Install " +name+ " drivers"
+    
+@route('/<filename:path>')
+def send_webroot(filename):
+    return static_file(filename, root='web')
     
 @route('/javascript/<filename:path>')
 def send_javascript(filename):
