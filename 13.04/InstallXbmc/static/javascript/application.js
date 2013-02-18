@@ -1,4 +1,4 @@
-var loSystemInfoWindow;
+var loSystemInfoWindow, loConsoleWindow;
 
 $(document).ready(function(){
     $('#openSystemInfo').bind('click', function(){
@@ -7,10 +7,12 @@ $(document).ready(function(){
         loSystemInfoWindow.open();
         return false;
     });
-    
+
     populateConsole();
+    loConsoleWindow.minimize();
     
-    //setInterval("populateSystemInfo()", 5000);
+    populateFooter();
+    setInterval("populateFooter()", 5000);
 });
 
 function populateSystemInfo() {
@@ -28,20 +30,26 @@ function populateSystemInfo() {
 }
 
 function populateConsole() {
-     loSystemInfoWindow = $('#systemConsole').kendoWindow({
+     loConsoleWindow = $('#systemConsole').kendoWindow({
         content: "/system_console",
         actions: ["Minimize"],
         draggable: false,
-        height: "200px",
+        height: "300px",
         width: "100%",
         modal: false,
         visible: true,
-        resizable: true,
+        resizable: false,
         title: "Console"
     }).data("kendoWindow");
     
     $('#systemConsole').closest(".k-window").css({
         bottom: "0px",
         left: "0px"
+    });
+}
+
+function populateFooter() {
+    $.get('/footer', function(data) {
+        $('#footer').html(data);
     });
 }

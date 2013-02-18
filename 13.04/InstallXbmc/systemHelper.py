@@ -4,6 +4,7 @@ import subprocess
 import platform
 import multiprocessing
 import re
+import command
 
 def getLocalIpAddress():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
