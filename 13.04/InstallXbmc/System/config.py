@@ -31,7 +31,7 @@ powermanagement_dir = "/var/lib/polkit-1/localauthority/50-local.d/"
 initramfs_splash_file = "/etc/initramfs-tools/conf.d/splash"
 initramfs_modules_file = "/etc/initramfs-tools/modules"
 
-github_download_url = "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/{{ ubunut_version }}/download/"
+github_download_url = "https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/{{ ubuntu_version }}/download/"
 
 xbmc_ppa = "ppa:team-xbmc/ppa"
 xbmc_unstable_ppa = "ppa:team-xbmc/unstable"

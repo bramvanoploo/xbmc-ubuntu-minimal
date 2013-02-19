@@ -1,1 +1,0 @@
-XBMC_USER = "xbmc"
