@@ -288,6 +288,7 @@ function addUserToRequiredGroups()
 	sudo adduser $XBMC_USER fuse > /dev/null 2>&1
 	sudo adduser $XBMC_USER cdrom > /dev/null 2>&1
 	sudo adduser $XBMC_USER plugdev > /dev/null 2>&1
+        sudo adduser $XBMC_USER dialout > /dev/null 2>&1
 	showInfo "XBMC user added to required groups"
 }
 
