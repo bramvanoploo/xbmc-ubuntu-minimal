@@ -5,6 +5,7 @@ installer_version = "3.0.0"
 home_directory = command.run("echo $HOME")
 xbmc_user = home_directory.split("/")[2]
 temp_directory = home_directory+ "temp/"
+environment_file = "/etc/environment"
 
 xbmc_home_dir = home_directory+ ".xbmc/"
 xbmc_addons_dir = xbmc_home_dir+ "addons/"
@@ -39,3 +40,6 @@ wsnipex_xbmc_daily_ppa = "ppa:wsnipex/xbmc-xvba"
 wsnipex_xbmc_frodo_ppa = "ppa:wsnipex/xbmc-xvba-frodo"
 hts_tvheadend_ppa = "ppa:jabbors/hts-stable"
 oscam_ppa = "ppa:oscam/ppa"
+
+installation_database = "xbmc_installation.db"
+log_database = "xbmc_installation_log.db"

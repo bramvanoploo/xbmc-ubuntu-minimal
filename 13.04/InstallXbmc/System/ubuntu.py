@@ -1,4 +1,4 @@
-import os, platform, config, shutil, apt, apt.progress
+import os, platform, config, network, shutil, apt, apt.progress, config
 from softwareproperties.SoftwareProperties import SoftwareProperties
 
 #System information
@@ -70,10 +70,15 @@ def createDirectory(directoryPath):
 def appendToFile(filePath, content):
     if os.path.isFile(filePath):
         backupFile(filePath)
-        with open(filePath, "a") as file:
-            file.write(content)
-            return True
+    else:
+        createFile(filePath)
+    with open(filePath, "a") as file:
+        file.write(content)
+        return True
     return False
+
+def move(source, destination):
+    shutil.move(source, destination)
 
 #Package management
 def aptUpdate():
@@ -108,3 +113,26 @@ def addPpa(ppaName):
     sp.add_source_from_line(ppaName)
     sp.sourceslist.save()
     aptUpgrade()
+
+# Installation methods
+def createTempDirectory():
+    createDirectory(temp_directory)
+
+def fixLocaleBug():
+    restoreBackupFile(config.environment_file)
+    appendToFile(config.environment_file, 'LC_MESSAGES="C"')
+    appendToFile(config.environment_file, 'LC_ALL="en_US.UTF-8"')
+
+def fixUsbAutomount():
+    rulesFileUrl = github_download_url+'media-by-label-auto-mount.rules'
+    tempRulesFile = temp_directory+'media-by-label-auto-mount.rules'
+    restoreBackupFile(config.modules_file)
+    appendToFile(config.modules_file, 'usb-storage')
+    network.download(rulesFileUrl, tempRulesFile)
+    if os.path.isfile(tempRulesFile) and move(tempRulesFile, config.automount_rules_file):
+        deletFile(tempRulesFile)
+
+def applyXbmcNiceLevelPermissions():
+    createFile(config.system_limits_file)
+    restoreBackupFile(config.system_limits_file)
+    appendToFile(config.system_limits_file, config.xbmc_user+"             -       nice            -1")

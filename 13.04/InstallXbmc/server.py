@@ -2,6 +2,7 @@ import System
 from flask import Flask, render_template
 
 app = Flask(__name__)
+db = System.Database.Database(System.config.installation_database)
 
 @app.route('/')
 def index():
@@ -24,7 +25,7 @@ def system():
 
 @app.route('/prepare_system')
 def prepare_system():
-    System.database.set('installation_steps', 'prepare_system', 1)
+    db.set('installation_steps', 'prepare_system', 1)
     return render_template('prepare_system.html')
 
 @app.route('/about')
@@ -46,7 +47,7 @@ def footer():
 @app.route('/system_console')
 def system_console():
     return render_template('console.ajax.html',
-        test_var = System.database.get('installation_steps', 'prepare_system'))
+        test_var = db.get('installation_steps', 'prepare_system'))
 
 if __name__ == '__main__':
     app.run(host=System.network.getLocalIpAddress(), port=80, debug=True)

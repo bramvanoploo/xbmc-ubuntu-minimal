@@ -1,5 +1,5 @@
 import config
-import database
+import Database
 import command
 import network
 import hardware
