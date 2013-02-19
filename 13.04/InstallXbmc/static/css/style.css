@@ -30,7 +30,7 @@ a:visited {
 
 table {
     *border-collapse: collapse; /* IE7 and lower */
-    border-spacing: 0; 
+    border-spacing: 0;
 }
 
 
@@ -101,5 +101,22 @@ ul {
     color: #999;
     margin: 0px auto;
     text-shadow: 0 0 7px #aaa;
+}
 
+#loading .icon {
+	width: 140px;
+	height: 140px;
+	float: left;
+	background: url('../images/info_icon.png') no-repeat center #fff;
+}
+
+#loading .message {
+	float: right;
+	padding: 10px;
+	font-size: 16px;
+	width: 320px;
+	color: #000;
+	height: 140px;
+	overflow: auto;
+	vertical-align: middle;
 }

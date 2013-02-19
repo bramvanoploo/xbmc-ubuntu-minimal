@@ -12,6 +12,19 @@
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/kendoui/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/kendoui/kendo.web.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/application.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/system.class.js') }}"></script>
+        <script type="text/javascript">
+        	var sys = new System();
+
+        	$(document).ready(function(){
+        		sys.getCpuLoad('#cpuLoad');
+        		sys.getRamInUse('#ramInUse');
+        		sys.getTotalRam('#totalRam');
+        		sys.getOperatingSystem('#operatingSystem');
+        		setInterval('sys.getCpuLoad("#cpuLoad")', 5000);
+        		setInterval('sys.getRamInUse("#ramInUse")', 5000);
+        	});
+        </script>
         {% endblock %}
     </head>
 <body>
@@ -83,12 +96,31 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" id="footer"></td>
+                <td colspan="2" id="footer">
+                	<table width="100%">
+					    <tr>
+					        <td width="33%" align="center">
+					            os: <b id="operatingSystem"></b>
+					        </td>
+					        <td width="33%" align="center">
+					            cpu load: <b id="cpuLoad"></b> %
+					        </td>
+					        <td width="33%" align="center">
+					            ram in use: <b id="ramInUse"></b> MB of <b id="totalRam"></b> MB
+					        </td>
+					        <td></td>
+					    </tr>
+					</table>
+                </td>
             </tr>
         </table>
     </center>
 
     <div id="systemInfo"></div>
-    <div id="systemConsole"></div>
+    <div id="console"></div>
+    <div id="loading">
+    	<div class="icon"></div>
+    	<div class="message"></div>
+    </div>
 </body>
 </html>

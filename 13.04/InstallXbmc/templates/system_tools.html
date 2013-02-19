@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Welcome{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript">
+       	$(document).ready(function(){
+			$('#aptUpgrade').bind('click', function(){
+				showLoading('Your system is being updated. Please be patient.');
+				sys.aptUpgrade(function(poData){
+					if(poData && poData.success) {
+						$('#console').append(getDateAndTime()+ ' - System software successfully updated<br />');
+					}
+					else {
+						$('#console').append(getDateAndTime()+ ' - Could not perform system update<br />');
+					}
+					showConsole();
+					hideLoading();
+				});
+
+				return false;
+			});
+       	});
+       </script>
+{% endblock %}
+{% block content %}
+    <h1>
+        System tools
+    </h1>
+    <br />
+    <span>
+        <button class="k-button" style="font-weight:bold;" id="aptUpgrade">Update system software</button>
+    </span>
+{% endblock %}

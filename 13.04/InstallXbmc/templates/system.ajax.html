@@ -1,3 +1,18 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#systemCpuLoad').html($('#cpuLoad').html());
+		$('#systemRamInUse').html($('#ramInUse').html());
+
+		setInterval(function(){
+			$('#systemCpuLoad').html($('#cpuLoad').html());
+		}, 100);
+
+		setInterval(function(){
+			$('#systemRamInUse').html($('#ramInUse').html());
+		}, 100);
+	});
+</script>
+
 <table width="100%">
     <tr>
         <th colspan="2">
@@ -46,7 +61,7 @@
             cpu load
         </td>
         <td>
-            {{ cpu_load }} %
+            <span id="systemCpuLoad"></span> %
         </td>
     </tr>
     <tr>
@@ -56,18 +71,18 @@
     <tr>
     <tr>
         <td class="title">
-            total RAM
+            RAM in use
         </td>
         <td>
-            {{ total_ram }} MB
+            <span id="systemRamInUse"></span>  MB
         </td>
     </tr>
     <tr>
         <td class="title">
-            RAM in use
+            total RAM
         </td>
         <td>
-            {{ ram_in_use }} MB
+            {{ total_ram }} MB
         </td>
     </tr>
     <tr>

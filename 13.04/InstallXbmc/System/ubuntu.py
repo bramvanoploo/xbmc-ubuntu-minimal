@@ -84,14 +84,14 @@ def move(source, destination):
 def aptUpdate():
     cache = apt.Cache()
     cache.update()
-    cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+    return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
 
 def aptUpgrade():
     cache = apt.Cache()
     cache.update()
     cache.open(None)
     cache.upgrade(True)
-    cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+    return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
 
 def aptInstall(packageName):
     cache = apt.Cache()
@@ -99,12 +99,19 @@ def aptInstall(packageName):
         return False
     package = cache[packageName]
     package.markInstall()
-    cache.commit()
+    return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
 
 def isPackageInstalled(packageName):
     cache = apt.Cache()
     cache.open()
     if packageName in cache and cache[packageName].is_installed:
+        return True
+    return False
+
+def packageExists(packageName):
+    cache = apt.Cache()
+    cache.open()
+    if packageName in cache:
         return True
     return False
 

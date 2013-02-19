@@ -1,8 +1,15 @@
-import System
-from flask import Flask, render_template
+import System, json, types
+from flask import Flask, render_template, request, Response
 
 app = Flask(__name__)
 db = System.Database.Database(System.config.installation_database)
+
+def methodExists(methodName):
+    try:
+        ret = type(eval(methodName))
+        return ret in (types.FunctionType, types.BuiltinFunctionType)
+    except AttributeError:
+        return False
 
 @app.route('/')
 def index():
@@ -34,7 +41,7 @@ def about():
 
 @app.route('/system_tools')
 def system_tools():
-    return ""
+    return render_template('system_tools.html')
 
 @app.route('/footer')
 def footer():
@@ -48,6 +55,41 @@ def footer():
 def system_console():
     return render_template('console.ajax.html',
         test_var = db.get('installation_steps', 'prepare_system'))
+
+@app.route('/api')
+def api():
+    result = {
+        'success' : False,
+        'message' : 'Illegal request'
+    }
+
+    if 'method' in request.args and methodExists('System.'+request.args['method']):
+        fullRequest = None
+        if 'params' in request.args and request.args['params'] != '{}':
+            fullRequest = 'System.'+request.args['method']+'(' +request.args['params']+ ')'
+        else:
+            fullRequest = 'System.'+request.args['method']+'()'
+
+        try:
+            data = eval(fullRequest)
+            result = {
+                'success'   : True,
+                'result'    : str(data)
+            }
+        except AttributeError:
+            result = {
+                'success' : False,
+                'message' : 'Illegal request: Attribute error'
+            }
+        except TypeError as e:
+            result = {
+                'success' : False,
+                'message' : 'Illegal request: Type error'
+            }
+
+    jsonResult = json.dumps(result)
+    response = Response(jsonResult, status=200, mimetype='application/json')
+    return response
 
 if __name__ == '__main__':
     app.run(host=System.network.getLocalIpAddress(), port=80, debug=True)
