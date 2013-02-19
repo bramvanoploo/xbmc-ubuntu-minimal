@@ -1,3 +1,4 @@
+import config
 import command
 import network
 import hardware

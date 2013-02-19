@@ -8,7 +8,7 @@
 clear
 
 echo "* Preparing ubuntu..."
-sudo apt-get -y install software-properties-common python python-flask lm-sensors python-apt tar wget > /dev/null 2>&1
+sudo apt-get -y install python-software-properties software-properties-common python python-flask lm-sensors python-apt tar wget > /dev/null 2>&1
 
 #echo "* Downloading and installing installer requirements..."
 #Download and install urwid
