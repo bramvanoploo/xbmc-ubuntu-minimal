@@ -28,6 +28,12 @@ a:visited {
     text-decoration: none;
 }
 
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0; 
+}
+
+
 td#steps h4 {
     font-size: 20px;
     color: #3E4967;
