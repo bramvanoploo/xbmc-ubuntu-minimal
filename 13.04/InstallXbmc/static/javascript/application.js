@@ -9,14 +9,14 @@ $(document).ready(function(){
     });
 
     loLoadingDialog = $('#loading').kendoWindow({
-        actions: ["Minimize"],
+        actions: {},
         draggable: true,
-        height: "180px",
-        width: "500px",
+        height: "100px",
+        width: "425px",
         modal: true,
         visible: false,
         resizable: false,
-        title: ""
+        title: "Operation in progress..."
     }).data("kendoWindow");
 
     loConsoleWindow = $('#console').kendoWindow({

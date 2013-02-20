@@ -1,23 +1,122 @@
 {% extends "layout.html" %}
-{% block title %}Welcome{% endblock %}
+{% block title %}System tool{% endblock %}
 {% block head %}
     {{ super() }}
     <script type="text/javascript">
        	$(document).ready(function(){
 			$('#aptUpgrade').bind('click', function(){
-				showLoading('Your system is being updated. Please be patient.');
-				sys.aptUpgrade(function(poData){
-					if(poData && poData.success) {
-						$('#console').append(getDateAndTime()+ ' - System software successfully updated<br />');
-					}
-					else {
-						$('#console').append(getDateAndTime()+ ' - Could not perform system update<br />');
-					}
-					showConsole();
+				showLoading('Your system is being updated.<br />Please be patient.');
+
+				api.aptUpgrade(function(poData){
+					var lstrLog = getDateAndTime()+ ' - ';
+					lstrLog		+= (poData && poData.success)? 'System software successfully updated<br />' : 'Could not perform system update<br />';
+					$('#console').append(lstrLog);
 					hideLoading();
 				});
 
 				return false;
+			});
+
+			$("#installPackageName").kendoAutoComplete({
+			    placeholder: "Search...",
+			    minLength: 2,
+			    dataSource: new kendo.data.DataSource({
+			    	serverFiltering: true,
+			    	transport: {
+			    		read: {
+			    			contentType: "application/json; charset=utf-8",
+    						dataType: "json",
+    	            		url: function(params) {
+	    	                    return "/api?method=ubuntu.aptSearch&params='" +$("#installPackageName").val()+ "',False";
+	    	                }
+		    	        }
+		    	   	},
+		    	   	schema: {
+		    	        data: "result"
+		    	    }
+			    })
+			});
+
+			$("#uninstallPackageName").kendoAutoComplete({
+			    placeholder: "Search...",
+			    minLength: 2,
+			    dataSource: new kendo.data.DataSource({
+			    	serverFiltering: true,
+			    	transport: {
+			    		read: {
+			    			contentType: "application/json; charset=utf-8",
+    						dataType: "json",
+    	            		url: function(params) {
+	    	                    return "/api?method=ubuntu.aptSearch&params='" +$("#uninstallPackageName").val()+ "',True";
+	    	                }
+		    	        }
+		    	   	},
+		    	   	schema: {
+		    	        data: "result"
+		    	    }
+			    })
+			});
+
+			$("#removePpaName").kendoAutoComplete({
+			    placeholder: "Repository name...",
+			    minLength: 2
+			});
+
+			$("#purgePpaName").kendoAutoComplete({
+			    placeholder: "Repository name...",
+			    minLength: 2
+			});
+
+			$('#installPackage').bind('click', function(){
+				var lstrPackageName = $('#installPackageName').val();
+
+				if($.trim(lstrPackageName) == '' || lstrPackageName.length < 4) {
+					alert('Please enter a valid package name first');
+					return false;
+				}
+
+				$('#installPackageName').val('');
+
+				showLoading('Attempting to install ' +lstrPackageName+ '.<br />Please be patient.');
+
+				api.aptInstall(lstrPackageName, function(poResult){
+					var lstrLog = getDateAndTime()+ ' - ';
+					lstrLog		+= (poResult && poResult.result != false)? lstrPackageName+ ' successfully installed<br />' : lstrPackageName+ ' could not be installed or was already installed<br />';
+					$('#console').append(lstrLog);
+					hideLoading();
+				});
+
+				return false;
+			});
+
+			$('#uninstallPackage').bind('click', function(){
+				var lstrPackageName = $('#uninstallPackageName').val();
+
+				if($.trim(lstrPackageName) == '' || lstrPackageName.length < 4) {
+					alert('Please enter a valid package name first');
+					return false;
+				}
+
+				$('#uninstallPackageName').val('');
+
+				showLoading('Attempting to uninstall ' +lstrPackageName+ '.<br />Please be patient.');
+
+				api.aptUninstall(lstrPackageName, function(poResult){
+					var lstrLog = getDateAndTime()+ ' - ';
+					lstrLog		+= (poResult && poResult.result != false)? lstrPackageName+ ' successfully uninstalled<br />' : lstrPackageName+ ' could not be uninstalled<br />';
+					$('#console').append(lstrLog);
+					hideLoading();
+				});
+
+				return false;
+			});
+
+			$('#clearInstallSearch').bind('click', function(){
+				$('#installPackageName').val('');
+			});
+
+			$('#clearUninstallSearch').bind('click', function(){
+				$('#uninstallPackageName').val('');
 			});
        	});
        </script>
@@ -27,7 +126,78 @@
         System tools
     </h1>
     <br />
+    <table>
+    	<tr>
+    		<td class="title">
+    			power controls
+    		</td>
+    		<td>
+    			<button class="k-button" style="font-weight:bold;" id="shutdown">shutdown</button>
+    			<button class="k-button" style="font-weight:bold;" id="shutdown">reboot</button>
+    			<button class="k-button" style="font-weight:bold;" id="shutdown">(re)start XBMC</button>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td class="title">
+    			update system software
+    		</td>
+    		<td>
+    			<button class="k-button" style="font-weight:bold;" id="aptUpgrade">run update</button>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td class="title">
+    			install package
+    		</td>
+    		<td>
+    			<input id="installPackageName" style="width:400px;" />
+    			<button class="k-button" style="font-weight:bold;" id="installPackage">install</button>
+    			<button class="k-button" style="font-weight:bold;" id="clearInstallSearch">clear</button>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td class="title">
+    			uninstall package
+    		</td>
+    		<td>
+    			<input id="uninstallPackageName" style="width:400px;" />
+    			<button class="k-button" style="font-weight:bold;" id="uninstallPackage">uninstall</button>
+    			<button class="k-button" style="font-weight:bold;" id="clearUninstallSearch">clear</button>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td class="title">
+    			add ppa
+    		</td>
+    		<td>
+    			<input id="addPpaName" class="k-textbox" style="width:400px;" />
+    			<button class="k-button" style="font-weight:bold;" id="addPpa">add</button>
+    			<button class="k-button" style="font-weight:bold;" id="clearAddPpa">clear</button>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td class="title">
+    			remove ppa
+    		</td>
+    		<td>
+    			<input id="removePpaName" style="width:400px;" />
+    			<button class="k-button" style="font-weight:bold;" id="removePpa">remove</button>
+    			<button class="k-button" style="font-weight:bold;" id="clearRemovePpa">clear</button>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td class="title">
+    			purge ppa
+    		</td>
+    		<td>
+    			<input id="purgePpaName" style="width:400px;" />
+    			<button class="k-button" style="font-weight:bold;" id="purgePpa">purge</button>
+    			<button class="k-button" style="font-weight:bold;" id="clearPurgePpa">clear</button>
+    		</td>
+    	</tr>
+    </table>
     <span>
-        <button class="k-button" style="font-weight:bold;" id="aptUpgrade">Update system software</button>
+
     </span>
+
 {% endblock %}

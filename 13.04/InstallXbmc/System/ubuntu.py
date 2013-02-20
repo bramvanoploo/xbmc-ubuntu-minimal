@@ -1,4 +1,4 @@
-import os, platform, config, network, shutil, apt, apt.progress, config
+import os, platform, config, network, shutil, apt, apt_pkg, apt.progress, config, command, logging
 from softwareproperties.SoftwareProperties import SoftwareProperties
 
 #System information
@@ -94,12 +94,38 @@ def aptUpgrade():
     return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
 
 def aptInstall(packageName):
-    cache = apt.Cache()
-    if not packageName in cache or cache[packageName].is_installed:
+    apt_pkg.init()
+    apt_pkg.PkgSystemLock()
+    apt_cache = apt.cache.Cache()
+    pkg = apt_cache[packageName]
+
+    if packageName in apt_cache:
+        if pkg.isInstalled:
+            apt_pkg.PkgSystemUnLock()
+            logging.error('Trying to install a package that is already installed (%s)', packageName)
+            return False
+        else:
+            pkg.mark_install()
+            try:
+                apt_pkg.PkgSystemUnLock()
+                result = apt_cache.commit()
+                return result
+            except SystemError as e:
+                logging.exception(e)
+                return False
+    else:
+        loggin.error('Unknown package selected (%s)', packageName)
         return False
-    package = cache[packageName]
-    package.markInstall()
-    return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+
+def aptSearch(packageName, installedPackes):
+    apt_cache = apt.cache.Cache()
+    packages = apt_cache.keys()
+    if installedPackes:
+        result = [value for value in packages if apt_cache[value].isInstalled and packageName in value]
+    else:
+        result = [value for value in packages if not apt_cache[value].isInstalled and packageName in value]
+
+    return result
 
 def isPackageInstalled(packageName):
     cache = apt.Cache()

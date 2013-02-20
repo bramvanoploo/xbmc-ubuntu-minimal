@@ -1,8 +1,9 @@
-import System, json, types
+import System, json, types, logging
 from flask import Flask, render_template, request, Response
 
 app = Flask(__name__)
 db = System.Database.Database(System.config.installation_database)
+logging.basicConfig(filename="installation.log", level=logging.DEBUG)
 
 def methodExists(methodName):
     try:
@@ -65,7 +66,7 @@ def api():
 
     if 'method' in request.args and methodExists('System.'+request.args['method']):
         fullRequest = None
-        if 'params' in request.args and request.args['params'] != '{}':
+        if 'params' in request.args and request.args['params'] != '':
             fullRequest = 'System.'+request.args['method']+'(' +request.args['params']+ ')'
         else:
             fullRequest = 'System.'+request.args['method']+'()'
@@ -74,14 +75,16 @@ def api():
             data = eval(fullRequest)
             result = {
                 'success'   : True,
-                'result'    : str(data)
+                'result'    : data
             }
-        except AttributeError:
+        except AttributeError as e1:
+            logging.exception(e1)
             result = {
                 'success' : False,
                 'message' : 'Illegal request: Attribute error'
             }
-        except TypeError as e:
+        except TypeError as e2:
+            logging.exception(e2)
             result = {
                 'success' : False,
                 'message' : 'Illegal request: Type error'

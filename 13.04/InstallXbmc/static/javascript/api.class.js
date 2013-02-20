@@ -1,6 +1,6 @@
-function System() {
-	this.request = function(pstrMethod, poParams, pfCallback) {
-		var loParams = (poParams == undefined)? {} : poParams;
+function Api() {
+	this.request = function(pstrMethod, pstrParams, pfCallback) {
+		var lstrParams = (pstrParams == undefined)? '' : pstrParams;
 
 		$.ajax({
 			type: 'GET',
@@ -9,7 +9,7 @@ function System() {
 			cache: false,
 			data: {
 				method: pstrMethod,
-				params: JSON.stringify(loParams)
+				params: lstrParams
 			},
 			success: function(data, textStatus, jqXHR) {
 				pfCallback(data);
@@ -21,7 +21,7 @@ function System() {
 	}
 
 	this.getOperatingSystem = function(pstrTarget) {
-		this.request('ubuntu.getVersion', {}, function(poData){
+		this.request('ubuntu.getVersion', '', function(poData){
 			if(poData && poData.success) {
 				$(pstrTarget).html(poData.result);
 			}
@@ -29,7 +29,7 @@ function System() {
 	}
 
 	this.getCpuLoad = function(pstrTarget) {
-		this.request('hardware.getCpuLoad', {}, function(poData){
+		this.request('hardware.getCpuLoad', '', function(poData){
 			if(poData && poData.success) {
 				$(pstrTarget).html(poData.result);
 			}
@@ -37,7 +37,7 @@ function System() {
 	}
 
 	this.getRamInUse = function(pstrTarget) {
-		this.request('hardware.getRamInUse', {}, function(poData){
+		this.request('hardware.getRamInUse', '', function(poData){
 			if(poData && poData.success) {
 				$(pstrTarget).html(poData.result);
 			}
@@ -45,15 +45,21 @@ function System() {
 	}
 
 	this.getTotalRam = function(pstrTarget) {
-		this.request('hardware.getTotalRam', {}, function(poData){
+		this.request('hardware.getTotalRam', '', function(poData){
 			if(poData && poData.success) {
 				$(pstrTarget).html(poData.result);
 			}
 		});
 	}
 
+	this.aptInstall = function(pstrPackageName, pfCallback) {
+		this.request('ubuntu.aptInstall', pstrPackageName, function(poData){
+			pfCallback(poData);
+		});
+	}
+
 	this.aptUpgrade = function(pfCallback) {
-		this.request('ubuntu.aptUpgrade', {}, function(poData){
+		this.request('ubuntu.aptUpgrade', '', function(poData){
 			pfCallback(poData);
 		});
 	}
