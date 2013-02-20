@@ -447,7 +447,7 @@ function configureAtiDriver()
     sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
 }
 
-function disbaleAtiUnderscan()
+function disableAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null 2>&1
