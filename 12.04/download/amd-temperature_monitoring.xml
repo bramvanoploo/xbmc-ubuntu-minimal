@@ -1,0 +1,4 @@
+<advancedsettings>
+  <cputempcommand>sensors|sed -ne "s/temp1: \+[-+]\([0-9]\+\).*/\1 C/p"</cputempcommand>
+  <gputempcommand>/usr/bin/aticonfig --od-gettemperature | grep Temperature | cut -f 2 -d "-" | cut -f 1 -d "." | sed -e "s, ,," | sed 's/$/ C/'</gputempcommand>
+</advancedsettings>
