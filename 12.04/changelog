@@ -8,7 +8,11 @@ TODO
 - [ ] Add support to exit xbmc to terminal
 - [ ] Fix errors around install.
 - [ ] Drop into console login when Exit in Powermenu in XBMC.
+- [ ] Add AMD temperature support via advancedsettings.xml
+- [ ] Add condition in what plymouth is installed and resolution and fixes are applied to NVIDIA only
+- [ ] adduser to dialout group so that whoever uses libcec can benefit.
 
+- [x] Fix typos and more errors
 - [x] Remove apparmor properly
 - [x] Fix Rsyslog service autostart after proper apparmor removal
 - [x] Remove cursor/mouse/X when XBMC starts
