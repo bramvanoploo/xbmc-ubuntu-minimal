@@ -117,6 +117,30 @@ def aptInstall(packageName):
         loggin.error('Unknown package selected (%s)', packageName)
         return False
 
+def aptRemove(packageName, purge = False):
+    apt_pkg.init()
+    apt_pkg.PkgSystemLock()
+    apt_cache = apt.cache.Cache()
+    pkg = apt_cache[packageName]
+
+    if packageName in apt_cache:
+        if not pkg.isInstalled:
+            apt_pkg.PkgSystemUnLock()
+            logging.error('Trying to uninstall a package that is not installed (%s)', packageName)
+            return False
+        else:
+            pkg.mark_delete(purge)
+            try:
+                apt_pkg.PkgSystemUnLock()
+                result = apt_cache.commit()
+                return result
+            except SystemError as e:
+                logging.exception(e)
+                return False
+    else:
+        loggin.error('Unknown package selected (%s)', packageName)
+        return False
+
 def aptSearch(packageName, installedPackes):
     apt_cache = apt.cache.Cache()
     packages = apt_cache.keys()
@@ -125,7 +149,7 @@ def aptSearch(packageName, installedPackes):
     else:
         result = [value for value in packages if not apt_cache[value].isInstalled and packageName in value]
 
-    return result
+    return sorted(result)
 
 def isPackageInstalled(packageName):
     cache = apt.Cache()
@@ -142,10 +166,22 @@ def packageExists(packageName):
     return False
 
 def addPpa(ppaName):
+    if not ppaName.startswith('ppa:') or '/' not in ppaName:
+        return False
     sp = SoftwareProperties()
-    sp.add_source_from_line(ppaName)
+    if not sp.add_source_from_line(ppaName):
+        return False
     sp.sourceslist.save()
-    aptUpgrade()
+    return aptUpdate()
+
+def removePpa(ppaName):
+    if not ppaName.startswith('ppa:') or '/' not in ppaName:
+        return False
+    sp = SoftwareProperties()
+    if not sp.remove_source(ppaName, True):
+        return False
+    sp.sourceslist.save()
+    return aptUpdate()
 
 # Installation methods
 def createTempDirectory():

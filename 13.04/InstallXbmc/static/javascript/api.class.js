@@ -53,13 +53,37 @@ function Api() {
 	}
 
 	this.aptInstall = function(pstrPackageName, pfCallback) {
-		this.request('ubuntu.aptInstall', pstrPackageName, function(poData){
+		this.request('ubuntu.aptInstall', '"' +pstrPackageName+ '"', function(poData){
+			pfCallback(poData);
+		});
+	}
+
+	this.aptRemove = function(pstrPackageName, pfCallback) {
+		this.request('ubuntu.aptRemove', '"' +pstrPackageName+ '"', function(poData){
+			pfCallback(poData);
+		});
+	}
+
+	this.aptUpdate = function(pfCallback) {
+		this.request('ubuntu.aptUpdate', '', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.aptUpgrade = function(pfCallback) {
 		this.request('ubuntu.aptUpgrade', '', function(poData){
+			pfCallback(poData);
+		});
+	}
+
+	this.addPpa = function(pstrPpa, pfCallback) {
+		this.request('ubuntu.addPpa', '"' +pstrPpa+ '"', function(poData){
+			pfCallback(poData);
+		});
+	}
+
+	this.removePpa = function(pstrPpa, pfCallback) {
+		this.request('ubuntu.removePpa', '"' +pstrPpa+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}

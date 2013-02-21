@@ -12,7 +12,7 @@ td {
 
 a {
     text-decoration: none;
-    color: #70C510;
+    color: #3E4967;
     font-size: 15px;
 }
 
@@ -33,10 +33,32 @@ table {
     border-spacing: 0;
 }
 
+input {
+	padding: 3px;
+    outline:none;
+    transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    border-radius:3px;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border:1px solid rgba(62, 73, 103, 0.2);
+}
+
+input:focus {
+    box-shadow: 0 0 5px rgba(112, 197, 16, 1);
+    -webkit-box-shadow: 0 0 5px rgba(112, 197, 16, 1);
+    -moz-box-shadow: 0 0 5px rgba(112, 197, 16, 1);
+    border:1px solid rgba(62, 73, 103, 0.8);
+}
+
+input.working {
+	background: url('../images/loading_16.gif') no-repeat right center;
+}
 
 td#steps h4 {
     font-size: 20px;
-    color: #3E4967;
+    color: #70C510;
     margin: 0px;
     padding: 0px;
     margin-bottom: 10px;
@@ -68,8 +90,8 @@ td#content {
 td.title {
     text-align: right;
     border-right: 1px solid #eee;
-    color: #3E4967;
-    width: 150px;
+    color: #888;
+    width: 140px;
 }
 
 a.active {
@@ -81,12 +103,6 @@ th {
     border-bottom: 1px solid #eee;
     padding-top: 5px;
     color: #70C510;
-}
-
-div.console {
-    font-family: "courier new";
-    height: 100%;
-    cursor: default;
 }
 
 ul {
@@ -113,9 +129,20 @@ ul {
 #loading .message {
 	float: right;
 	padding: 10px;
-	font-size: 16px;
+	font-size: 14px;
 	width: 320px;
 	color: #000;
 	overflow: auto;
 	vertical-align: middle;
+}
+
+.ui-autocomplete {
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0px;
+}
+
+.ui-widget {
+    font-size:14px !important;
 }

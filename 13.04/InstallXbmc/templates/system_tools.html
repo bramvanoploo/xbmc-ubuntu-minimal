@@ -4,119 +4,309 @@
     {{ super() }}
     <script type="text/javascript">
        	$(document).ready(function(){
+       		/*
+       		* System update/upgrade
+       		*/
 			$('#aptUpgrade').bind('click', function(){
 				showLoading('Your system is being updated.<br />Please be patient.');
 
 				api.aptUpgrade(function(poData){
-					var lstrLog = getDateAndTime()+ ' - ';
-					lstrLog		+= (poData && poData.success)? 'System software successfully updated<br />' : 'Could not perform system update<br />';
-					$('#console').append(lstrLog);
+					$.notify_osd.create({
+						'text': (poData && poData.success)? 'System software successfully updated' : 'Could not perform system update'
+					});
+
 					hideLoading();
 				});
 
 				return false;
 			});
 
-			$("#installPackageName").kendoAutoComplete({
-			    placeholder: "Search...",
+			$('#aptUpdate').bind('click', function(){
+				showLoading('Sotware sources are being updated.<br />Please be patient.');
+
+				api.aptUpdate(function(poData){
+					$.notify_osd.create({
+						'text': (poData && poData.success)? 'Software sources successfully updated' : 'Could not update software sources'
+					});
+
+					hideLoading();
+				});
+
+				return false;
+			});
+
+
+       		/*
+       		* Software installation
+       		*/
+			$("#installPackageName").autocomplete({
 			    minLength: 2,
-			    dataSource: new kendo.data.DataSource({
-			    	serverFiltering: true,
-			    	transport: {
-			    		read: {
-			    			contentType: "application/json; charset=utf-8",
-    						dataType: "json",
-    	            		url: function(params) {
-	    	                    return "/api?method=ubuntu.aptSearch&params='" +$("#installPackageName").val()+ "',False";
-	    	                }
-		    	        }
-		    	   	},
-		    	   	schema: {
-		    	        data: "result"
-		    	    }
-			    })
+			    dataType: 'json',
+			    source: function(request, response) {
+			        $.getJSON('/api?method=ubuntu.aptSearch&params="' +$('#installPackageName').val()+ '",False',
+			        	function (data) {
+			            	response($.map(data.result, function(entry) {
+				                return {
+				                    value: entry
+				                }
+				         	}));
+			        	}
+			        );
+			    },
+			    change: function (event, ui) {
+	                if(!ui.item){
+	                	$('#installPackageName').val('');
+	                }
+	            },
+			    search: function(){
+			    	$('#installPackageName').addClass('working');
+			    },
+			    response: function(){
+			    	$('#installPackageName').removeClass('working');
+			    }
 			});
 
-			$("#uninstallPackageName").kendoAutoComplete({
-			    placeholder: "Search...",
-			    minLength: 2,
-			    dataSource: new kendo.data.DataSource({
-			    	serverFiltering: true,
-			    	transport: {
-			    		read: {
-			    			contentType: "application/json; charset=utf-8",
-    						dataType: "json",
-    	            		url: function(params) {
-	    	                    return "/api?method=ubuntu.aptSearch&params='" +$("#uninstallPackageName").val()+ "',True";
-	    	                }
-		    	        }
-		    	   	},
-		    	   	schema: {
-		    	        data: "result"
-		    	    }
-			    })
-			});
-
-			$("#removePpaName").kendoAutoComplete({
-			    placeholder: "Repository name...",
-			    minLength: 2
-			});
-
-			$("#purgePpaName").kendoAutoComplete({
-			    placeholder: "Repository name...",
-			    minLength: 2
+			$("#installPackageName").bind('focus', function(){
+				$(this).autocomplete('search', $(this).val());
 			});
 
 			$('#installPackage').bind('click', function(){
-				var lstrPackageName = $('#installPackageName').val();
+				var lstrPackageName = $.trim($('#installPackageName').val());
 
-				if($.trim(lstrPackageName) == '' || lstrPackageName.length < 4) {
+				if(lstrPackageName.length < 2) {
 					alert('Please enter a valid package name first');
 					return false;
 				}
 
-				$('#installPackageName').val('');
+				$('<div title="Confirm installation"></div>')
+					.html('Are sure you want to install "' +lstrPackageName+ '" and all it\'s dependencies?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 200,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								var loThis = $(this);
+								$('#installPackageName').val('');
+								loThis.dialog("close");
 
-				showLoading('Attempting to install ' +lstrPackageName+ '.<br />Please be patient.');
+								showLoading('Attempting to install "' +lstrPackageName+ '".<br />Please be patient.');
 
-				api.aptInstall(lstrPackageName, function(poResult){
-					var lstrLog = getDateAndTime()+ ' - ';
-					lstrLog		+= (poResult && poResult.result != false)? lstrPackageName+ ' successfully installed<br />' : lstrPackageName+ ' could not be installed or was already installed<br />';
-					$('#console').append(lstrLog);
-					hideLoading();
-				});
+								api.aptInstall(lstrPackageName, function(poResult){
+									$.notify_osd.create({
+										'text': (poResult && poResult.result != false)? '"' +lstrPackageName+ '" successfully installed' : '"' +lstrPackageName+ '" could not be installed or was already installed'
+									});
 
-				return false;
-			});
+									hideLoading();
+								});
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'Installation of "' +lstrPackageName+ '" cancelled.'
+								});
 
-			$('#uninstallPackage').bind('click', function(){
-				var lstrPackageName = $('#uninstallPackageName').val();
-
-				if($.trim(lstrPackageName) == '' || lstrPackageName.length < 4) {
-					alert('Please enter a valid package name first');
-					return false;
-				}
-
-				$('#uninstallPackageName').val('');
-
-				showLoading('Attempting to uninstall ' +lstrPackageName+ '.<br />Please be patient.');
-
-				api.aptUninstall(lstrPackageName, function(poResult){
-					var lstrLog = getDateAndTime()+ ' - ';
-					lstrLog		+= (poResult && poResult.result != false)? lstrPackageName+ ' successfully uninstalled<br />' : lstrPackageName+ ' could not be uninstalled<br />';
-					$('#console').append(lstrLog);
-					hideLoading();
-				});
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
 
 				return false;
 			});
 
 			$('#clearInstallSearch').bind('click', function(){
 				$('#installPackageName').val('');
+				$('#installPackageName').removeClass('working');
+			});
+
+			/*
+       		* Software removal
+       		*/
+			$("#uninstallPackageName").autocomplete({
+			    minLength: 0,
+			    dataType: 'json',
+			    source: function (request, response) {
+			        $.getJSON('/api?method=ubuntu.aptSearch&params="' +$('#uninstallPackageName').val()+ '",True',
+			        	function (data) {
+			            	response($.map(data.result, function(entry) {
+				                return {
+				                    value: entry
+				                }
+				         	}));
+			        	}
+			        );
+			    },
+			    change: function (event, ui) {
+	                if(!ui.item){
+	                	$('#uninstallPackageName').val('');
+	                }
+	            },
+			    search: function(){
+			    	$('#uninstallPackageName').addClass('working');
+			    },
+			    response: function(){
+			    	$('#uninstallPackageName').removeClass('working');
+			    }
+			});
+
+			$("#uninstallPackageName").bind('focus', function(){
+				$(this).autocomplete('search', $(this).val());
+			});
+
+			$('#uninstallPackage').bind('click', function(){
+				var lstrPackageName = $.trim($('#uninstallPackageName').val());
+
+				if(lstrPackageName.length < 2) {
+					alert('Please enter a valid package name first');
+					return false;
+				}
+
+				$('<div title="Confirm removal"></div>')
+					.html('Are sure you want to uninstall "' +lstrPackageName+ '"?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 200,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								var loThis = $(this);
+								$('#uninstallPackageName').val('');
+								loThis.dialog("close");
+
+								showLoading('Attempting to uninstall "' +lstrPackageName+ '".<br />Please be patient.');
+
+								api.aptRemove(lstrPackageName, function(poResult){
+									$.notify_osd.create({
+										'text': (poResult && poResult.result != false)? '"' +lstrPackageName+ '" successfully removed' : '"' +lstrPackageName+ '" could not be uninstalled or was already removed'
+									});
+
+									hideLoading();
+								});
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'Uninstallation of ' +lstrPackageName+ ' cancelled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+
+				return false;
 			});
 
 			$('#clearUninstallSearch').bind('click', function(){
 				$('#uninstallPackageName').val('');
+				$('#uninstallPackageName').removeClass('working');
+			});
+
+			/*
+			* Manage repositories
+			*/
+			$('#addPpa').bind('click', function(){
+				var lstrPpaName = $.trim($('#addPpaName').val());
+
+				if(lstrPpaName.length < 7) {
+					alert('Please enter a valid repository name (i.e. "ppa:user/repository")');
+					return false;
+				}
+
+				$('<div title="Confirm adding repository"></div>')
+					.html('Are you sure you want to add repository "' +lstrPpaName+ '" ?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 200,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								var loThis = $(this);
+								$('#addPpaName').val('');
+								loThis.dialog("close");
+
+								showLoading('Attempting to add the repository "' +lstrPpaName+ '".<br />Please be patient.');
+
+								api.addPpa(lstrPpaName, function(poResult){
+									$.notify_osd.create({
+										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" successfully added' : 'Repository "' +lstrPpaName+ '" could not be added. Are you sure it exists or isn\'t already available?'
+									});
+
+									hideLoading();
+								});
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'Adding repository "' +lstrPpaName+ '" cancelled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+
+				return false;
+			});
+
+			$('#clearAddPpa').bind('click', function(){
+				$('#addPpaName').val('');
+			});
+
+			$('#removePpa').bind('click', function(){
+				var lstrPpaName = $.trim($('#removePpaName').val());
+
+				if(lstrPpaName.length < 7) {
+					alert('Please enter a valid repository name (i.e. "ppa:user/repository")');
+					return false;
+				}
+
+				$('<div title="Confirm removing repository"></div>')
+					.html('Are you sure you want to remove repository "' +lstrPpaName+ '" ?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 200,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								var loThis = $(this);
+								$('#removePpaName').val('');
+								loThis.dialog("close");
+
+								showLoading('Attempting to add the repository "' +lstrPpaName+ '".<br />Please be patient.');
+
+								api.removePpa(lstrPpaName, function(poResult){
+									$.notify_osd.create({
+										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" successfully removed' : 'Repository "' +lstrPpaName+ '" could not be removed. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
+									});
+
+									hideLoading();
+								});
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'Repository removal for "' +lstrPpaName+ '" cancelled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+
+				return false;
+			});
+
+			$('#clearRemovePpa').bind('click', function(){
+				$('#removePpaName').val('');
 			});
        	});
        </script>
@@ -132,9 +322,9 @@
     			power controls
     		</td>
     		<td>
-    			<button class="k-button" style="font-weight:bold;" id="shutdown">shutdown</button>
-    			<button class="k-button" style="font-weight:bold;" id="shutdown">reboot</button>
-    			<button class="k-button" style="font-weight:bold;" id="shutdown">(re)start XBMC</button>
+    			<button id="shutdown" title="Turn off the machine">shutdown</button>
+    			<button id="reboot" title="Power of and restart the machine">reboot</button>
+    			<button id="restartXbmc" title="If applicable close, and restart XBMC">(re)start XBMC</button>
     		</td>
     	</tr>
     	<tr>
@@ -142,7 +332,17 @@
     			update system software
     		</td>
     		<td>
-    			<button class="k-button" style="font-weight:bold;" id="aptUpgrade">run update</button>
+    			<button id="aptUpdate" title="Refresh the machines software sources">update software sources</button>
+    			<button id="aptDistUpgrade" title="Apply available software upgrades">upgrade software</button>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td class="title">
+    			maintenance
+    		</td>
+    		<td>
+    			<button id="aptAutoClean" title="Clean up the software managers cache">clean software installation cache</button>
+    			<button id="aptAutoRemove" title="Remove packages that are no longer required">uninstall obsolete software</button>
     		</td>
     	</tr>
     	<tr>
@@ -150,9 +350,9 @@
     			install package
     		</td>
     		<td>
-    			<input id="installPackageName" style="width:400px;" />
-    			<button class="k-button" style="font-weight:bold;" id="installPackage">install</button>
-    			<button class="k-button" style="font-weight:bold;" id="clearInstallSearch">clear</button>
+    			<input type="text" id="installPackageName" placeholder="Search..." style="width:400px;" title="Suggests packages that aren't already installed" />
+    			<button id="installPackage">install</button>
+    			<button id="clearInstallSearch">clear</button>
     		</td>
     	</tr>
     	<tr>
@@ -160,41 +360,43 @@
     			uninstall package
     		</td>
     		<td>
-    			<input id="uninstallPackageName" style="width:400px;" />
-    			<button class="k-button" style="font-weight:bold;" id="uninstallPackage">uninstall</button>
-    			<button class="k-button" style="font-weight:bold;" id="clearUninstallSearch">clear</button>
+    			<input type="text" id="uninstallPackageName" placeholder="Search..." style="width:400px;" title="Suggests packages that are already installed" />
+    			<button id="uninstallPackage">uninstall</button>
+    			<button id="clearUninstallSearch">clear</button>
     		</td>
     	</tr>
     	<tr>
     		<td class="title">
-    			add ppa
+    			<a href="https://launchpad.net/ubuntu/+ppas" target="_blank" title="Search for repositories on launchpad.net" style="font-size:12px;">add repository</a>
     		</td>
     		<td>
-    			<input id="addPpaName" class="k-textbox" style="width:400px;" />
-    			<button class="k-button" style="font-weight:bold;" id="addPpa">add</button>
-    			<button class="k-button" style="font-weight:bold;" id="clearAddPpa">clear</button>
+    			<input type="text" id="addPpaName" placeholder="ppa::user/repository" style="width:400px;" title="Add a launchpad ppa repository. Make sure the ppa is available for your ubuntu version!" />
+    			<button id="addPpa">add</button>
+    			<button id="clearAddPpa">clear</button>
     		</td>
     	</tr>
     	<tr>
     		<td class="title">
-    			remove ppa
+    			remove repository
     		</td>
     		<td>
-    			<input id="removePpaName" style="width:400px;" />
-    			<button class="k-button" style="font-weight:bold;" id="removePpa">remove</button>
-    			<button class="k-button" style="font-weight:bold;" id="clearRemovePpa">clear</button>
+    			<input type="text" id="removePpaName" placeholder="ppa::user/repository" style="width:400px;" title="Remove repository from software sources" />
+    			<button id="removePpa">remove</button>
+    			<button id="clearRemovePpa">clear</button>
     		</td>
     	</tr>
+    	<!--
     	<tr>
     		<td class="title">
     			purge ppa
     		</td>
     		<td>
-    			<input id="purgePpaName" style="width:400px;" />
-    			<button class="k-button" style="font-weight:bold;" id="purgePpa">purge</button>
-    			<button class="k-button" style="font-weight:bold;" id="clearPurgePpa">clear</button>
+    			<input type="text" id="purgePpaName" placeholder="ppa::user/repository" style="width:400px;" title="Remove repository and downgrade/remove all related packages" />
+    			<button id="purgePpa">purge</button>
+    			<button id="clearPurgePpa">clear</button>
     		</td>
     	</tr>
+    	-->
     </table>
     <span>
 

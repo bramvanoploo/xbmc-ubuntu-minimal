@@ -1,74 +1,41 @@
 var loSystemInfoWindow, loConsoleWindow, loLoadingDialog;
 
 $(document).ready(function(){
+	loSystemInfoWindow = $('#systemInfo').dialog({
+        draggable: true,
+        height: 470,
+        width: 700,
+        modal: true,
+        resizable: false,
+        autoOpen: false
+    }).load('/system');
+
+	loLoadingDialog = $("#loading").dialog({
+        modal: true,
+        draggable: true,
+        height: 150,
+        width: 450,
+        autoOpen: false,
+        closeOnEscape: false,
+        open: function(event, ui) {
+        	$(".ui-dialog-titlebar-close", ui.dialog).remove();
+        }
+  });
+
     $('#openSystemInfo').bind('click', function(){
-        populateSystemInfo();
-        loSystemInfoWindow.center();
-        loSystemInfoWindow.open();
+    	loSystemInfoWindow.dialog('open');
         return false;
     });
-
-    loLoadingDialog = $('#loading').kendoWindow({
-        actions: {},
-        draggable: true,
-        height: "100px",
-        width: "425px",
-        modal: true,
-        visible: false,
-        resizable: false,
-        title: "Operation in progress..."
-    }).data("kendoWindow");
-
-    loConsoleWindow = $('#console').kendoWindow({
-        actions: ["Minimize"],
-        draggable: false,
-        height: "250px",
-        width: "100%",
-        modal: false,
-        visible: true,
-        resizable: false,
-        title: "Console"
-    }).data("kendoWindow");
-
-    $('#console').closest(".k-window").css({
-        bottom: "0px",
-        left: "0px"
-    });
-
-    loLoadingDialog.center();
-    loConsoleWindow.minimize();
 });
 
 function showLoading(pstrMessage) {
 	$('#loading .message').html(pstrMessage);
-	loLoadingDialog.open();
+	loLoadingDialog.dialog('open');
 }
 
 function hideLoading() {
 	$('#loading .message').html('');
-	loLoadingDialog.close();
-}
-
-function showConsole() {
-	$('#console .k-i-restore').parent().trigger('click');
-}
-
-function hideConsole() {
-	loConsoleWindow.minimize();
-}
-
-function populateSystemInfo() {
-     loSystemInfoWindow = $('#systemInfo').kendoWindow({
-        content: "/system",
-        actions: ["Maximize", "Close"],
-        draggable: true,
-        height: "430px",
-        width: "700px",
-        modal: true,
-        visible: false,
-        resizable: false,
-        title: "System information"
-    }).data("kendoWindow");
+	loLoadingDialog.dialog('close');
 }
 
 function apiRequest(pstrMethod, poParams, pfCallback) {

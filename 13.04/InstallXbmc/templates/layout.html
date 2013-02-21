@@ -6,11 +6,12 @@
         <title>
             {% block title %}{% endblock %} - XBMC Minimal Installation
         </title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kendoui/kendo.common.min.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kendoui/kendo.uniform.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/xbmc-installer-theme/jquery-ui-1.10.1.custom.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-notify-osd/notify-osd.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-        <script type="text/javascript" src="{{ url_for('static', filename='javascript/kendoui/jquery.min.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='javascript/kendoui/kendo.web.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/jquery-1.9.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/jquery-ui-1.10.1.custom.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/jquery-notify-osd/notify-osd.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/application.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/api.class.js') }}"></script>
         <script type="text/javascript">
@@ -23,6 +24,30 @@
         		api.getOperatingSystem('#operatingSystem');
         		setInterval('api.getCpuLoad("#cpuLoad")', 5000);
         		setInterval('api.getRamInUse("#ramInUse")', 5000);
+
+        		$.notify_osd.setup({
+        	    	'visible_max': 4,
+        	    	'sticky': false,
+        	    	'timeout': 8,
+        	    	'dismissable': true
+        		});
+
+        		$('input, button, a').not('.ui-button').tooltip({
+					show: null,
+					position: {
+					  	my: 'left bottom-20',
+					  	at: 'left top'
+					},
+					open: function(event, ui) {
+					  	ui.tooltip.animate({
+					  		top: ui.tooltip.position().top + 10
+					  	},
+					  	150);
+    		   		},
+    		   		hide: {
+   		            	duration: 100
+   		          	}
+        		});
         	});
         </script>
         {% endblock %}
@@ -116,9 +141,10 @@
         </table>
     </center>
 
-    <div id="systemInfo"></div>
+    <div id="systemInfo" title="System info"></div>
     <div id="console"></div>
-    <div id="loading">
+    <div id="confirm"></div>
+    <div id="loading" title="Operation in progress...">
     	<div class="icon"></div>
     	<div class="message"></div>
     </div>
