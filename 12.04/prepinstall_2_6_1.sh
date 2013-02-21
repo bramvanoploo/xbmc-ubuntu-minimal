@@ -1,13 +1,13 @@
 #!/bin/bash
 #
 # @author   Bram van Oploo / Edited by uNiversal
-# @date     2013-02-10
-# @version  2.6.1
+# @date     2013-02-22
+# @version  2.6.2
 #
 
 XBMC_USER="xbmc"
 THIS_FILE=$0
-SCRIPT_VERSION="2.6.1"
+SCRIPT_VERSION="2.6.2"
 VIDEO_DRIVER=""
 HOME_DIRECTORY="/home/$XBMC_USER/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
@@ -285,7 +285,7 @@ function addUserToRequiredGroups()
         sudo adduser $XBMC_USER video > /dev/null 2>&1
 	sudo adduser $XBMC_USER audio > /dev/null 2>&1
 	sudo adduser $XBMC_USER users > /dev/null 2>&1
-	sudo adduser $XBMC_USER fuse  > /dev/null 2>&1
+	sudo adduser $XBMC_USER fuse > /dev/null 2>&1
 	sudo adduser $XBMC_USER cdrom > /dev/null 2>&1
 	sudo adduser $XBMC_USER plugdev > /dev/null 2>&1
 	sudo adduser $XBMC_USER dialout > /dev/null 2>&1
@@ -943,6 +943,7 @@ control_c()
 clear
 
 createFile "$LOG_FILE" 0 1
+cat $LOG_FILE | pastebinit 
 
 echo ""
 installDependencies
