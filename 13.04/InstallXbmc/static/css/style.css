@@ -1,9 +1,10 @@
 html, body {
-    font-size: 14px;
+    font-size: 12px;
     padding: 0px;
     margin: 0px;
     background-color: #efefef;
     overflow: hidden;
+    font-family: 'Ubuntu', sans-serif !important;
 }
 
 td {
@@ -13,7 +14,6 @@ td {
 a {
     text-decoration: none;
     color: #3E4967;
-    font-size: 15px;
 }
 
 a:hover {
@@ -64,6 +64,12 @@ td#steps h4 {
     margin-bottom: 10px;
 }
 
+h1 {
+	font-size: 20px;
+	border-bottom: 1px dotted #efefef;
+	color: #5a5a5a;
+}
+
 td#steps {
     width: 200px;
     border: 1px solid #ddd;
@@ -71,6 +77,7 @@ td#steps {
     vertical-align: top;
     text-align: right;
     background-color: #fefefe;
+    box-shadow: -6px 0px 10px -7px #888;
 }
 
 td#content {
@@ -81,6 +88,7 @@ td#content {
     height: 500px;
     vertical-align: top;
     background: url('../images/xbmc_logo.png') no-repeat bottom right #fff;
+    box-shadow: 6px 0px 10px -7px #888;
 }
 
 #content h1 {
@@ -129,7 +137,7 @@ ul {
 #loading .message {
 	float: right;
 	padding: 10px;
-	font-size: 14px;
+	font-size: 12px;
 	width: 320px;
 	color: #000;
 	overflow: auto;
@@ -143,6 +151,14 @@ ul {
     padding-right: 0px;
 }
 
-.ui-widget {
-    font-size:14px !important;
+.ui-widget, .ui-tooltip {
+    font-size: 12px !important;
+    font-family: 'Ubuntu', sans-serif !important;
+}
+
+.ui-button, .ui-button-text .ui-button {
+	font-family: 'Ubuntu', sans-serif !important;
+	font-size: 12px !important;
+	font-weight: normal !important;
+	line-height: 1.0 !important;
 }

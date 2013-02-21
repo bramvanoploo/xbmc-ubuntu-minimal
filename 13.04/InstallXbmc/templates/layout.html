@@ -6,6 +6,7 @@
         <title>
             {% block title %}{% endblock %} - XBMC Minimal Installation
         </title>
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400' rel='stylesheet' type='text/css' />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/xbmc-installer-theme/jquery-ui-1.10.1.custom.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-notify-osd/notify-osd.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
@@ -48,6 +49,10 @@
    		            	duration: 100
    		          	}
         		});
+
+        		$('input[type=submit], button').button().click(function(event) {
+        	    	event.preventDefault();
+        	    });
         	});
         </script>
         {% endblock %}
