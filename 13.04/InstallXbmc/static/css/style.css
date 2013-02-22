@@ -1,8 +1,15 @@
+html {
+	background: url(../images/wallpaper_5.png) no-repeat center center fixed;
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+}
+
 html, body {
     font-size: 12px;
     padding: 0px;
     margin: 0px;
-    background-color: #efefef;
     overflow: hidden;
     font-family: 'Ubuntu', sans-serif !important;
 }
@@ -33,6 +40,14 @@ table {
     border-spacing: 0;
 }
 
+/*table.main_structure {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  filter: alpha(opacity=90);
+  -moz-opacity: 0.9;
+  -khtml-opacity: 0.9;
+  opacity: 0.9;
+}*/
+
 input {
 	padding: 3px;
     outline:none;
@@ -49,7 +64,7 @@ input:focus {
     box-shadow: 0 0 5px rgba(112, 197, 16, 1);
     -webkit-box-shadow: 0 0 5px rgba(112, 197, 16, 1);
     -moz-box-shadow: 0 0 5px rgba(112, 197, 16, 1);
-    border:1px solid rgba(62, 73, 103, 0.8);
+    border:1px solid #6D758C;
 }
 
 input.working {
@@ -58,16 +73,18 @@ input.working {
 
 td#steps h4 {
     font-size: 20px;
-    color: #70C510;
+    color: #FFF;
     margin: 0px;
     padding: 0px;
     margin-bottom: 10px;
+    text-shadow: 0 0 2px #70C510;
 }
 
 h1 {
 	font-size: 20px;
-	border-bottom: 1px dotted #efefef;
+	border-bottom: 2px dotted #f5f5f5;
 	color: #5a5a5a;
+	text-align: center;
 }
 
 td#steps {
@@ -77,7 +94,7 @@ td#steps {
     vertical-align: top;
     text-align: right;
     background-color: #fefefe;
-    box-shadow: -6px 0px 10px -7px #888;
+    box-shadow: -6px 7px 10px -7px #000;
 }
 
 td#content {
@@ -88,7 +105,7 @@ td#content {
     height: 500px;
     vertical-align: top;
     background: url('../images/xbmc_logo.png') no-repeat bottom right #fff;
-    box-shadow: 6px 0px 10px -7px #888;
+    box-shadow: 6px 7px 10px -7px #000;
 }
 
 #content h1 {
@@ -97,7 +114,7 @@ td#content {
 
 td.title {
     text-align: right;
-    border-right: 1px solid #eee;
+    border-right: 1px solid #f5f5f5;
     color: #888;
     width: 140px;
 }
@@ -108,9 +125,10 @@ a.active {
 
 th {
     text-align: left;
-    border-bottom: 1px solid #eee;
-    padding-top: 5px;
-    color: #70C510;
+    border-bottom: 1px solid #f5f5f5;
+    color: #6D758C;
+    font-size: 11px;
+    /*text-shadow: 0 0 2px #3E4967;*/
 }
 
 ul {
@@ -121,10 +139,10 @@ ul {
 }
 
 #footer td {
-    font-size: 12px;
-    color: #999;
+    font-size: 10px;
+    color: #fff;
     margin: 0px auto;
-    text-shadow: 0 0 7px #aaa;
+    text-shadow: 0 0 2px #fff;
 }
 
 #loading .icon {
@@ -154,6 +172,12 @@ ul {
 .ui-widget, .ui-tooltip {
     font-size: 12px !important;
     font-family: 'Ubuntu', sans-serif !important;
+}
+
+.ui-tooltip {
+	color: #70C510;
+	font-size: 11px !important;
+	max-width: 500px !important;
 }
 
 .ui-button, .ui-button-text .ui-button {

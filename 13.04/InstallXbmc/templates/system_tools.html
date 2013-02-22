@@ -7,10 +7,10 @@
        		/*
        		* System update/upgrade
        		*/
-			$('#aptUpgrade').bind('click', function(){
+			$('#aptDistUpgrade').bind('click', function(){
 				showLoading('Your system is being updated.<br />Please be patient.');
 
-				api.aptUpgrade(function(poData){
+				api.aptDistUpgrade(function(poData){
 					$.notify_osd.create({
 						'text': (poData && poData.success)? 'System software successfully updated' : 'Could not perform system update'
 					});
@@ -231,7 +231,7 @@
 								$('#addPpaName').val('');
 								loThis.dialog("close");
 
-								showLoading('Attempting to add the repository "' +lstrPpaName+ '".<br />Please be patient.');
+								showLoading('Attempting to add repository "' +lstrPpaName+ '".<br />Please be patient.');
 
 								api.addPpa(lstrPpaName, function(poResult){
 									$.notify_osd.create({
@@ -281,7 +281,7 @@
 								$('#removePpaName').val('');
 								loThis.dialog("close");
 
-								showLoading('Attempting to add the repository "' +lstrPpaName+ '".<br />Please be patient.');
+								showLoading('Attempting to remove repository "' +lstrPpaName+ '".<br />Please be patient.');
 
 								api.removePpa(lstrPpaName, function(poResult){
 									$.notify_osd.create({
@@ -308,6 +308,188 @@
 			$('#clearRemovePpa').bind('click', function(){
 				$('#removePpaName').val('');
 			});
+
+			$('#purgePpa').bind('click', function(){
+				var lstrPpaName = $.trim($('#purgePpaName').val());
+
+				if(lstrPpaName.length < 7) {
+					alert('Please enter a valid repository name (i.e. "ppa:user/repository")');
+					return false;
+				}
+
+				$('<div title="Confirm purging repository"></div>')
+					.html('Are you sure you want to purge repository "' +lstrPpaName+ '" ?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 200,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								var loThis = $(this);
+								$('#purgePpaName').val('');
+								loThis.dialog("close");
+
+								showLoading('Attempting to purge repository "' +lstrPpaName+ '".<br />Please be patient.');
+
+								api.removePpa(lstrPpaName, function(poResult){
+									$.notify_osd.create({
+										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" successfully purged' : 'Repository "' +lstrPpaName+ '" could not be purged. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
+									});
+
+									hideLoading();
+								});
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'Repository purging for "' +lstrPpaName+ '" cancelled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+
+				return false;
+			});
+
+			$('#clearPurgePpa').bind('click', function(){
+				$('#purgePpaName').val('');
+			});
+
+			/*
+			* Maintenance methods
+			*/
+			$('#aptAutoClean').bind('click', function(){
+				api.request('ubuntu.aptAutoClean', '', function(poResult){
+					if(poResult && poResult.success) {
+						$.notify_osd.create({
+							'text': 'Software managers cache successfully emptied'
+						});
+					}
+					else {
+						$.notify_osd.create({
+							'text': 'ERROR: The software managers cache could not be emptied'
+						});
+					}
+				});
+
+				return false;
+			});
+
+			$('#aptAutoRemove').bind('click', function(){
+				api.request('ubuntu.aptAutoRemove', '', function(poResult){
+					if(poResult && poResult.success) {
+						$.notify_osd.create({
+							'text': 'Obsolete software has successfully been removed'
+						});
+					}
+					else {
+						$.notify_osd.create({
+							'text': 'ERROR: Obsolete software could not be removed'
+						});
+					}
+				});
+
+				return false;
+			});
+
+			/*
+			*	Power controls
+			*/
+			$('#rebootSystem').bind('click', function(){
+				$('<div title="Confirm system reboot"></div>')
+					.html('Are you sure you want to reboot your system?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 150,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								$(this).dialog("close");
+
+								api.reboot(function(pbSuccess){
+									if(pbSuccess) {
+										var loRebootDialog = $('<div title="System reboot">Your system is rebooting. Please reload this page in a minute or so.<br /></div>').appendTo('body');
+										loRebootDialog.dialog({
+											modal: true,
+											width: 400,
+											height: 150,
+											open: function(event, ui) {
+									        	$(".ui-dialog-titlebar-close", ui.dialog).remove();
+									        }
+										});
+									}
+									else {
+										$.notify_osd.create({
+											'text': 'ERROR: Reboot command could not be executed.'
+										});
+									}
+								});
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'System reboot canceled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+
+				return false;
+			});
+
+			$('#shutdownSystem').bind('click', function(){
+				$('<div title="Confirm system shutdown"></div>')
+					.html('Are you sure you want to turn off your computer?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 150,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								$(this).dialog("close");
+
+								api.shutdown(function(pbSuccess){
+									if(pbSuccess) {
+										var loRebootDialog = $('<div title="System shutdown">Your system is shutting down. This application will no longer respond.<br /></div>').appendTo('body');
+										loRebootDialog.dialog({
+											modal: true,
+											width: 400,
+											height: 150,
+											open: function(event, ui) {
+									        	$(".ui-dialog-titlebar-close", ui.dialog).remove();
+									        }
+										});
+									}
+									else {
+										$.notify_osd.create({
+											'text': 'ERROR: Shutdown command could not be executed.'
+										});
+									}
+								});
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'System shutdown canceled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+
+				return false;
+			});
        	});
        </script>
 {% endblock %}
@@ -318,32 +500,55 @@
     <br />
     <table>
     	<tr>
-    		<td class="title">
-    			power controls
-    		</td>
+    		<th colspan="2">
+    			Power controls
+    		</th>
+    	</tr>
+    	<tr>
+    		<td class="title"></td>
     		<td>
-    			<button id="shutdown" title="Turn off the machine">shutdown</button>
-    			<button id="reboot" title="Power of and restart the machine">reboot</button>
-    			<button id="restartXbmc" title="If applicable close, and restart XBMC">(re)start XBMC</button>
+    			<button id="shutdownSystem" title="Turn off the machine">shutdown</button>
+    			<button id="rebootSystem" title="Power of and restart the machine">reboot</button>
+    			<!-- <button id="restartXbmc" title="If applicable close, and restart XBMC">(re)start XBMC</button> -->
     		</td>
     	</tr>
     	<tr>
-    		<td class="title">
-    			update system software
-    		</td>
+    		<td colspan="2"></td>
+    	</tr>
+    	<tr>
+    		<th colspan="2">
+    			Update system software
+    		</th>
+    	</tr>
+    	<tr>
+    		<td class="title"></td>
     		<td>
-    			<button id="aptUpdate" title="Refresh the machines software sources">update software sources</button>
-    			<button id="aptDistUpgrade" title="Apply available software upgrades">upgrade software</button>
+    			<button id="aptUpdate" title="Refresh Ubuntus software sources">update software sources</button>
+    			<button id="aptDistUpgrade" title="Install available software upgrades">upgrade software</button>
     		</td>
     	</tr>
     	<tr>
-    		<td class="title">
-    			maintenance
-    		</td>
+    		<td colspan="2"></td>
+    	</tr>
+    	<tr>
+    		<th colspan="2">
+    			Maintenance
+    		</th>
+    	</tr>
+    	<tr>
+    		<td class="title"></td>
     		<td>
-    			<button id="aptAutoClean" title="Clean up the software managers cache">clean software installation cache</button>
+    			<button id="aptAutoClean" title="Clean up the software managers cache">clean cache</button>
     			<button id="aptAutoRemove" title="Remove packages that are no longer required">uninstall obsolete software</button>
     		</td>
+    	</tr>
+    	<tr>
+    		<td colspan="2"></td>
+    	</tr>
+    	<tr>
+    		<th colspan="2">
+    			Package management
+    		</th>
     	</tr>
     	<tr>
     		<td class="title">
@@ -351,8 +556,8 @@
     		</td>
     		<td>
     			<input type="text" id="installPackageName" placeholder="Search..." style="width:400px;" title="Suggests packages that are not installed" />
+    			<button id="clearInstallSearch">-</button>
     			<button id="installPackage">install</button>
-    			<button id="clearInstallSearch">clear</button>
     		</td>
     	</tr>
     	<tr>
@@ -361,9 +566,17 @@
     		</td>
     		<td>
     			<input type="text" id="uninstallPackageName" placeholder="Search..." style="width:400px;" title="Suggests packages that are already installed" />
+    			<button id="clearUninstallSearch">-</button>
     			<button id="uninstallPackage">uninstall</button>
-    			<button id="clearUninstallSearch">clear</button>
     		</td>
+    	</tr>
+    	<tr>
+    		<td colspan="2"></td>
+    	</tr>
+    	<tr>
+    		<th colspan="2">
+    			Repository management
+    		</th>
     	</tr>
     	<tr>
     		<td class="title">
@@ -371,8 +584,8 @@
     		</td>
     		<td>
     			<input type="text" id="addPpaName" placeholder="ppa::user/repository" style="width:400px;" title="Add a launchpad ppa repository. Make sure the ppa is available for your ubuntu version!" />
+    			<button id="clearAddPpa">-</button>
     			<button id="addPpa">add</button>
-    			<button id="clearAddPpa">clear</button>
     		</td>
     	</tr>
     	<tr>
@@ -381,8 +594,8 @@
     		</td>
     		<td>
     			<input type="text" id="removePpaName" placeholder="ppa::user/repository" style="width:400px;" title="Remove repository from software sources" />
+    			<button id="clearRemovePpa">-</button>
     			<button id="removePpa">remove</button>
-    			<button id="clearRemovePpa">clear</button>
     		</td>
     	</tr>
     	<!--

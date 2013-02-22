@@ -16,9 +16,9 @@ def methodExists(methodName):
 def index():
     return render_template('index.html')
 
-@app.route('/system')
+@app.route('/system_info')
 def system():
-    return render_template('system.ajax.html',
+    return render_template('system_info.html',
         os                  = System.ubuntu.getVersion(),
         kernel              = System.ubuntu.getKernelVersion(),
         gpu_manufacturer    = System.hardware.getGpuManufacturer(),
@@ -52,11 +52,6 @@ def footer():
         total_ram   = System.hardware.getTotalRam(),
         ram_in_use  = System.hardware.getRamInUse())
 
-@app.route('/system_console')
-def system_console():
-    return render_template('console.ajax.html',
-        test_var = db.get('installation_steps', 'prepare_system'))
-
 @app.route('/api')
 def api():
     result = {
@@ -73,22 +68,23 @@ def api():
 
         try:
             data = eval(fullRequest)
-            result = {
-                'success'   : True,
-                'result'    : data
-            }
+
+            if isinstance(data, bool):
+                result = {
+                    'success'   : data,
+                    'result'    : data
+                }
+            else:
+                result = {
+                    'success'   : True,
+                    'result'    : data
+                }
         except AttributeError as e1:
             logging.exception(e1)
-            result = {
-                'success' : False,
-                'message' : 'Illegal request: Attribute error'
-            }
+            result.message = 'Illegal request: Attribute error'
         except TypeError as e2:
             logging.exception(e2)
-            result = {
-                'success' : False,
-                'message' : 'Illegal request: Type error'
-            }
+            result.message = 'Illegal request: Type error'
 
     jsonResult = json.dumps(result)
     response = Response(jsonResult, status=200, mimetype='application/json')

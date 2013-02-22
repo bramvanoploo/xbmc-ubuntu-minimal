@@ -86,23 +86,23 @@ def aptUpdate():
     cache.update()
     return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
 
-def aptUpgrade():
-    cache = apt.Cache()
-    cache.update()
-    cache.open(None)
-    cache.upgrade(True)
-    return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+def aptDistUpgrade():
+    apt_cache = apt.Cache()
+    apt_cache.update()
+    apt_cache.open(None)
+    apt_cache.upgrade(True)
+    return apt_cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
 
 def aptInstall(packageName):
     apt_pkg.init()
     apt_pkg.PkgSystemLock()
     apt_cache = apt.cache.Cache()
-    pkg = apt_cache[packageName]
+    pkg = apt_cache[packageName.strip()]
 
-    if packageName in apt_cache:
+    if packageName.strip() in apt_cache:
         if pkg.isInstalled:
             apt_pkg.PkgSystemUnLock()
-            logging.error('Trying to install a package that is already installed (%s)', packageName)
+            logging.error('Trying to install a package that is already installed (%s)', packageName.strip())
             return False
         else:
             pkg.mark_install()
@@ -114,19 +114,19 @@ def aptInstall(packageName):
                 logging.exception(e)
                 return False
     else:
-        loggin.error('Unknown package selected (%s)', packageName)
+        loggin.error('Unknown package selected (%s)', packageName.strip())
         return False
 
 def aptRemove(packageName, purge = False):
     apt_pkg.init()
     apt_pkg.PkgSystemLock()
     apt_cache = apt.cache.Cache()
-    pkg = apt_cache[packageName]
+    pkg = apt_cache[packageName.strip()]
 
-    if packageName in apt_cache:
+    if packageName.strip() in apt_cache:
         if not pkg.isInstalled:
             apt_pkg.PkgSystemUnLock()
-            logging.error('Trying to uninstall a package that is not installed (%s)', packageName)
+            logging.error('Trying to uninstall a package that is not installed (%s)', packageName.strip())
             return False
         else:
             pkg.mark_delete(purge)
@@ -138,50 +138,70 @@ def aptRemove(packageName, purge = False):
                 logging.exception(e)
                 return False
     else:
-        loggin.error('Unknown package selected (%s)', packageName)
+        loggin.error('Unknown package selected (%s)', packageName.strip())
         return False
+
+def aptAutoClean():
+    return command.run('sudo apt-get -y autoclean', True)
+
+def aptAutoRemove():
+    return command.run('sudo apt-get -y autoremove', True)
 
 def aptSearch(packageName, installedPackes):
     apt_cache = apt.cache.Cache()
     packages = apt_cache.keys()
     if installedPackes:
-        result = [value for value in packages if apt_cache[value].isInstalled and packageName in value]
+        result = [value for value in packages if apt_cache[value].isInstalled and packageName.strip() in value]
     else:
-        result = [value for value in packages if not apt_cache[value].isInstalled and packageName in value]
+        result = [value for value in packages if not apt_cache[value].isInstalled and packageName.strip() in value]
 
     return sorted(result)
 
 def isPackageInstalled(packageName):
     cache = apt.Cache()
     cache.open()
-    if packageName in cache and cache[packageName].is_installed:
+    if packageName.strip() in cache and cache[packageName.strip()].is_installed:
         return True
     return False
 
 def packageExists(packageName):
     cache = apt.Cache()
     cache.open()
-    if packageName in cache:
+    if packageName.strip() in cache:
         return True
     return False
 
 def addPpa(ppaName):
-    if not ppaName.startswith('ppa:') or '/' not in ppaName:
+    if not ppaName.strip().startswith('ppa:') or '/' not in ppaName:
         return False
     sp = SoftwareProperties()
-    if not sp.add_source_from_line(ppaName):
+    if not sp.add_source_from_line(ppaName.strip()):
         return False
     sp.sourceslist.save()
     return aptUpdate()
 
 def removePpa(ppaName):
-    if not ppaName.startswith('ppa:') or '/' not in ppaName:
+    if not ppaName.strip().startswith('ppa:') or '/' not in ppaName:
         return False
-    sp = SoftwareProperties()
-    if not sp.remove_source(ppaName, True):
+    success = command.run('sudo add-apt-repository --remove '+ppaName.strip(), True)
+    if not success:
         return False
-    sp.sourceslist.save()
     return aptUpdate()
+
+def purgePpa(ppaName):
+    if not ppaName.strip().startswith('ppa:') or '/' not in ppaName:
+        return False
+    success = command.run('sudo ppa-purge '+ppaName.strip(), True)
+    if not success:
+        return False
+    return aptUpdate()
+
+# Power control
+def shutdown():
+    return command.run('sudo shutdown now -h -q', True)
+
+def reboot():
+    return command.run('sudo reboot now -q', True)
 
 # Installation methods
 def createTempDirectory():

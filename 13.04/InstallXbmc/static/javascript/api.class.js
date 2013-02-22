@@ -1,6 +1,7 @@
 function Api() {
 	this.request = function(pstrMethod, pstrParams, pfCallback) {
 		var lstrParams = (pstrParams == undefined)? '' : pstrParams;
+		var lfCallback = (pfCallback == undefined)? function(){} : pfCallback;
 
 		$.ajax({
 			type: 'GET',
@@ -12,7 +13,7 @@ function Api() {
 				params: lstrParams
 			},
 			success: function(data, textStatus, jqXHR) {
-				pfCallback(data);
+				lfCallback(data);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 
@@ -70,8 +71,8 @@ function Api() {
 		});
 	}
 
-	this.aptUpgrade = function(pfCallback) {
-		this.request('ubuntu.aptUpgrade', '', function(poData){
+	this.aptDistUpgrade = function(pfCallback) {
+		this.request('ubuntu.aptDistUpgrade', '', function(poData){
 			pfCallback(poData);
 		});
 	}
@@ -85,6 +86,24 @@ function Api() {
 	this.removePpa = function(pstrPpa, pfCallback) {
 		this.request('ubuntu.removePpa', '"' +pstrPpa+ '"', function(poData){
 			pfCallback(poData);
+		});
+	}
+
+	this.purgePpa = function(pstrPpa, pfCallback) {
+		this.request('ubuntu.purgePpa', '"' +pstrPpa+ '"', function(poData){
+			pfCallback(poData);
+		});
+	}
+
+	this.shutdown = function(pfCallback) {
+		this.request('ubuntu.shutdown', '', function(poData){
+			return (poData && poData.success)? pfCallback(poData.success) : pfCallback(false);
+		});
+	}
+
+	this.reboot = function(pfCallback) {
+		this.request('ubuntu.reboot', '', function(poData){
+			return (poData && poData.success)? pfCallback(poData.success) : pfCallback(false);
 		});
 	}
 }

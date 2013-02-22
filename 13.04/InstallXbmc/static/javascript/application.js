@@ -1,15 +1,6 @@
-var loSystemInfoWindow, loConsoleWindow, loLoadingDialog;
+var loLoadingDialog;
 
 $(document).ready(function(){
-	loSystemInfoWindow = $('#systemInfo').dialog({
-        draggable: true,
-        height: 470,
-        width: 700,
-        modal: true,
-        resizable: false,
-        autoOpen: false
-    }).load('/system');
-
 	loLoadingDialog = $("#loading").dialog({
         modal: true,
         draggable: true,
@@ -20,12 +11,7 @@ $(document).ready(function(){
         open: function(event, ui) {
         	$(".ui-dialog-titlebar-close", ui.dialog).remove();
         }
-  });
-
-    $('#openSystemInfo').bind('click', function(){
-    	loSystemInfoWindow.dialog('open');
-        return false;
-    });
+	});
 });
 
 function showLoading(pstrMessage) {
@@ -36,27 +22,6 @@ function showLoading(pstrMessage) {
 function hideLoading() {
 	$('#loading .message').html('');
 	loLoadingDialog.dialog('close');
-}
-
-function apiRequest(pstrMethod, poParams, pfCallback) {
-	var loParams = (!poParams)? {} : poParams;
-
-	$.ajax({
-		type: 'GET',
-		url: '/api',
-		dataType: 'json',
-		cache: false,
-		data: {
-			method: pstrMethod,
-			params: JSON.stringify(loParams)
-		},
-		success: function(data, textStatus, jqXHR) {
-			pfCallback(data);
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-
-		}
-	})
 }
 
 function getDateAndTime() {
