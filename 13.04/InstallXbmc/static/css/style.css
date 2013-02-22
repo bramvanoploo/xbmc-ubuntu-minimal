@@ -40,13 +40,12 @@ table {
     border-spacing: 0;
 }
 
-/*table.main_structure {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-  filter: alpha(opacity=90);
-  -moz-opacity: 0.9;
-  -khtml-opacity: 0.9;
-  opacity: 0.9;
-}*/
+table.main_structure {
+   	-moz-border-radius: 5px;
+   	-webkit-border-radius: 5px;
+   	-khtml-border-radius: 5px;
+	border-radius: 5px;
+}
 
 input {
 	padding: 3px;
@@ -95,6 +94,10 @@ td#steps {
     text-align: right;
     background-color: #fefefe;
     box-shadow: -6px 7px 10px -7px #000;
+    -moz-border-radius: 8px;
+   	-webkit-border-radius: 8px;
+   	-khtml-border-radius: 8px;
+	border-radius: 8px;
 }
 
 td#content {
@@ -106,6 +109,10 @@ td#content {
     vertical-align: top;
     background: url('../images/xbmc_logo.png') no-repeat bottom right #fff;
     box-shadow: 6px 7px 10px -7px #000;
+    -moz-border-radius: 8px;
+   	-webkit-border-radius: 8px;
+   	-khtml-border-radius: 8px;
+	border-radius: 8px;
 }
 
 #content h1 {
@@ -185,4 +192,8 @@ ul {
 	font-size: 12px !important;
 	font-weight: normal !important;
 	line-height: 1.0 !important;
+}
+
+.ui-widget-overlay, ui-front {
+	background: #222;
 }
