@@ -447,7 +447,7 @@ function configureAtiDriver()
     sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
 }
 
-function disbaleAtiUnderscan()
+function disableAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null 2>&1
@@ -498,7 +498,7 @@ function installVideoDriver()
             RESPONSE=$?
             case ${RESPONSE//\"/} in
                 0) 
-                    disbaleAtiUnderscan
+                    disableAtiUnderscan
                     ;;
                 1) 
                     enableAtiUnderscan
@@ -678,7 +678,7 @@ function applyScreenResolution()
     sudo sed -i '/gfxmode=/ a\  set gfxpayload=keep' "$GRUB_HEADER_FILE" > /dev/null 2>&1
     GRUB_CONFIG="nomodeset usbcore.autosuspend=-1 video=uvesafb:mode_option=$RESOLUTION-24,mtrr=3,scroll=ywrap"
     
-    if [[ $GFX_CARD == INTEL ]]; then
+    if [[ $GFX_CARD == NVIDIA ]]; then
         GRUB_CONFIG="usbcore.autosuspend=-1 video=uvesafb:mode_option=$RESOLUTION-24,mtrr=3,scroll=ywrap"
     fi
     
