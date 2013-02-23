@@ -2,3 +2,5 @@
 *.pyc
 *.db
 *.log
+*.project
+*.pydevproject
