@@ -14684,3 +14684,887 @@ DP-1 disconnected (normal left inverted right x axis y axis)
 2013-02-23 15:44:31 RESULT: 8.5
 
 
+2013-02-23 15:48:52 COMMAND: "echo $HOME"
+2013-02-23 15:48:52 RESULT: /home/bram
+
+
+2013-02-23 15:48:52 COMMAND: "echo $HOME"
+2013-02-23 15:48:52 RESULT: /home/bram
+
+
+2013-02-23 15:48:57 COMMAND: "lspci |grep VGA"
+2013-02-23 15:48:57 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:48:58 COMMAND: "lspci |grep VGA"
+2013-02-23 15:48:58 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:48:58 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:48:58 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:48:58 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:48:58 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:48:58 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:48:58 RESULT: 10.2
+
+
+2013-02-23 15:48:58 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:48:58 RESULT: 10.8
+
+
+2013-02-23 15:49:01 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:49:01 RESULT: 11.7
+
+
+2013-02-23 15:49:02 COMMAND: "lspci |grep VGA"
+2013-02-23 15:49:02 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:49:02 COMMAND: "lspci |grep VGA"
+2013-02-23 15:49:02 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:49:02 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:49:02 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:49:03 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:49:03 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:49:03 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:49:03 RESULT: 12.6
+
+
+2013-02-23 15:49:03 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:49:03 RESULT: 12.6
+
+
+2013-02-23 15:49:05 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:49:05 RESULT: 11
+
+
+2013-02-23 15:49:35 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:49:35 RESULT: 8.1
+
+
+2013-02-23 15:49:56 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:49:56 RESULT: 8
+
+
+2013-02-23 15:50:08 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:08 RESULT: 8.5
+
+
+2013-02-23 15:50:14 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:14 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:14 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:14 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:14 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:14 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:14 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:14 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:14 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:14 RESULT: 8.2
+
+
+2013-02-23 15:50:14 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:14 RESULT: 8.3
+
+
+2013-02-23 15:50:15 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:15 RESULT: 8.3
+
+
+2013-02-23 15:50:17 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:17 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:17 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:17 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:17 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:17 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:17 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:17 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:17 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:17 RESULT: 8.2
+
+
+2013-02-23 15:50:17 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:17 RESULT: 8.2
+
+
+2013-02-23 15:50:20 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:20 RESULT: 8.1
+
+
+2013-02-23 15:50:31 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:31 RESULT: 8
+
+
+2013-02-23 15:50:42 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:42 RESULT: 8
+
+
+2013-02-23 15:50:44 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:44 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:44 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:44 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:44 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:44 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:44 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:44 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:44 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:44 RESULT: 8
+
+
+2013-02-23 15:50:45 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:45 RESULT: 8
+
+
+2013-02-23 15:50:46 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:46 RESULT: 8
+
+
+2013-02-23 15:50:48 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:48 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:48 COMMAND: "lspci |grep VGA"
+2013-02-23 15:50:48 RESULT: 01:00.0 VGA compatible controller: NVIDIA Corporation GK104 [GeForce GTX 660 Ti] (rev a1)
+
+
+2013-02-23 15:50:48 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:48 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:48 COMMAND: "xrandr -q -d :0"
+2013-02-23 15:50:48 RESULT: Screen 0: minimum 8 x 8, current 3600 x 1080, maximum 16384 x 16384
+DVI-I-0 disconnected (normal left inverted right x axis y axis)
+DVI-I-1 connected 1920x1080+1680+0 (normal left inverted right x axis y axis) 598mm x 336mm
+   1920x1080      60.0*+   50.0  
+   1680x1050      60.0  
+   1600x1200      60.0  
+   1440x900       75.0     59.9  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1280x720       60.0     50.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   720x576        50.0  
+   720x480        59.9  
+   640x480        75.0     72.8     59.9  
+HDMI-0 disconnected (normal left inverted right x axis y axis)
+DP-0 disconnected (normal left inverted right x axis y axis)
+DVI-D-0 connected 1680x1050+0+0 (normal left inverted right x axis y axis) 474mm x 296mm
+   1680x1050      59.9*+   60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     70.1     60.0  
+   800x600        75.0     72.2     60.3     56.2  
+   640x480        75.0     72.8     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)
+
+
+2013-02-23 15:50:48 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:48 RESULT: 8
+
+
+2013-02-23 15:50:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:49 RESULT: 8
+
+
+2013-02-23 15:50:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:50:57 RESULT: 7.9
+
+
+2013-02-23 15:51:16 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:51:16 RESULT: 35.9
+
+
+2013-02-23 15:51:25 COMMAND: "grep -hi "^deb.*launchpad" /etc/apt/sources.list /etc/apt/sources.list.d/*"
+2013-02-23 15:51:25 RESULT: deb http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb-src http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb-src http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb-src http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb-src http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb-src http://ppa.launchpad.net/fossfreedom/rhythmbox-plugins/ubuntu raring main
+deb http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb-src http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb-src http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb-src http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb-src http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb http://ppa.launchpad.net/jonoomph/openshot-edge/ubuntu quantal main
+deb http://ppa.launchpad.net/jonoomph/openshot-edge/ubuntu quantal main
+deb http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb-src http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb-src http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb-src http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb-src http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb-src http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb-src http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb-src http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb-src http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+
+
+2013-02-23 15:51:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:51:27 RESULT: 32.6
+
+
+2013-02-23 15:51:46 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:51:46 RESULT: 22.2
+
+
+2013-02-23 15:51:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:51:57 RESULT: 18.6
+
+
+2013-02-23 15:52:16 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:52:16 RESULT: 16.1
+
+
+2013-02-23 15:52:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:52:19 RESULT: 16.2
+
+
+2013-02-23 15:52:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:52:27 RESULT: 18.5
+
+
+2013-02-23 15:52:29 COMMAND: "grep -hi "^deb.*launchpad" /etc/apt/sources.list /etc/apt/sources.list.d/*"
+2013-02-23 15:52:29 RESULT: deb http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb-src http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb-src http://ppa.launchpad.net/atareao/atareao/ubuntu raring main
+deb http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb-src http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb-src http://ppa.launchpad.net/danielrichter2007/grub-customizer/ubuntu quantal main
+deb-src http://ppa.launchpad.net/fossfreedom/rhythmbox-plugins/ubuntu raring main
+deb http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb-src http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb-src http://ppa.launchpad.net/graysky/utils/ubuntu raring main
+deb http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb-src http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb-src http://ppa.launchpad.net/i-nex-development-team/stable/ubuntu raring main
+deb http://ppa.launchpad.net/jonoomph/openshot-edge/ubuntu quantal main
+deb http://ppa.launchpad.net/jonoomph/openshot-edge/ubuntu quantal main
+deb http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb-src http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb-src http://ppa.launchpad.net/kazam-team/unstable-series/ubuntu raring main
+deb http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb-src http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb-src http://ppa.launchpad.net/libreoffice/libreoffice-prereleases/ubuntu raring main
+deb http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb-src http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb-src http://ppa.launchpad.net/nemh/gambas3/ubuntu raring main
+deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu raring main
+deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu raring main
+deb http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb-src http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb-src http://ppa.launchpad.net/samrog131/ppa/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb-src http://ppa.launchpad.net/webupd8team/themes/ubuntu raring main
+deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+deb http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+deb-src http://ppa.launchpad.net/wsnipex/xbmc-xvba-testing/ubuntu raring main
+
+
+2013-02-23 15:52:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:52:49 RESULT: 17.1
+
+
+2013-02-23 15:52:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:52:57 RESULT: 16.4
+
+
+2013-02-23 15:53:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:53:19 RESULT: 15
+
+
+2013-02-23 15:53:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:53:27 RESULT: 14.5
+
+
+2013-02-23 15:53:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:53:49 RESULT: 13.6
+
+
+2013-02-23 15:53:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:53:57 RESULT: 13.4
+
+
+2013-02-23 15:54:10 COMMAND: "echo $HOME"
+2013-02-23 15:54:10 RESULT: /home/bram
+
+
+2013-02-23 15:54:11 COMMAND: "echo $HOME"
+2013-02-23 15:54:11 RESULT: /home/bram
+
+
+2013-02-23 15:54:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:54:19 RESULT: 14
+
+
+2013-02-23 15:54:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:54:27 RESULT: 51.4
+
+
+2013-02-23 15:54:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:54:49 RESULT: 28.7
+
+
+2013-02-23 15:54:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:54:57 RESULT: 19
+
+
+2013-02-23 15:55:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:55:19 RESULT: 20.7
+
+
+2013-02-23 15:55:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:55:27 RESULT: 19.4
+
+
+2013-02-23 15:55:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:55:49 RESULT: 52.1
+
+
+2013-02-23 15:55:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:55:57 RESULT: 50.4
+
+
+2013-02-23 15:56:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:56:19 RESULT: 33.3
+
+
+2013-02-23 15:56:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:56:27 RESULT: 30.1
+
+
+2013-02-23 15:56:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:56:49 RESULT: 23.7
+
+
+2013-02-23 15:56:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:56:57 RESULT: 21.8
+
+
+2013-02-23 15:57:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:57:19 RESULT: 18.6
+
+
+2013-02-23 15:57:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:57:27 RESULT: 17.7
+
+
+2013-02-23 15:57:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:57:49 RESULT: 16.3
+
+
+2013-02-23 15:57:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:57:57 RESULT: 15.8
+
+
+2013-02-23 15:58:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:58:19 RESULT: 14.8
+
+
+2013-02-23 15:58:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:58:27 RESULT: 14.5
+
+
+2013-02-23 15:58:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:58:49 RESULT: 13.8
+
+
+2013-02-23 15:58:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:58:57 RESULT: 13.6
+
+
+2013-02-23 15:59:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:59:19 RESULT: 13.1
+
+
+2013-02-23 15:59:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:59:27 RESULT: 13.1
+
+
+2013-02-23 15:59:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:59:49 RESULT: 12.5
+
+
+2013-02-23 15:59:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 15:59:57 RESULT: 12.4
+
+
+2013-02-23 16:00:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:00:19 RESULT: 12.2
+
+
+2013-02-23 16:00:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:00:27 RESULT: 12
+
+
+2013-02-23 16:00:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:00:49 RESULT: 11.8
+
+
+2013-02-23 16:00:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:00:57 RESULT: 11.6
+
+
+2013-02-23 16:01:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:01:19 RESULT: 11.5
+
+
+2013-02-23 16:01:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:01:27 RESULT: 11.2
+
+
+2013-02-23 16:01:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:01:49 RESULT: 11.1
+
+
+2013-02-23 16:01:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:01:57 RESULT: 11.2
+
+
+2013-02-23 16:02:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:02:19 RESULT: 11
+
+
+2013-02-23 16:02:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:02:27 RESULT: 11
+
+
+2013-02-23 16:02:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:02:49 RESULT: 10.8
+
+
+2013-02-23 16:02:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:02:57 RESULT: 10.6
+
+
+2013-02-23 16:03:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:03:19 RESULT: 10.6
+
+
+2013-02-23 16:03:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:03:27 RESULT: 10.6
+
+
+2013-02-23 16:03:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:03:49 RESULT: 10.5
+
+
+2013-02-23 16:03:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:03:57 RESULT: 10.4
+
+
+2013-02-23 16:04:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:04:19 RESULT: 10.6
+
+
+2013-02-23 16:04:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:04:27 RESULT: 10.5
+
+
+2013-02-23 16:04:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:04:49 RESULT: 10.3
+
+
+2013-02-23 16:04:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:04:57 RESULT: 10.3
+
+
+2013-02-23 16:05:19 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:05:19 RESULT: 10.2
+
+
+2013-02-23 16:05:27 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:05:27 RESULT: 10.2
+
+
+2013-02-23 16:05:49 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:05:49 RESULT: 29
+
+
+2013-02-23 16:05:57 COMMAND: "ps aux|awk 'NR > 0 { s +=$3 }; END {print s}'"
+2013-02-23 16:05:57 RESULT: 24.4
+
+

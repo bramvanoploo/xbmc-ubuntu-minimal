@@ -66,6 +66,7 @@ input {
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
     border:1px solid rgba(62, 73, 103, 0.2);
+    background: #fff;
 }
 
 input:focus {
@@ -73,10 +74,11 @@ input:focus {
     -webkit-box-shadow: 0 0 5px rgba(112, 197, 16, 1);
     -moz-box-shadow: 0 0 5px rgba(112, 197, 16, 1);
     border:1px solid #6D758C;
+    background: #fff;
 }
 
 input.working {
-	background: url('../images/loading_16.gif') no-repeat right center;
+	background: url('../images/loading_16.gif') no-repeat right center #fff;
 }
 
 td#steps h4 {
@@ -109,7 +111,8 @@ td#steps {
    	-webkit-border-radius: 8px;
    	-khtml-border-radius: 8px;
 	border-radius: 8px;
-	background-color: #f6f6f6;
+	background: #f6f6f6;
+	/*background: url('../images/xbmc_logo.png') #f6f6f6 no-repeat bottom left;*/
 }
 
 td#content {
@@ -119,7 +122,6 @@ td#content {
     border-top: 1px solid #ddd;
     height: 500px;
     vertical-align: top;
-    background: url('../images/xbmc_logo.png') no-repeat bottom right #fff;
     -moz-box-shadow: 6px 7px 10px -7px #000;
 	-webkit-box-shadow: 6px 7px 10px -7px #000;
     box-shadow: 6px 7px 10px -7px #000;
@@ -130,6 +132,7 @@ td#content {
    	-webkit-border-radius: 8px;
    	-khtml-border-radius: 8px;
 	border-radius: 8px;
+	background: #fff;
 }
 
 #content h1 {
