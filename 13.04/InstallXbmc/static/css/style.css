@@ -35,6 +35,15 @@ a:visited {
     text-decoration: none;
 }
 
+a.active {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 22px;
+    padding-bottom: 3px;
+    padding-right: 16px;
+    background: url('../images/arrow_right_12.gif') no-repeat right center;
+}
+
 table {
     *border-collapse: collapse; /* IE7 and lower */
     border-spacing: 0;
@@ -76,7 +85,7 @@ td#steps h4 {
     margin: 0px;
     padding: 0px;
     margin-bottom: 10px;
-    text-shadow: 0 0 2px #70C510;
+    text-shadow: 0 0 4px #3E4967;
 }
 
 h1 {
@@ -93,11 +102,14 @@ td#steps {
     vertical-align: top;
     text-align: right;
     background-color: #fefefe;
+    -moz-box-shadow: -6px 7px 10px -7px #000;
+	-webkit-box-shadow: -6px 7px 10px -7px #000;
     box-shadow: -6px 7px 10px -7px #000;
     -moz-border-radius: 8px;
    	-webkit-border-radius: 8px;
    	-khtml-border-radius: 8px;
 	border-radius: 8px;
+	background-color: #f6f6f6;
 }
 
 td#content {
@@ -108,7 +120,12 @@ td#content {
     height: 500px;
     vertical-align: top;
     background: url('../images/xbmc_logo.png') no-repeat bottom right #fff;
+    -moz-box-shadow: 6px 7px 10px -7px #000;
+	-webkit-box-shadow: 6px 7px 10px -7px #000;
     box-shadow: 6px 7px 10px -7px #000;
+    -moz-box-shadow: inset -5px -5px 5px #888;
+	-webkit-box-shadow: inset -5px -5px 5px #888;
+	box-shadow: inset 2px 3px 20px #ddd;
     -moz-border-radius: 8px;
    	-webkit-border-radius: 8px;
    	-khtml-border-radius: 8px;
@@ -133,9 +150,11 @@ a.active {
 th {
     text-align: left;
     border-bottom: 1px solid #f5f5f5;
-    color: #6D758C;
-    font-size: 11px;
-    /*text-shadow: 0 0 2px #3E4967;*/
+    color: #FFF;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 0 0 2px #3E4967;
+    padding-bottom: 3px;
 }
 
 ul {

@@ -12,18 +12,15 @@ def run(command, returnBool = False):
                 close_fds=True)
     output, error = process.communicate()
 
-    if error:
+    if error.strip():
         errorOutput = now.strftime("%Y-%m-%d %H:%M:%S")+ ' COMMAND: "' +command+ '"\n' +now.strftime("%Y-%m-%d %H:%M:%S")+ ' ERROR: ' +error+ '\n\n'
         shellErrorLog.write(errorOutput)
         shellErrorLog.close()
-        if returnBool:
-            return False
-        else:
-            return error
+        return False
 
-    #    successOutput = now.strftime("%Y-%m-%d %H:%M:%S")+ ' COMMAND: "' +command+ '"\n' +now.strftime("%Y-%m-%d %H:%M:%S")+ ' RESULT: ' +output+ '\n\n'
-    #    shellLog.write(successOutput)
-    #    shellLog.close()
+    successOutput = now.strftime("%Y-%m-%d %H:%M:%S")+ ' COMMAND: "' +command+ '"\n' +now.strftime("%Y-%m-%d %H:%M:%S")+ ' RESULT: ' +output+ '\n\n'
+    shellLog.write(successOutput)
+    shellLog.close()
 
     if returnBool:
         return True

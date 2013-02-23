@@ -82,16 +82,20 @@ def move(source, destination):
 
 #Package management
 def aptUpdate():
-    cache = apt.Cache()
-    cache.update()
-    return cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+    apt_cache = apt.cache.Cache()
+    apt_cache.update()
+    success = apt_cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+    apt_cache.close()
+    return success
 
 def aptDistUpgrade():
-    apt_cache = apt.Cache()
+    apt_cache = apt.cache.Cache()
     apt_cache.update()
     apt_cache.open(None)
     apt_cache.upgrade(True)
-    return apt_cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+    success = apt_cache.commit(apt.progress.TextFetchProgress(), apt.progress.InstallProgress())
+    apt_cache.close()
+    return success
 
 def aptInstall(packageName):
     apt_pkg.init()
@@ -103,17 +107,21 @@ def aptInstall(packageName):
         if pkg.isInstalled:
             apt_pkg.PkgSystemUnLock()
             logging.error('Trying to install a package that is already installed (%s)', packageName.strip())
+            apt_cache.close()
             return False
         else:
             pkg.mark_install()
             try:
                 apt_pkg.PkgSystemUnLock()
                 result = apt_cache.commit()
+                apt_cache.close()
                 return result
             except SystemError as e:
                 logging.exception(e)
+                apt_cache.close()
                 return False
     else:
+        apt_cache.close()
         loggin.error('Unknown package selected (%s)', packageName.strip())
         return False
 
@@ -133,11 +141,14 @@ def aptRemove(packageName, purge = False):
             try:
                 apt_pkg.PkgSystemUnLock()
                 result = apt_cache.commit()
+                apt_cache.close()
                 return result
             except SystemError as e:
                 logging.exception(e)
+                apt_cache.close()
                 return False
     else:
+        apt_cache.close()
         loggin.error('Unknown package selected (%s)', packageName.strip())
         return False
 
@@ -154,47 +165,75 @@ def aptSearch(packageName, installedPackes):
         result = [value for value in packages if apt_cache[value].isInstalled and packageName.strip() in value]
     else:
         result = [value for value in packages if not apt_cache[value].isInstalled and packageName.strip() in value]
+    apt_cache.close()
 
     return sorted(result)
 
 def isPackageInstalled(packageName):
-    cache = apt.Cache()
-    cache.open()
+    apt_cache = apt.cache.Cache()
+    apt_cache.open()
     if packageName.strip() in cache and cache[packageName.strip()].is_installed:
+        apt_cache.close()
         return True
+    apt_cache.close()
+
     return False
 
 def packageExists(packageName):
-    cache = apt.Cache()
-    cache.open()
+    apt_cache = apt.cache.Cache()
+    apt_cache.open()
     if packageName.strip() in cache:
+        apt_cache.close()
         return True
+    apt_cache.close()
+
     return False
 
 def addPpa(ppaName):
-    if not ppaName.strip().startswith('ppa:') or '/' not in ppaName:
+    if ppaName.strip().startswith('ppa:') or ppaName.strip().startswith('deb http://ppa.launchpad.net/') or ppaName.strip().startswith('deb-src http://ppa.launchpad.net/'):
+        success = command.run('sudo add-apt-repository -y "' +ppaName.strip()+ '"', True)
+        aptUpdate()
+        return True #Always return True because somehow add-apt-repository command always throws an error, even wen successfull
+    else:
         return False
-    sp = SoftwareProperties()
-    if not sp.add_source_from_line(ppaName.strip()):
-        return False
-    sp.sourceslist.save()
-    return aptUpdate()
 
+# This method always returns true but never succeeds
 def removePpa(ppaName):
-    if not ppaName.strip().startswith('ppa:') or '/' not in ppaName:
+    if not ppaName.strip().startswith('ppa:') or not '/' in ppaName:
         return False
-    success = command.run('sudo add-apt-repository --remove '+ppaName.strip(), True)
-    if not success:
-        return False
-    return aptUpdate()
+    success = command.run('sudo add-apt-repository -y -r "' +ppaName.strip()+ '"', True)
+    aptUpdate()
+    return success
 
 def purgePpa(ppaName):
     if not ppaName.strip().startswith('ppa:') or '/' not in ppaName:
         return False
-    success = command.run('sudo ppa-purge '+ppaName.strip(), True)
-    if not success:
-        return False
-    return aptUpdate()
+    success = command.run('sudo ppa-purge -y '+ppaName.strip(), True)
+    aptUpdate()
+    return success
+
+def getActivePpas(keyWord):
+    ppasText = command.run('grep -hi "^deb.*launchpad" /etc/apt/sources.list /etc/apt/sources.list.d/*')
+    ppas = []
+    ppaLines = ppasText.split('\n')
+    for line in ppaLines:
+        ppaParts = line.split(' ')
+        if len(ppaParts) == 4:
+            ppaUrlParts = ppaParts[1].split('/')
+            ppaUserName = ppaUrlParts[-3]
+            ppaName = ppaUrlParts[-2]
+            ppas.append('ppa:'+ppaUserName+'/'+ppaName)
+    sortedPpas = sorted(list(set(ppas)))
+
+    if keyWord.strip() == '':
+        return sortedPpas
+    else:
+        filteredPpas = []
+        for entry in sortedPpas:
+            if keyWord in entry:
+                filteredPpas.append(entry)
+        return filteredPpas
+
 
 # Power control
 def shutdown():

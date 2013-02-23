@@ -13,6 +13,7 @@
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/jquery-1.9.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/jquery-ui-1.10.1.custom.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/jquery-notify-osd/notify-osd.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='javascript/config.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/application.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='javascript/api.class.js') }}"></script>
         <script type="text/javascript">
@@ -23,13 +24,13 @@
         		api.getRamInUse('#ramInUse');
         		api.getTotalRam('#totalRam');
         		api.getOperatingSystem('#operatingSystem');
-        		setInterval('api.getCpuLoad("#cpuLoad")', 5000);
-        		setInterval('api.getRamInUse("#ramInUse")', 5000);
+        		setInterval('api.getCpuLoad("#cpuLoad")', INFO_UPDATE_INTERVAL);
+        		setInterval('api.getRamInUse("#ramInUse")', INFO_UPDATE_INTERVAL);
 
         		$.notify_osd.setup({
         	    	'visible_max': 4,
         	    	'sticky': false,
-        	    	'timeout': 8,
+        	    	'timeout': NOTIFICATION_TIMEOUT,
         	    	'dismissable': true
         		});
 
@@ -43,10 +44,27 @@
 					  	ui.tooltip.animate({
 					  		top: ui.tooltip.position().top + 10
 					  	},
-					  	150);
+					  	ANIMATION_SPEED);
     		   		},
     		   		hide: {
-   		            	duration: 100
+   		            	duration: ANIMATION_SPEED
+   		          	}
+        		});
+
+        		$('#footer a').not('.ui-button').tooltip({
+					show: null,
+					position: {
+					  	my: 'center bottom+30',
+					  	at: 'center bottom'
+					},
+					open: function(event, ui) {
+					  	ui.tooltip.animate({
+					  		top: ui.tooltip.position().top + 10
+					  	},
+					  	ANIMATION_SPEED);
+    		   		},
+    		   		hide: {
+   		            	duration: ANIMATION_SPEED
    		          	}
         		});
 
@@ -66,15 +84,9 @@
             <tr>
                 <td id="steps">
                     <h4>
-                        Installation steps
+                        XBMC Installation
                     </h4>
                     <ul>
-                        <li>
-                            <a href="/">Welcome</a>
-                        </li>
-                        <li>
-                            &nbsp;
-                        </li>
                         <li>
                             <a href="/prepare_system">System preparation</a>
                         </li>
@@ -108,17 +120,24 @@
                         <li>
                             <a href="javascript:void(0);">Headphones</a>
                         </li>
+					</ul>
+					<br />
+					<br />
+					<h4>
+                        System
+                    </h4>
+					<ul>
                         <li>
-                            &nbsp;
+                            <a href="/system_info" {% if request.path == "/system_info" %}class="active"{% endif %}>Information</a>
                         </li>
                         <li>
-                            <a href="/system_tools">System tools</a>
+                            <a href="/system_tools" {% if request.path == "/system_tools" %}class="active"{% endif %}>Tools</a>
                         </li>
                         <li>
-                            <a href="/system_info">System information</a>
+                        	&nbsp;
                         </li>
                         <li>
-                            <a href="/about">About</a>
+                            <a href="/about" {% if request.path == "/about" %}class="active"{% endif %}>About</a>
                         </li>
                     </ul>
                 </td>
@@ -130,16 +149,21 @@
                 <td colspan="2" id="footer">
                 	<table width="100%">
 					    <tr>
-					        <td width="33%" align="center">
+					        <td width="20%" align="center" valign="top">
 					            os: <b id="operatingSystem"></b>
 					        </td>
-					        <td width="33%" align="center">
+					        <td width="20%" align="center" valign="top">
 					            cpu load: <b id="cpuLoad"></b> %
 					        </td>
-					        <td width="33%" align="center">
+					        <td width="20%" align="center" valign="top">
 					            ram in use: <b id="ramInUse"></b> MB of <b id="totalRam"></b> MB
 					        </td>
-					        <td></td>
+					        <td align="right">
+					        	<a href="http://www.ubuntu.com/" target="_blank" title="Running on Ubuntu"><img src="{{ url_for('static', filename='images/ubuntu_logo.png') }}" border="0" height="24" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+					            <a href="https://github.com/Bram77/xbmc-ubuntu-minimal" target="_blank" title="Hosted on GitHub"><img src="{{ url_for('static', filename='images/github_logo.png') }}" border="0" height="24" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+					        	<a href="http://www.python.org/" target="_blank" title="Powered by Python"><img src="{{ url_for('static', filename='images/python_logo.png') }}" border="0" height="24" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+					        	<a href="http://www.sudo-systems.com/" target="_blank" title="Developed by Sudo-Systems"><img src="{{ url_for('static', filename='images/sudo_systems_logo.png') }}" border="0" height="24" /></a>
+					        </td>
 					    </tr>
 					</table>
                 </td>

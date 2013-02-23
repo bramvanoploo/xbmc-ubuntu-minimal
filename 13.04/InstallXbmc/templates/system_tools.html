@@ -42,6 +42,7 @@
 			$("#installPackageName").autocomplete({
 			    minLength: 2,
 			    dataType: 'json',
+			    cache: false,
 			    source: function(request, response) {
 			        $.getJSON('/api?method=ubuntu.aptSearch&params="' +$('#installPackageName').val()+ '",False',
 			        	function (data) {
@@ -127,6 +128,7 @@
 			$("#uninstallPackageName").autocomplete({
 			    minLength: 0,
 			    dataType: 'json',
+			    cache: false,
 			    source: function (request, response) {
 			        $.getJSON('/api?method=ubuntu.aptSearch&params="' +$('#uninstallPackageName').val()+ '",True',
 			        	function (data) {
@@ -259,11 +261,43 @@
 				$('#addPpaName').val('');
 			});
 
+			$("#removePpaName").autocomplete({
+			    minLength: 0,
+			    dataType: 'json',
+			    cache: false,
+			    source: function (request, response) {
+			        $.getJSON('/api?method=ubuntu.getActivePpas&params="' +$.trim($('#removePpaName').val())+ '"',
+			        	function (data) {
+			            	response($.map(data.result, function(entry) {
+				                return {
+				                    value: entry
+				                }
+				         	}));
+			        	}
+			        );
+			    },
+			    change: function (event, ui) {
+	                if(!ui.item){
+	                	$('#removePpaName').val('');
+	                }
+	            },
+			    search: function(){
+			    	$('#removePpaName').addClass('working');
+			    },
+			    response: function(){
+			    	$('#removePpaName').removeClass('working');
+			    }
+			});
+
+			$("#removePpaName").bind('focus', function(){
+				$(this).autocomplete('search', $(this).val());
+			});
+
 			$('#removePpa').bind('click', function(){
 				var lstrPpaName = $.trim($('#removePpaName').val());
 
 				if(lstrPpaName.length < 7) {
-					alert('Please enter a valid repository name (i.e. "ppa:user/repository")');
+					alert('Please choose a repository first');
 					return false;
 				}
 
@@ -283,9 +317,9 @@
 
 								showLoading('Attempting to remove repository "' +lstrPpaName+ '".<br />Please be patient.');
 
-								api.removePpa(lstrPpaName, function(poResult){
+								api.purgePpa(lstrPpaName, function(poResult){
 									$.notify_osd.create({
-										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" successfully removed' : 'Repository "' +lstrPpaName+ '" could not be removed. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
+										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" and all related packages successfully removed' : 'Repository "' +lstrPpaName+ '" could not be removed. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
 									});
 
 									hideLoading();
@@ -307,6 +341,7 @@
 
 			$('#clearRemovePpa').bind('click', function(){
 				$('#removePpaName').val('');
+				$('#removePpaName').removeClass('working');
 			});
 
 			$('#purgePpa').bind('click', function(){
@@ -494,9 +529,6 @@
        </script>
 {% endblock %}
 {% block content %}
-    <h1>
-        System tools
-    </h1>
     <br />
     <table>
     	<tr>
@@ -575,7 +607,7 @@
     	</tr>
     	<tr>
     		<th colspan="2">
-    			Repository management
+    			PPA repository management
     		</th>
     	</tr>
     	<tr>
@@ -583,17 +615,17 @@
     			<a href="https://launchpad.net/ubuntu/+ppas" target="_blank" title="Search for repositories on launchpad.net">add repository</a>
     		</td>
     		<td>
-    			<input type="text" id="addPpaName" placeholder="ppa::user/repository" style="width:400px;" title="Add a launchpad ppa repository. Make sure the ppa is available for your ubuntu version!" />
+    			<input type="text" id="addPpaName" placeholder="ppa::user/repo or 'deb url'" style="width:400px;" title="Add a launchpad ppa repository. Make sure the ppa is available for your ubuntu version!" />
     			<button id="clearAddPpa">-</button>
     			<button id="addPpa">add</button>
     		</td>
     	</tr>
     	<tr>
     		<td class="title">
-    			remove repository
+    			purge repository
     		</td>
     		<td>
-    			<input type="text" id="removePpaName" placeholder="ppa::user/repository" style="width:400px;" title="Remove repository from software sources" />
+    			<input type="text" id="removePpaName" placeholder="ppa::user/repo" style="width:400px;" title="Remove repository from software sources and downgrade or uninstall all related packages" />
     			<button id="clearRemovePpa">-</button>
     			<button id="removePpa">remove</button>
     		</td>

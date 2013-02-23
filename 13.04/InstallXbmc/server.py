@@ -1,9 +1,9 @@
-import System, json, types, logging
+import System, json, types, logging, urllib
 from flask import Flask, render_template, request, Response
 
 app = Flask(__name__)
 db = System.Database.Database(System.config.installation_database)
-logging.basicConfig(filename="installation.log", level=logging.DEBUG)
+#logging.basicConfig(filename="installation.log", level=logging.DEBUG)
 
 def methodExists(methodName):
     try:
@@ -42,15 +42,7 @@ def about():
 
 @app.route('/system_tools')
 def system_tools():
-    return render_template('system_tools.html')
-
-@app.route('/footer')
-def footer():
-    return render_template('footer.ajax.html',
-        os          = System.ubuntu.getVersion(),
-        cpu_load    = System.hardware.getCpuLoad(),
-        total_ram   = System.hardware.getTotalRam(),
-        ram_in_use  = System.hardware.getRamInUse())
+    return render_template('system_tools.html',)
 
 @app.route('/api')
 def api():
@@ -62,9 +54,9 @@ def api():
     if 'method' in request.args and methodExists('System.'+request.args['method']):
         fullRequest = None
         if 'params' in request.args and request.args['params'] != '':
-            fullRequest = 'System.'+request.args['method']+'(' +request.args['params']+ ')'
+            fullRequest = 'System.'+urllib.unquote(request.args['method'])+'(' +urllib.unquote(request.args['params'])+ ')'
         else:
-            fullRequest = 'System.'+request.args['method']+'()'
+            fullRequest = 'System.'+urllib.unquote(request.args['method'])+'()'
 
         try:
             data = eval(fullRequest)

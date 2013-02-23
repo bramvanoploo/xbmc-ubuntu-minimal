@@ -89,6 +89,13 @@ function Api() {
 		});
 	}
 
+	this.getActivePpas = function(pfCallback){
+		this.request('ubuntu.getActivePpas', '', function(poData){
+			var laResult = (poData && poData.success)? poData.result : [];
+			pfCallback(laResult);
+		});
+	}
+
 	this.purgePpa = function(pstrPpa, pfCallback) {
 		this.request('ubuntu.purgePpa', '"' +pstrPpa+ '"', function(poData){
 			pfCallback(poData);
