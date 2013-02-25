@@ -2,8 +2,8 @@ import command
 
 installer_version = "3.0.0"
 
-home_directory = command.run("echo $HOME")
-xbmc_user = home_directory.split("/")[2]
+home_directory = command.run("echo $HOME").replace("\n", "")+'/'
+xbmc_user = home_directory.split("/")[2].replace("\n", "")
 temp_directory = home_directory+ "temp/"
 environment_file = "/etc/environment"
 
@@ -43,3 +43,5 @@ oscam_ppa = "ppa:oscam/ppa"
 
 installation_database = "xbmc_installation.db"
 log_database = "xbmc_installation_log.db"
+
+xbmc_repositories_url = "http://wiki.xbmc.org/index.php?title=Unofficial_add-on_repositories"

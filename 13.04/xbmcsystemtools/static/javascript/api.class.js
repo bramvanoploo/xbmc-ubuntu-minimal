@@ -54,13 +54,13 @@ function Api() {
 	}
 
 	this.aptInstall = function(pstrPackageName, pfCallback) {
-		this.request('ubuntu.aptInstall', '"' +pstrPackageName+ '"', function(poData){
+		this.request('ubuntu.aptInstall', '"' +encodeURI(pstrPackageName)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.aptRemove = function(pstrPackageName, pfCallback) {
-		this.request('ubuntu.aptRemove', '"' +pstrPackageName+ '"', function(poData){
+		this.request('ubuntu.aptRemove', '"' +encodeURI(pstrPackageName)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
@@ -78,13 +78,13 @@ function Api() {
 	}
 
 	this.addPpa = function(pstrPpa, pfCallback) {
-		this.request('ubuntu.addPpa', '"' +pstrPpa+ '"', function(poData){
+		this.request('ubuntu.addPpa', '"' +encodeURI(pstrPpa)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.removePpa = function(pstrPpa, pfCallback) {
-		this.request('ubuntu.removePpa', '"' +pstrPpa+ '"', function(poData){
+		this.request('ubuntu.removePpa', '"' +encodeURI(pstrPpa)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
@@ -97,7 +97,7 @@ function Api() {
 	}
 
 	this.purgePpa = function(pstrPpa, pfCallback) {
-		this.request('ubuntu.purgePpa', '"' +pstrPpa+ '"', function(poData){
+		this.request('ubuntu.purgePpa', '"' +encodeURI(pstrPpa)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
@@ -111,6 +111,18 @@ function Api() {
 	this.reboot = function(pfCallback) {
 		this.request('ubuntu.reboot', '', function(poData){
 			return (poData && poData.success)? pfCallback(poData.success) : pfCallback(false);
+		});
+	}
+
+	this.getAddonRepositories = function(pfCallback){
+		this.request('addonRepositories.get', '', function(poData){
+			pfCallback(poData);
+		});
+	}
+
+	this.installAddonRepositoryFromUrl = function(pstrUrl, pstrFIleName, pfCallback){
+		this.request('addonRepositories.install', '"' +encodeURI(pstrUrl)+ '","' +encodeURI(pstrFIleName)+ '"', function(poData){
+			pfCallback(poData);
 		});
 	}
 }

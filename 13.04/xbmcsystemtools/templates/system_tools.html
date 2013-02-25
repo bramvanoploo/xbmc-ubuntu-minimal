@@ -84,7 +84,7 @@
 					.appendTo('body')
 					.dialog({
 						resizable: false,
-						height: 200,
+						height: 150,
 						width: 400,
 						modal: true,
 						buttons: {
@@ -97,7 +97,7 @@
 
 								api.aptInstall(lstrPackageName, function(poResult){
 									$.notify_osd.create({
-										'text': (poResult && poResult.result != false)? '"' +lstrPackageName+ '" successfully installed' : '"' +lstrPackageName+ '" could not be installed or was already installed'
+										'text': (poResult && poResult.success)? '"' +lstrPackageName+ '" successfully installed' : '"' +lstrPackageName+ '" could not be installed or was already installed'
 									});
 
 									hideLoading();
@@ -170,7 +170,7 @@
 					.appendTo('body')
 					.dialog({
 						resizable: false,
-						height: 200,
+						height: 150,
 						width: 400,
 						modal: true,
 						buttons: {
@@ -183,7 +183,7 @@
 
 								api.aptRemove(lstrPackageName, function(poResult){
 									$.notify_osd.create({
-										'text': (poResult && poResult.result != false)? '"' +lstrPackageName+ '" successfully removed' : '"' +lstrPackageName+ '" could not be uninstalled or was already removed'
+										'text': (poResult && poResult.success)? '"' +lstrPackageName+ '" successfully removed' : '"' +lstrPackageName+ '" could not be uninstalled or was already removed'
 									});
 
 									hideLoading();
@@ -224,7 +224,7 @@
 					.appendTo('body')
 					.dialog({
 						resizable: false,
-						height: 200,
+						height: 150,
 						width: 400,
 						modal: true,
 						buttons: {
@@ -237,7 +237,7 @@
 
 								api.addPpa(lstrPpaName, function(poResult){
 									$.notify_osd.create({
-										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" successfully added' : 'Repository "' +lstrPpaName+ '" could not be added. Are you sure it exists or isn\'t already available?'
+										'text': (poResult && poResult.success)? 'Repository "' +lstrPpaName+ '" successfully added' : 'Repository "' +lstrPpaName+ '" could not be added. Are you sure it exists or isn\'t already available?'
 									});
 
 									hideLoading();
@@ -306,7 +306,7 @@
 					.appendTo('body')
 					.dialog({
 						resizable: false,
-						height: 200,
+						height: 150,
 						width: 400,
 						modal: true,
 						buttons: {
@@ -319,7 +319,7 @@
 
 								api.purgePpa(lstrPpaName, function(poResult){
 									$.notify_osd.create({
-										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" and all related packages successfully removed' : 'Repository "' +lstrPpaName+ '" could not be removed. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
+										'text': (poResult && poResult.success)? 'Repository "' +lstrPpaName+ '" and all related packages successfully removed' : 'Repository "' +lstrPpaName+ '" could not be removed. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
 									});
 
 									hideLoading();
@@ -357,7 +357,7 @@
 					.appendTo('body')
 					.dialog({
 						resizable: false,
-						height: 200,
+						height: 150,
 						width: 400,
 						modal: true,
 						buttons: {
@@ -370,7 +370,7 @@
 
 								api.removePpa(lstrPpaName, function(poResult){
 									$.notify_osd.create({
-										'text': (poResult && poResult.result != false)? 'Repository "' +lstrPpaName+ '" successfully purged' : 'Repository "' +lstrPpaName+ '" could not be purged. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
+										'text': (poResult && poResult.success)? 'Repository "' +lstrPpaName+ '" successfully purged' : 'Repository "' +lstrPpaName+ '" could not be purged. Are you sure you\'ve entered the correct name and that it\'s an existing repository?'
 									});
 
 									hideLoading();
@@ -539,13 +539,10 @@
     	<tr>
     		<td class="title"></td>
     		<td>
-    			<button id="shutdownSystem" title="Turn off the machine">shutdown</button>
-    			<button id="rebootSystem" title="Power of and restart the machine">reboot</button>
+    			<button id="rebootSystem" title="Power of and restart the machine" class="medium" style="border:1px solid #70C510;">reboot</button>
+    			<button id="shutdownSystem" title="Turn off the machine" class="medium" style="border:1px solid red;">shutdown</button>
     			<!-- <button id="restartXbmc" title="If applicable close, and restart XBMC">(re)start XBMC</button> -->
     		</td>
-    	</tr>
-    	<tr>
-    		<td colspan="2"></td>
     	</tr>
     	<tr>
     		<th colspan="2">
@@ -555,12 +552,10 @@
     	<tr>
     		<td class="title"></td>
     		<td>
-    			<button id="aptUpdate" title="Refresh Ubuntus software sources">update software sources</button>
-    			<button id="aptDistUpgrade" title="Install available software upgrades">upgrade software</button>
+    			<button id="aptUpdate" title="Refresh Ubuntus software sources" class="large">update software sources</button>
+    			<br />
+    			<button id="aptDistUpgrade" title="Install available software updates" class="large">upgrade software</button>
     		</td>
-    	</tr>
-    	<tr>
-    		<td colspan="2"></td>
     	</tr>
     	<tr>
     		<th colspan="2">
@@ -570,12 +565,10 @@
     	<tr>
     		<td class="title"></td>
     		<td>
-    			<button id="aptAutoClean" title="Clean up the software managers cache">clean cache</button>
-    			<button id="aptAutoRemove" title="Remove packages that are no longer required">uninstall obsolete software</button>
+    			<button id="aptAutoClean" title="Clean up the software managers cache" class="large">clean cache</button>
+    			<br />
+    			<button id="aptAutoRemove" title="Remove packages that are no longer required" class="large">uninstall obsolete software</button>
     		</td>
-    	</tr>
-    	<tr>
-    		<td colspan="2"></td>
     	</tr>
     	<tr>
     		<th colspan="2">
@@ -588,8 +581,8 @@
     		</td>
     		<td>
     			<input type="text" id="installPackageName" placeholder="Search..." style="width:400px;" title="Suggests packages that are not installed" />
-    			<button id="clearInstallSearch">-</button>
-    			<button id="installPackage">install</button>
+    			<button id="clearInstallSearch" class="mini" title="Clear">-</button>
+    			<button id="installPackage" class="small">install</button>
     		</td>
     	</tr>
     	<tr>
@@ -598,12 +591,9 @@
     		</td>
     		<td>
     			<input type="text" id="uninstallPackageName" placeholder="Search..." style="width:400px;" title="Suggests packages that are already installed" />
-    			<button id="clearUninstallSearch">-</button>
-    			<button id="uninstallPackage">uninstall</button>
+    			<button id="clearUninstallSearch" class="mini" title="Clear">-</button>
+    			<button id="uninstallPackage" class="small">uninstall</button>
     		</td>
-    	</tr>
-    	<tr>
-    		<td colspan="2"></td>
     	</tr>
     	<tr>
     		<th colspan="2">
@@ -616,8 +606,8 @@
     		</td>
     		<td>
     			<input type="text" id="addPpaName" placeholder="ppa::user/repo or 'deb url'" style="width:400px;" title="Add a launchpad ppa repository. Make sure the ppa is available for your ubuntu version!" />
-    			<button id="clearAddPpa">-</button>
-    			<button id="addPpa">add</button>
+    			<button id="clearAddPpa" class="mini" title="Clear">-</button>
+    			<button id="addPpa" class="small">add</button>
     		</td>
     	</tr>
     	<tr>
@@ -626,8 +616,8 @@
     		</td>
     		<td>
     			<input type="text" id="removePpaName" placeholder="ppa::user/repo" style="width:400px;" title="Remove repository from software sources and downgrade or uninstall all related packages" />
-    			<button id="clearRemovePpa">-</button>
-    			<button id="removePpa">remove</button>
+    			<button id="clearRemovePpa" class="mini" title="Clear">-</button>
+    			<button id="removePpa" class="small">remove</button>
     		</td>
     	</tr>
     	<!--

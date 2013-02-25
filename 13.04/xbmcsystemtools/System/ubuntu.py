@@ -41,10 +41,22 @@ def restoreBackupFile(filePath):
         return True
     return False
 
+def delete(path):
+    if os.path.exists(path):
+        try:
+            os.remove(path)
+            return True
+        except:
+            pass
+    return False
+
 def deleteFile(filePath):
     if os.path.isFile(filePath):
-        os.remove(filePath)
-        return True
+        try:
+            os.remove(filePath)
+            return True
+        except:
+            pass
     return False
 
 def deleteDirectory(directoryPath):

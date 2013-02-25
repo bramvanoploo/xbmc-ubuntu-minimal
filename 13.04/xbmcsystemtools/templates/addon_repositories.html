@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% block title %}XBMC Repositories{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript">
+       	$(document).ready(function(){
+       		$('#addons button.install_repo').bind('click', function(){
+       			var lstrRepoUrl = $(this).attr('url');
+       			var lstrFileName = $(this).attr('file_name');
+
+				$('<div title="Confirm installation"></div>')
+				.html('Are sure you want to install this addon repository?')
+				.appendTo('body')
+				.dialog({
+					resizable: false,
+					height: 150,
+					width: 400,
+					modal: true,
+					buttons: {
+						'Yes': function() {
+							$(this).dialog("close");
+							showLoading('Attempting to install repository addon.');
+
+							api.installAddonRepositoryFromUrl(lstrRepoUrl, lstrFileName, function(poResult){
+								$.notify_osd.create({
+									'text': (poResult && poResult.success)? 'Repository successfully installed' : 'Repository could not be installed<br />ERROR: "' +poResult.message+ '"'
+								});
+
+								hideLoading();
+							});
+						},
+						'No': function() {
+							$.notify_osd.create({
+								'text': 'Installation of addon repository canceled.'
+							});
+
+						  	$(this).dialog("close");
+						}
+					}
+		    	});
+
+				return false;
+       		});
+       	});
+    </script>
+{% endblock %}
+{% block content %}
+	<table callspacing="0" cellpadding="0" width="100%" id="addons">
+		<tr>
+			<th colspan="2">
+				Repository
+			</th>
+			<th width="200">
+				Owner
+			</th>
+			<th width="120">
+				Status
+			</th>
+		</tr>
+	{% for repo in repositories %}
+    	<tr class="repo {{ loop.cycle('odd', 'even') }}">
+    		<td width="24">
+    			{% if repo.website_url and repo.icon_url %}
+        			<a href="{{ repo.website_url }}" target="_blank"><img src="{{ repo.icon_url }}" height="24" width="24" border="0" /></a>
+        		{% elif repo.icon_url %}
+        			<img src="{{ repo.icon_url }}" height="24" width="24" border="0" />
+        		{% elif repo.website_url %}
+        			<a href="{{ repo.website_url }}" target="_blank"><img src="{{ url_for('static', filename='images/addon_24.png') }}" height="24" width="24" border="0" /></a>
+        		{% else %}
+        			<img src="{{ url_for('static', filename='images/addon_24.png') }}" height="24" width="24" border="0" />
+        		{% endif %}
+    		</td>
+        	<td class="name">
+        		{% if repo.website_url %}
+        			<a href="{{ repo.website_url }}" target="_blank" title="{{ repo.description }}">{{ repo.name }}</a>
+        		{% else %}
+        			{{ repo.name }}
+        		{% endif %}
+        	</td>
+        	<td class="owner">
+        		{{ repo.owner }}
+        	</td>
+        	<td align="center">
+        		<button class="install_repo medium" url="{{ repo.download_url }}" file_name="{{ repo.file_name }}">install</button>
+        	</td>
+    	</tr>
+    {% endfor %}
+ 	</table>
+{% endblock %}

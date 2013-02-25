@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, Response
 
 app = Flask(__name__)
 db = System.Database.Database(System.config.installation_database)
-#logging.basicConfig(filename="installation.log", level=logging.DEBUG)
+logging.basicConfig(filename="installation.log", level=logging.DEBUG)
 
 def methodExists(methodName):
     try:
@@ -15,6 +15,11 @@ def methodExists(methodName):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/addon_repositories')
+def addon_repositories():
+    return render_template('addon_repositories.html',
+        repositories = System.addonRepositories.get())
 
 @app.route('/system_info')
 def system():
@@ -46,11 +51,6 @@ def system_tools():
 
 @app.route('/api')
 def api():
-    result = {
-        'success' : False,
-        'message' : 'Illegal request'
-    }
-
     if 'method' in request.args and methodExists('System.'+request.args['method']):
         fullRequest = None
         if 'params' in request.args and request.args['params'] != '':
@@ -58,14 +58,22 @@ def api():
         else:
             fullRequest = 'System.'+urllib.unquote(request.args['method'])+'()'
 
+        logging.debug(fullRequest)
+
         try:
             data = eval(fullRequest)
 
             if isinstance(data, bool):
-                result = {
-                    'success'   : data,
-                    'result'    : data
-                }
+                if not data:
+                    result = {
+                        'success'   : False,
+                        'message'    : 'An unknown error occurred'
+                    }
+                else:
+                    result = {
+                        'success'   : True,
+                        'result'    : True
+                    }
             else:
                 result = {
                     'success'   : True,
@@ -73,10 +81,16 @@ def api():
                 }
         except AttributeError as e1:
             logging.exception(e1)
-            result.message = 'Illegal request: Attribute error'
+            result = {
+                'success' : False,
+                'message' : 'Illegal request: Attribute error'
+            }
         except TypeError as e2:
             logging.exception(e2)
-            result.message = 'Illegal request: Type error'
+            result = {
+                'success' : False,
+                'message' : 'Illegal request: Type error'
+            }
 
     jsonResult = json.dumps(result)
     response = Response(jsonResult, status=200, mimetype='application/json')

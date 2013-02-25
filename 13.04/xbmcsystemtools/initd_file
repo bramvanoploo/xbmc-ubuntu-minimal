@@ -2,7 +2,7 @@
 
 ## Fill in name of program here.
 PROG="XbmcSystemTools.py"
-PROG_PATH="/home/xbmc/.xbmcsystemtools" ## Not need, but sometimes helpful (if $PROG resides in /opt for example).
+PROG_PATH="/home/xbmc/.xbmcsystemtools"
 PROG_ARGS="10000000"
 PID_PATH="/var/run/"
 SERVER_PORT="80"

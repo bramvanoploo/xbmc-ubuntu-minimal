@@ -76,27 +76,57 @@
         {% endblock %}
     </head>
 <body>
-    <br />
-    <br />
-    <br />
+    <h1>
+    	Ubuntu XBMC HTPC System Tools
+    </h1>
     <center>
         <table width="990" cellspacing="0" cellpadding="0" class="main_structure">
             <tr>
                 <td id="steps">
+                	<h4>
+                        XBMC
+                    </h4>
+					<ul>
+                        <li>
+                            <a href="/xbmc_repository" {% if request.path == "/xbmc_repository" %}class="active"{% endif %}>Repository</a>
+                        </li>
+                        <!--
+                        <li>
+                            <a href="/xbmc_database" {% if request.path == "/xbmc_database" %}class="active"{% endif %}>Database</a>
+                        </li>
+                        <li>
+                            <a href="/xbmc_advanced_settings" {% if request.path == "/xbmc_advanced_settings" %}class="active"{% endif %}>Advanced Settings</a>
+                        </li>
+                        -->
+                        <li>
+                            <a href="/addon_repositories" {% if request.path == "/addon_repositories" %}class="active"{% endif %}>Addon repositories</a>
+                        </li>
+                        <!--
+                        <li>
+                            <a href="/xbmc_skins" {% if request.path == "/xbmcskins" %}class="active"{% endif %}>Skins (Github)</a>
+                        </li>
+                        -->
+                        <li>
+                            <a href="/xbmc_backup" {% if request.path == "/xbmc_backup" %}class="active"{% endif %}>Backup</a>
+                        </li>
+                    </ul>
+				    <br />
 					<h4>
                         System
                     </h4>
 					<ul>
-                        <li>
-                            <a href="/system_info" {% if request.path == "/system_info" %}class="active"{% endif %}>Information</a>
+						<li>
+                            <a href="/system_tools" {% if request.path == "/system_tools" %}class="active"{% endif %}>Tools</a>
                         </li>
                         <li>
-                            <a href="/system_tools" {% if request.path == "/system_tools" %}class="active"{% endif %}>Tools</a>
+                            <a href="/system_info" {% if request.path == "/system_info" %}class="active"{% endif %}>Information</a>
                         </li>
                     </ul>
                 </td>
                 <td id="content">
-                    {% block content %}{% endblock %}
+                	<div id="contentWrapper">
+                		{% block content %}{% endblock %}
+                	</div>
                 </td>
             </tr>
             <tr>
