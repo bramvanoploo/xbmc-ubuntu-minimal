@@ -125,4 +125,10 @@ function Api() {
 			pfCallback(poData);
 		});
 	}
+
+	this.backupXbmcConfig = function(pfCallback) {
+		this.request('xbmc.backupConfig', '', function(poData){
+			return (poData && poData.success)? pfCallback(poData.success) : pfCallback(false);
+		});
+	}
 }

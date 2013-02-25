@@ -232,11 +232,11 @@ button.large {
 	width: 180px;
 }
 
-table#addons tr.odd {
+tr.odd {
 	background-color: #f5f5f5;
 }
 
-table#addons tr.even {
+tr.even {
 	background-color: #fff;
 }
 

@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+{% block title %}About XbmControl Installer{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript">
+       	$(document).ready(function(){
+       		/*
+       		* System update/upgrade
+       		*/
+			$('#startBackup').bind('click', function(){
+				showLoading('Your xbmc configuration is being backed up.<br />This might take a while. Please be patient...');
+
+				api.backupXbmcConfig(function(poData){
+					$.notify_osd.create({
+						'text': (poData && poData.success)? window.location.reload() : 'ERROR: XBMC configuration backup could not be created.'
+					});
+
+					hideLoading();
+				});
+
+				return false;
+			});
+
+       		$('button.download_backup').bind('click', function(){
+       			window.location.href = $(this).attr('url');
+       		});
+
+       		$('button.restore_backup').bind('click', function(){
+       			var lstrBackupName = $(this).attr('name');
+       			var lstrBackupDate = $(this).attr('date');
+
+       			$('<div title="Confirm restoring backup"></div>')
+					.html('Are you sure you want to restore the backup from ' +lstrBackupDate+ '?<br /><br /><center><b>!! This action wil overwrite your current configuration !!</b></center>')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 175,
+						width: 450,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								$(this).dialog("close");
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'Restoring backup cancelled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+       		});
+
+       		$('button.delete_backup').bind('click', function(){
+       			var lstrBackupName = $(this).attr('name');
+       			var lstrBackupDate = $(this).attr('date');
+
+       			$('<div title="Delete backup"></div>')
+					.html('Are you sure you want to delete the backup from ' +lstrBackupDate+ '?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 150,
+						width: 450,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								$(this).dialog("close");
+								window.location.reload()
+							},
+							'No': function() {
+								$.notify_osd.create({
+									'text': 'Deleting backup cancelled.'
+								});
+
+							  	$(this).dialog("close");
+							}
+						}
+			    	}
+				);
+       		});
+       	});
+    </script>
+{% endblock %}
+{% block content %}
+	<table width="100%">
+		<tr>
+			<th colspan="2">
+				Backup
+			</th>
+		</tr>
+		<tr>
+			<td class="title">
+				Create
+			</td>
+			<td>
+				<button class="medium" id="startBackup" style="border:1px solid #70C510;">New backup</button>
+			</td>
+		</tr>
+		<tr>
+			<td class="title">
+				Restore from file
+			</td>
+			<td>
+				<input type="file" name="restore_backup" />
+			</td>
+		</tr>
+		<tr>
+			<th colspan="2">
+				Archive
+			</th>
+		</tr>
+		{% for backup in backups %}
+		<tr class="{{ loop.cycle('odd', 'even') }}">
+			<td class="title">
+				<b>{{ backup.hr_time }}</b>
+			</td>
+			<td>
+				<button class="small download_backup" url="{{ url_for('static', filename=backup.path) }}">Download</button>
+				<button class="small restore_backup" name="{{ backup.name }}" date="{{ backup.hr_time }}">Restore</button>
+				&nbsp;
+				<button class="small delete_backup" style="border:1px solid red;" name="{{ backup.name }}" date="{{ backup.hr_time }}">Delete</button>
+			</td>
+		<tr>
+		{% endfor %}
+	</table>
+{% endblock %}

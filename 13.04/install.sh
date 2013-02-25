@@ -8,7 +8,7 @@
 clear
 
 echo "* Preparing ubuntu..."
-sudo apt-get -y install python-software-properties software-properties-common ppa-purge python python-flask python-apt python-beautifulsoup unzip > /dev/null 2>&1
+sudo apt-get -y install python-software-properties software-properties-common ppa-purge python python-flask python-apt python-beautifulsoup unzip tar > /dev/null 2>&1
 
 echo "* Downloading and installing Software package"
 cd ~

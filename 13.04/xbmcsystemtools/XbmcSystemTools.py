@@ -16,6 +16,11 @@ def methodExists(methodName):
 def index():
     return render_template('index.html')
 
+@app.route('/xbmc_backups')
+def xbmc_backups():
+    return render_template('xbmc_backups.html',
+        backups = System.xbmc.getExistingBackupUrlPaths())
+
 @app.route('/addon_repositories')
 def addon_repositories():
     return render_template('addon_repositories.html',

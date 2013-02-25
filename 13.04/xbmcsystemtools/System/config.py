@@ -11,6 +11,8 @@ xbmc_home_dir = home_directory+ ".xbmc/"
 xbmc_addons_dir = xbmc_home_dir+ "addons/"
 xbmc_userdata_dir = xbmc_home_dir+ "userdata/"
 xbmc_keymaps_dir = xbmc_home_dir+ "addons/"
+xbmc_backups_dir = 'static/backups/'
+xbmc_backups_url_path = 'backups/'
 
 xbmc_initd_file = "/etc/init.d/xbmc"
 xbmc_advancedsettings_file = xbmc_userdata_dir+ "advancedsettings.xml"

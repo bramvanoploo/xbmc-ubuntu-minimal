@@ -246,7 +246,6 @@ def getActivePpas(keyWord):
                 filteredPpas.append(entry)
         return filteredPpas
 
-
 # Power control
 def shutdown():
     return command.run('sudo shutdown now -h -q', True)
