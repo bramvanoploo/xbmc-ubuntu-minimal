@@ -131,4 +131,16 @@ function Api() {
 			return (poData && poData.success)? pfCallback(poData.success) : pfCallback(false);
 		});
 	}
+
+	this.deleteBackup = function(pstrFileName, pfCallback){
+		this.request('xbmc.deleteBackup', '"' +encodeURI(pstrFileName)+ '"', function(poData){
+			return (poData && poData.success)? pfCallback(poData.success) : pfCallback(false);
+		});
+	}
+
+	this.restoreBackup = function(pstrFileName, pfCallback){
+		this.request('xbmc.restoreBackup', '"' +encodeURI(pstrFileName)+ '"', function(poData){
+			return (poData && poData.success)? pfCallback(poData.success) : pfCallback(false);
+		});
+	}
 }

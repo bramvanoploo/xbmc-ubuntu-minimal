@@ -42,27 +42,30 @@ def restoreBackupFile(filePath):
     return False
 
 def delete(path):
-    if os.path.exists(path):
+    if os.path.exists(filePath.strip()):
         try:
-            os.remove(path)
+            os.remove(filePath.strip())
             return True
         except:
             pass
     return False
 
 def deleteFile(filePath):
-    if os.path.isFile(filePath):
+    if os.path.isfile(filePath.strip()):
         try:
-            os.remove(filePath)
+            os.remove(filePath.strip())
             return True
         except:
             pass
     return False
 
 def deleteDirectory(directoryPath):
-    if os.path.exists(directoryPath):
-        shutil.rmtree(directoryPath)
-        return True
+    if os.path.isdir(directoryPath.strip()):
+        try:
+            shutil.rmtree(directoryPath.strip())
+            return True
+        except:
+            pass
     return False
 
 def createFile(filePath, backupExisting = True, deleteExisting = False):
@@ -78,6 +81,30 @@ def createDirectory(directoryPath):
         os.makedirs(directoryPath)
         return True
     return False
+
+def getDirectorySize(startPath):
+    if not os.path.isdir(startPath.strip()):
+        return False
+    totalSize = 0
+    readableSize = ''
+    for dirPath, dirNames, fileNames in os.walk(startPath.strip()):
+        for f in fileNames:
+            fp = os.path.join(dirPath, f)
+            totalSize += os.path.getsize(fp)
+    return totalSize
+
+def getRedableSize(bytesSize):
+    sizeKb = bytesSize / (1024.0 ** 1)
+    sizeMb = bytesSize / (1024.0 ** 2)
+    sizeGb = bytesSize / (1024.0 ** 3)
+    if sizeKb < 1024:
+        readableSize = '%.2f KB' % sizeKb
+    elif sizeMb < 1024:
+        readableSize = '%.2f MB' % sizeMb
+    else:
+        readableSize = '%.2f GB' % sizeGb
+    return readableSize
+
 
 def appendToFile(filePath, content):
     if os.path.isFile(filePath):

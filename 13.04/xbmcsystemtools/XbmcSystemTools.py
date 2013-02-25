@@ -1,5 +1,7 @@
 import System, json, types, logging, urllib
-from flask import Flask, render_template, request, Response
+from os import path
+from flask import Flask, render_template, request, Response, redirect
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 db = System.Database.Database(System.config.installation_database)
@@ -19,6 +21,7 @@ def index():
 @app.route('/xbmc_backups')
 def xbmc_backups():
     return render_template('xbmc_backups.html',
+        xbmc_dir_size = System.ubuntu.getRedableSize(System.ubuntu.getDirectorySize(System.config.xbmc_home_dir)),
         backups = System.xbmc.getExistingBackupUrlPaths())
 
 @app.route('/addon_repositories')
@@ -54,8 +57,20 @@ def about():
 def system_tools():
     return render_template('system_tools.html',)
 
+@app.route('/upload_backup',  methods=['POST'])
+def upload_backup():
+    backupFile = request.files['backup_file']
+    backupFileName = secure_filename(backupFile.filename)
+    backupFile.save(path.join(System.config.xbmc_backups_dir, backupFileName))
+    return redirect('/xbmc_backups', 301)
+
 @app.route('/api')
 def api():
+    result = {
+        'success' : False,
+        'message' : 'Request not executed'
+    }
+
     if 'method' in request.args and methodExists('System.'+request.args['method']):
         fullRequest = None
         if 'params' in request.args and request.args['params'] != '':
@@ -71,18 +86,18 @@ def api():
             if isinstance(data, bool):
                 if not data:
                     result = {
-                        'success'   : False,
-                        'message'    : 'An unknown error occurred'
+                        'success' : False,
+                        'message' : 'An unknown error occurred'
                     }
                 else:
                     result = {
-                        'success'   : True,
-                        'result'    : True
+                        'success' : True,
+                        'result' : True
                     }
             else:
                 result = {
-                    'success'   : True,
-                    'result'    : data
+                    'success' : True,
+                    'result' : data
                 }
         except AttributeError as e1:
             logging.exception(e1)
@@ -95,6 +110,11 @@ def api():
             result = {
                 'success' : False,
                 'message' : 'Illegal request: Type error'
+            }
+        except:
+            result = {
+                'success' : False,
+                'message' : 'An unknown error occurred'
             }
 
     jsonResult = json.dumps(result)
