@@ -2,6 +2,12 @@ import command
 
 installer_version = "3.0.0"
 
+debug = True
+
+debug_log = "logs/debug.log"
+error_log = "logs/error.log"
+info_log = "logs/info.log"
+
 home_directory = command.run("echo $HOME").replace("\n", "")+'/'
 xbmc_user = home_directory.split("/")[2].replace("\n", "")
 temp_directory = home_directory+ "temp/"

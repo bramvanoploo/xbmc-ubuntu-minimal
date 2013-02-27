@@ -9,35 +9,36 @@
        			var lstrFileName = $(this).attr('file_name');
 
 				$('<div title="Confirm installation"></div>')
-				.html('Are sure you want to install this addon repository?')
-				.appendTo('body')
-				.dialog({
-					resizable: false,
-					height: 150,
-					width: 400,
-					modal: true,
-					buttons: {
-						'Yes': function() {
-							$(this).dialog("close");
-							showLoading('Attempting to install repository addon.');
+					.html('Are sure you want to install this addon repository?')
+					.appendTo('body')
+					.dialog({
+						resizable: false,
+						height: 150,
+						width: 400,
+						modal: true,
+						buttons: {
+							'Yes': function() {
+								$(this).dialog("close");
+								showLoading('Attempting to install repository addon.');
 
-							api.installAddonRepositoryFromUrl(lstrRepoUrl, lstrFileName, function(poResult){
+								api.installAddonRepositoryFromUrl(lstrRepoUrl, lstrFileName, function(poResult){
+									$.notify_osd.create({
+										'text': (poResult && poResult.success)? 'Repository successfully installed' : 'Repository could not be installed<br />ERROR: "' +poResult.message+ '"'
+									});
+
+									hideLoading();
+								});
+							},
+							'No': function() {
 								$.notify_osd.create({
-									'text': (poResult && poResult.success)? 'Repository successfully installed' : 'Repository could not be installed<br />ERROR: "' +poResult.message+ '"'
+									'text': 'Installation of addon repository canceled.'
 								});
 
-								hideLoading();
-							});
-						},
-						'No': function() {
-							$.notify_osd.create({
-								'text': 'Installation of addon repository canceled.'
-							});
-
-						  	$(this).dialog("close");
+							  	$(this).dialog("close");
+							}
 						}
-					}
-		    	});
+			    	}
+				);
 
 				return false;
        		});

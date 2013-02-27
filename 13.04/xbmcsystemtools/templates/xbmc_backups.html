@@ -9,7 +9,7 @@
        		*/
 			$('#startBackup').bind('click', function(){
 				$('<div title="Confirm backup creation"></div>')
-					.html('Are you sure you want to create a new backup? Your current XBMC directory takes up <b>{{ xbmc_dir_size }}</b> of disk space. <b>It might take up to an additional 90% of this size to store the backup on your /home partition</b>.<br /><br /><b>Make sure you have enough storage room left!</b>')
+					.html('Are you sure you want to create a new backup? Your current XBMC directory takes up <b>{{ xbmc_dir_size }}</b> of disk space. <b>It might take up to an additional 90% of this size to store the backup</b>.<br /><br /><b>Make sure you have enough storage room left!</b>')
 					.appendTo('body')
 					.dialog({
 						resizable: false,
@@ -20,7 +20,7 @@
 							'Yes': function() {
 								$(this).dialog("close");
 
-								showLoading('Your xbmc configuration is being backed up. This will most likely take a while depending on the speed of your computer.<br /><br /><b>Please be patient and do not interrupt the process!</b>');
+								showLoading('Your xbmc configuration is being backed up. This will most likely take a while depending on the speed of your computer and the size of your XBMC directory.<br /><br /><b>Please be patient and do not interrupt the process!</b>');
 
 								api.backupXbmcConfig(function(pbSuccess){
 									$.notify_osd.create({

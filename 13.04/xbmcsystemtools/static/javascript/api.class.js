@@ -54,50 +54,50 @@ function Api() {
 	}
 
 	this.aptInstall = function(pstrPackageName, pfCallback) {
-		this.request('ubuntu.aptInstall', '"' +encodeURI(pstrPackageName)+ '"', function(poData){
+		this.request('software.install', '"' +encodeURI(pstrPackageName)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.aptRemove = function(pstrPackageName, pfCallback) {
-		this.request('ubuntu.aptRemove', '"' +encodeURI(pstrPackageName)+ '"', function(poData){
+		this.request('software.remove', '"' +encodeURI(pstrPackageName)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.aptUpdate = function(pfCallback) {
-		this.request('ubuntu.aptUpdate', '', function(poData){
+		this.request('software.updateSources', '', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.aptDistUpgrade = function(pfCallback) {
-		this.request('ubuntu.aptDistUpgrade', '', function(poData){
+		this.request('software.distUpgrade', '', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.addPpa = function(pstrPpa, pfCallback) {
-		this.request('ubuntu.addPpa', '"' +encodeURI(pstrPpa)+ '"', function(poData){
+		this.request('ppa.add', '"' +encodeURI(pstrPpa)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.removePpa = function(pstrPpa, pfCallback) {
-		this.request('ubuntu.removePpa', '"' +encodeURI(pstrPpa)+ '"', function(poData){
+		this.request('ppa.remove', '"' +encodeURI(pstrPpa)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
 
 	this.getActivePpas = function(pfCallback){
-		this.request('ubuntu.getActivePpas', '', function(poData){
+		this.request('ppa.getActive', '', function(poData){
 			var laResult = (poData && poData.success)? poData.result : [];
 			pfCallback(laResult);
 		});
 	}
 
 	this.purgePpa = function(pstrPpa, pfCallback) {
-		this.request('ubuntu.purgePpa', '"' +encodeURI(pstrPpa)+ '"', function(poData){
+		this.request('ppa.purge', '"' +encodeURI(pstrPpa)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}
@@ -114,14 +114,8 @@ function Api() {
 		});
 	}
 
-	this.getAddonRepositories = function(pfCallback){
-		this.request('addonRepositories.get', '', function(poData){
-			pfCallback(poData);
-		});
-	}
-
-	this.installAddonRepositoryFromUrl = function(pstrUrl, pstrFIleName, pfCallback){
-		this.request('addonRepositories.install', '"' +encodeURI(pstrUrl)+ '","' +encodeURI(pstrFIleName)+ '"', function(poData){
+	this.installAddonRepositoryFromUrl = function(pstrUrl, pstrFileName, pfCallback){
+		this.request('xbmc.installRepository', '"' +encodeURI(pstrUrl)+ '","' +encodeURI(pstrFileName)+ '"', function(poData){
 			pfCallback(poData);
 		});
 	}

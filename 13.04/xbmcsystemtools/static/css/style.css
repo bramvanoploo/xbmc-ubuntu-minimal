@@ -204,16 +204,16 @@ ul {
 	height: 50px;
 	float: left;
 	background: url('../images/ajax_loader.gif') no-repeat center #fff;
+	vertical-align: middle;
 }
 
 #loading .message {
 	float: right;
-	padding: 10px;
-	font-size: 12px;
-	width: 320px;
-	color: #000;
+	padding: 5px;
+	font-size: 13px;
+	width: 345px;
+	color: #222;
 	overflow: auto;
-	vertical-align: middle;
 }
 
 button.mini {

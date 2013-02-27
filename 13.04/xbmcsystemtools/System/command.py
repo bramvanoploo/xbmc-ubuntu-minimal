@@ -1,8 +1,7 @@
-import subprocess, logging, datetime
+import subprocess, datetime, log
+from inspect import stack
 
 def run(command, returnBool = False):
-    shellErrorLog = open("shell_error.log", "a")
-    shellLog = open("shell_output.log", "a")
     now = datetime.datetime.now()
     process = subprocess.Popen(command,
                 shell=True,
@@ -13,18 +12,13 @@ def run(command, returnBool = False):
     output, error = process.communicate()
 
     if error.strip():
-        errorOutput = now.strftime("%Y-%m-%d %H:%M:%S")+ ' COMMAND: "' +command+ '"\n' +now.strftime("%Y-%m-%d %H:%M:%S")+ ' ERROR: ' +error+ '\n\n'
-        shellErrorLog.write(errorOutput)
-        shellErrorLog.close()
+        log.error(error, stack()[0][3])
         return False
 
-    successOutput = now.strftime("%Y-%m-%d %H:%M:%S")+ ' COMMAND: "' +command+ '"\n' +now.strftime("%Y-%m-%d %H:%M:%S")+ ' RESULT: ' +output+ '\n\n'
-    shellLog.write(successOutput)
-    shellLog.close()
+    log.debug(output.strip(), stack()[0][3])
 
-    if returnBool:
-        return True
-    else:
-        return output
+    output = True if not output else output
+
+    return True if returnBool else output
 
 

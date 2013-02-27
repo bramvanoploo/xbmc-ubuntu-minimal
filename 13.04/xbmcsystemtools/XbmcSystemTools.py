@@ -1,11 +1,11 @@
-import System, json, types, logging, urllib
+import System, json, types, urllib
+from inspect import stack
 from os import path
 from flask import Flask, render_template, request, Response, redirect
 from werkzeug import secure_filename
 
 app = Flask(__name__)
 db = System.Database.Database(System.config.installation_database)
-logging.basicConfig(filename="installation.log", level=logging.DEBUG)
 
 def methodExists(methodName):
     try:
@@ -21,13 +21,13 @@ def index():
 @app.route('/xbmc_backups')
 def xbmc_backups():
     return render_template('xbmc_backups.html',
-        xbmc_dir_size = System.ubuntu.getRedableSize(System.ubuntu.getDirectorySize(System.config.xbmc_home_dir)),
+        xbmc_dir_size = System.helper.getReadableSize(System.fileSystem.getDirectorySize(System.config.xbmc_home_dir)),
         backups = System.xbmc.getExistingBackupUrlPaths())
 
 @app.route('/addon_repositories')
 def addon_repositories():
     return render_template('addon_repositories.html',
-        repositories = System.addonRepositories.get())
+        repositories = System.xbmc.getInstallableRepositories())
 
 @app.route('/system_info')
 def system():
@@ -78,7 +78,7 @@ def api():
         else:
             fullRequest = 'System.'+urllib.unquote(request.args['method'])+'()'
 
-        logging.debug(fullRequest)
+        System.log.debug('request:' +fullRequest, stack()[0][3])
 
         try:
             data = eval(fullRequest)
@@ -100,24 +100,34 @@ def api():
                     'result' : data
                 }
         except AttributeError as e1:
-            logging.exception(e1)
+            System.log.error(str(e1), stack()[0][3])
             result = {
                 'success' : False,
-                'message' : 'Illegal request: Attribute error'
+                'message' : 'Illegal request: Attribute error (' +str(e1)+ ')'
             }
         except TypeError as e2:
-            logging.exception(e2)
+            System.log.error(str(e2), stack()[0][3])
             result = {
                 'success' : False,
-                'message' : 'Illegal request: Type error'
+                'message' : 'Illegal request: Type error (' +str(e2)+ ')'
+            }
+        except NameError as e3:
+            System.log.error(str(e3), stack()[0][3])
+            result = {
+                'success' : False,
+                'message' : 'Illegal Request: Name error (' +str(e3)+ ')'
             }
         except:
+            System.log.error('An unknown error occurred', stack()[0][3])
             result = {
                 'success' : False,
                 'message' : 'An unknown error occurred'
             }
 
     jsonResult = json.dumps(result)
+
+    System.log.debug('result:' +jsonResult, stack()[0][3])
+
     response = Response(jsonResult, status=200, mimetype='application/json')
     return response
 

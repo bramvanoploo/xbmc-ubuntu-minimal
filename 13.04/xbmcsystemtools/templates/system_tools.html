@@ -8,11 +8,11 @@
        		* System update/upgrade
        		*/
 			$('#aptDistUpgrade').bind('click', function(){
-				showLoading('Your system is being updated.<br />Please be patient.');
+				showLoading('Your software is being upgraded.<br />Please be patient.');
 
 				api.aptDistUpgrade(function(poData){
 					$.notify_osd.create({
-						'text': (poData && poData.success)? 'System software successfully updated' : 'Could not perform system update'
+						'text': (poData && poData.success)? 'System software successfully upgraded' : 'Could not perform system software upgrade'
 					});
 
 					hideLoading();
@@ -44,7 +44,7 @@
 			    dataType: 'json',
 			    cache: false,
 			    source: function(request, response) {
-			        $.getJSON('/api?method=ubuntu.aptSearch&params="' +$('#installPackageName').val()+ '",False',
+			        $.getJSON('/api?method=software.search&params="' +$('#installPackageName').val()+ '",False',
 			        	function (data) {
 			            	response($.map(data.result, function(entry) {
 				                return {
@@ -130,7 +130,7 @@
 			    dataType: 'json',
 			    cache: false,
 			    source: function (request, response) {
-			        $.getJSON('/api?method=ubuntu.aptSearch&params="' +$('#uninstallPackageName').val()+ '",True',
+			        $.getJSON('/api?method=software.search&params="' +$('#uninstallPackageName').val()+ '",True',
 			        	function (data) {
 			            	response($.map(data.result, function(entry) {
 				                return {
@@ -266,7 +266,7 @@
 			    dataType: 'json',
 			    cache: false,
 			    source: function (request, response) {
-			        $.getJSON('/api?method=ubuntu.getActivePpas&params="' +$.trim($('#removePpaName').val())+ '"',
+			        $.getJSON('/api?method=ppa.getActive&params="' +$.trim($('#removePpaName').val())+ '"',
 			        	function (data) {
 			            	response($.map(data.result, function(entry) {
 				                return {
@@ -398,7 +398,7 @@
 			* Maintenance methods
 			*/
 			$('#aptAutoClean').bind('click', function(){
-				api.request('ubuntu.aptAutoClean', '', function(poResult){
+				api.request('software.autoClean', '', function(poResult){
 					if(poResult && poResult.success) {
 						$.notify_osd.create({
 							'text': 'Software managers cache successfully emptied'
@@ -415,7 +415,7 @@
 			});
 
 			$('#aptAutoRemove').bind('click', function(){
-				api.request('ubuntu.aptAutoRemove', '', function(poResult){
+				api.request('software.autoRemove', '', function(poResult){
 					if(poResult && poResult.success) {
 						$.notify_osd.create({
 							'text': 'Obsolete software has successfully been removed'
