@@ -288,6 +288,8 @@ function addUserToRequiredGroups()
 	sudo adduser $XBMC_USER fuse > /dev/null 2>&1
 	sudo adduser $XBMC_USER cdrom > /dev/null 2>&1
 	sudo adduser $XBMC_USER plugdev > /dev/null 2>&1
+	sudo adduser $XBMC_USER dialout > /dev/null 2>&1
+	sudo adduser $XBMC_USER adm > /dev/null 2>&1
 	showInfo "XBMC user added to required groups"
 }
 
@@ -446,7 +448,7 @@ function configureAtiDriver()
     sudo aticonfig --set-pcs-u32=MCIL,HWUVD_H264Level51Support,1 > /dev/null 2>&1
 }
 
-function disbaleAtiUnderscan()
+function disableAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null 2>&1
@@ -497,7 +499,7 @@ function installVideoDriver()
             RESPONSE=$?
             case ${RESPONSE//\"/} in
                 0) 
-                    disbaleAtiUnderscan
+                    disableAtiUnderscan
                     ;;
                 1) 
                     enableAtiUnderscan
@@ -704,12 +706,12 @@ function installLmSensors()
     aptInstall lm-sensors
     clear
     echo ""
-    echo "$(tput setaf 2)$(tput bold)INSTALLATION INFO: Please confirm all questions with ENTER (applying the suggested option)."
+    echo "$(tput setaf 2)$(tput bold)INSTALLATION INFO: LM_sensors will attempt auto deployment."
     echo "$(tput setaf 2)The XBMC installation will continue automatically when finished.$(tput sgr0)"
     echo ""
     echo ""
     
-    sudo sensors-detect
+    sudo yes | sensors-detect
     
     if [ ! -e "$XBMC_ADVANCEDSETTINGS_FILE" ]; then
 	    createDirectory "$TEMP_DIRECTORY" 1 0
