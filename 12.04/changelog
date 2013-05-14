@@ -4,13 +4,12 @@
 - [x] <- Task complete
 
 TODO
-- [ ] Add option to install XBMC stable
 - [ ] Add support to exit xbmc to terminal
 - [ ] Fix errors around install.
 - [ ] Drop into console login when Exit in Powermenu in XBMC.
 - [ ] Add AMD temperature support via advancedsettings.xml
 - [ ] Add condition in what plymouth is installed and resolution and fixes are applied to NVIDIA only
-- [ ] adduser to dialout group so that whoever uses libcec can benefit.
+
 
 - [x] Fix typos and more errors
 - [x] Remove apparmor properly
@@ -25,3 +24,5 @@ TODO
 - [x] Added plymouth boot logo configuration fix
 - [x] Switched to new upstart script which is more efficient
 - [x] Added XBMC user to some more groups for accessto extra system functionalities
+- [x] adduser to dialout group so that whoever uses libcec can benefit.
+- [x] Add option to install XBMC stable
