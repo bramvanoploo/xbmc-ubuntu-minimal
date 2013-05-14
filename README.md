@@ -7,6 +7,11 @@ i386: http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-i386/current
 
 x64: http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-amd64/current/images/netboot/mini.iso
 
+* Make sure you installed your Ubuntu with xbmc user or create xbmc user after installation 
+  and add user to sudo group
+
+* On INTEL systems it is recommended to upgrade to kernel 3.9 (inclusive firmware update)
+
 * ...and run the following on the machine afterwards to install and configure XBMC (NVIDIA, ATI and Intel video cards supported):
 
 ```
