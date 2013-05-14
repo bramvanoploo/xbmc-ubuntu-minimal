@@ -34,11 +34,10 @@ XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 MODULES_FILE="/etc/modules"
 REMOTE_WAKEUP_RULES_FILE="/etc/udev/rules.d/90-enable-remote-wakeup.rules"
 AUTO_MOUNT_RULES_FILE="/etc/udev/rules.d/11-media-by-label-auto-mount.rules"
-RSYSLOG="/etc/init/rsyslog.conf"
+RSYSLOG_FILE="/etc/init/rsyslog.conf"
 SYSCTL_CONF_FILE="/etc/sysctl.conf"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://raw.github.com/uNiversaI/xbmc-ubuntu-minimal/master/12.04/download/"
-XBMC_PPA="ppa:wsnipex/xbmc-xvba"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
@@ -246,7 +245,9 @@ function installDependencies()
     echo "-- Installing installation dependencies..."
     echo ""
 
-	sudo apt-get -y install dialog software-properties-common pastebinit > /dev/null 2>&1
+	# python-software-properties for add-apt-repository (Ubuntu 12.04)
+	# software-properties-common for add-apt-repository (Ubuntu 12.10 and above)
+	sudo apt-get -y install dialog python-software-properties software-properties-common pastebinit > /dev/null 2>&1
 }
 
 function fixLocaleBug()
@@ -294,8 +295,10 @@ function addUserToRequiredGroups()
 
 function addXbmcPpa()
 {
-    showInfo "Adding wsnipex xbmc-xvba PPA..."
-	IS_ADDED=$(addRepository "$XBMC_PPA")
+	XBMC_PPA="$1"
+
+    	showInfo "Adding repository $XBMC_PPA ..."
+	addRepository "$XBMC_PPA"
 }
 
 function distUpgrade()
@@ -333,6 +336,12 @@ function installAudio()
     IS_INSTALLED=$(aptInstall alsa-utils)
     IS_INSTALLED=$(aptInstall libasound2)
     sudo alsamixer
+}
+
+function installAirplay()
+{
+    showInfo "Installing Airplay Service..."
+    IS_INSTALLED=$(aptInstall avahi-daemon)
 }
 
 function installLirc()
@@ -451,14 +460,14 @@ function disableAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,0 > /dev/null 2>&1
-    showInfo "Underscan successfully disabled"
+	showInfo "Underscan successfully disabled"
 }
 
 function enableAtiUnderscan()
 {
 	sudo kill $(pidof X) > /dev/null 2>&1
 	sudo aticonfig --set-pcs-val=MCIL,DigitalHDTVDefaultUnderscan,1 > /dev/null 2>&1
-    showInfo "Underscan successfully enabled"
+	showInfo "Underscan successfully enabled"
 }
 
 function installVideoDriver()
@@ -584,6 +593,7 @@ function installXbmcInitScript()
 	fi
 }
 
+# This function could be deleted because it is not used anywhere
 function installXbmcRunFile()
 {
     showInfo "Installing custom XBMC startup executable..."
@@ -737,6 +747,38 @@ function reconfigureXServer()
 	showInfo "X-server successfully configured"
 }
 
+function selectXbmcPpa()
+{
+    cmd=(dialog --backtitle "Select PPA to add"
+        --radiolist "Please select the PPA you like to add and install XBMC from:" 
+        15 $DIALOG_WIDTH 6)
+        
+    options=(1 "Team XBMC (stable)" on
+            2 "Team XBMC (UNstable)" off
+            3 "Wsnipex - Frodo (stable)" off
+            4 "Wsnipex - Git Builds (tested)" off)
+         
+    choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+    case ${choice//\"/} in
+        1)
+            addXbmcPpa "ppa:team-xbmc/ppa"
+            ;;
+        2)
+            addXbmcPpa "ppa:team-xbmc/unstable"
+            ;;
+        3)
+            addXbmcPpa "ppa:wsnipex/xbmc-xvba-frodo"
+            ;;
+        4)
+            addXbmcPpa "ppa:wsnipex/xbmc-xvba"
+            ;;
+        *)
+            addXbmcPpa
+            ;;
+    esac
+}
+
 function selectXbmcStartupMethod()
 {
     cmd=(dialog --backtitle "XBMC autorun method"
@@ -770,7 +812,7 @@ function selectXbmcTweaks()
         
     options=(1 "Enable dirty region rendering (improved performance)" on
             2 "Enable temperature monitoring (confirm with ENTER)" on
-            3 "Install Addon Repositories Installer addon" on
+            3 "Install Addon Repositories Installer addon" off
             4 "Apply improved Pulse-Eight Motorola NYXboard keymap" off)
             
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -955,7 +997,7 @@ fixLocaleBug
 fixUsbAutomount
 applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
-addXbmcPpa
+selectXbmcPpa
 distUpgrade
 installVideoDriver
 installXinit
@@ -966,6 +1008,7 @@ selectScreenResolution
 reconfigureXServer
 installPowerManagement
 installAudio
+installAirplay
 selectXbmcTweaks
 selectAdditionalPackages
 allowRemoteWakeup
