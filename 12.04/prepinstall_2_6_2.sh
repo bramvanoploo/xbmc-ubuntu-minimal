@@ -261,7 +261,7 @@ function fixLocaleBug()
 
 function fixUsbAutomount()
 {
-    handleFileBackup "$MODULES_FILE" 1 1
+    handleFileBackup "$MODULES_FILE" 1 0
     appendToFile $MODULES_FILE "usb-storage"
     createDirectory "$TEMP_DIRECTORY" 1 0
     download $DOWNLOAD_URL"media-by-label-auto-mount.rules"
