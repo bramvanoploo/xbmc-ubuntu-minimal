@@ -479,7 +479,7 @@ function installVideoDriver()
     elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]] || [[ $GFX_CARD == ADVANCED ]]; then
         VIDEO_DRIVER="fglrx"
     elif [[ $GFX_CARD == INTEL ]]; then
-        VIDEO_DRIVER="i965-va-driver"
+        VIDEO_DRIVER="libva-intel-vaapi-driver"
     elif [[ $GFX_CARD == VMWARE ]]; then
         VIDEO_DRIVER="i965-va-driver"
     else
@@ -756,7 +756,8 @@ function selectXbmcPpa()
     options=(1 "Team XBMC (stable)" on
             2 "Team XBMC (UNstable)" off
             3 "Wsnipex - Frodo (stable)" off
-            4 "Wsnipex - Git Builds (tested)" off)
+            4 "Wsnipex - Git Builds (tested)" off
+			5 "Wsnipex - VAAPI (only for INTEL)" off)
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
@@ -772,6 +773,9 @@ function selectXbmcPpa()
             ;;
         4)
             addXbmcPpa "ppa:wsnipex/xbmc-xvba"
+            ;;
+		5)
+            addXbmcPpa "ppa:wsnipex/vaapi"
             ;;
         *)
             addXbmcPpa
