@@ -9,7 +9,7 @@ i386: http://archive.ubuntu.com/ubuntu/dists/quantal/main/installer-i386/current
 
 * ...and run the following on the machine afterwards to install and configure XBMC (NVIDIA, ATI and Intel video cards supported):
 
-* ...This is my personal version of the Bramm77 xbmc-ubuntu-minimal install scripts, with scripts 2.6 and 2.6.1 adjusted to allow for Frodo Stable repo from wsnipex's ppa to be installed
+* ...This is my personal version of the Bramm77 xbmc-ubuntu-minimal install scripts, with additonal vesrsions of the scripts 2.6 and 2.6.1 adjusted to allow for Frodo Stable repo from wsnipex's ppa to be installed
 
 ```
 cd ~ 
