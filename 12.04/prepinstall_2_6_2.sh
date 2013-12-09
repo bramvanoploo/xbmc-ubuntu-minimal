@@ -256,7 +256,7 @@ function fixLocaleBug()
     handleFileBackup $ENVIRONMENT_FILE 1
     appendToFile $ENVIRONMENT_FILE "LC_MESSAGES=\"C\""
     appendToFile $ENVIRONMENT_FILE "LC_ALL=\"en_US.UTF-8\""
-	showInfo "Locale environment bug fixed"
+    showInfo "Locale environment bug fixed"
 }
 
 function fixUsbAutomount()
@@ -277,7 +277,7 @@ function fixUsbAutomount()
 function applyXbmcNiceLevelPermissions()
 {
 	createFile $SYSTEM_LIMITS_FILE
-    appendToFile $SYSTEM_LIMITS_FILE "$XBMC_USER             -       nice            -1"
+	appendToFile $SYSTEM_LIMITS_FILE "$XBMC_USER             -       nice            -1"
 	showInfo "Allowed XBMC to prioritize threads"
 }
 
@@ -290,7 +290,7 @@ function addUserToRequiredGroups()
 	sudo adduser $XBMC_USER cdrom > /dev/null 2>&1
 	sudo adduser $XBMC_USER plugdev > /dev/null 2>&1
 	sudo adduser $XBMC_USER dialout > /dev/null 2>&1
-        showInfo "XBMC user added to required groups"
+	showInfo "XBMC user added to required groups"
 }
 
 function addXbmcPpa()
@@ -303,7 +303,7 @@ function addXbmcPpa()
 
 function distUpgrade()
 {
-    showInfo "Updating Ubuntu with latest packages (may take a while)..."
+	showInfo "Updating Ubuntu with latest packages (may take a while)..."
 	update
 	sudo apt-get -y dist-upgrade > /dev/null 2>&1
 	showInfo "Ubuntu installation updated"
@@ -323,16 +323,14 @@ function installPowerManagement()
     IS_INSTALLED=$(aptInstall upower)
     IS_INSTALLED=$(aptInstall udisks)
     IS_INSTALLED=$(aptInstall acpi-support)
-	download $DOWNLOAD_URL"custom-actions.pkla"
-	createDirectory "$POWERMANAGEMENT_DIR"
+    download $DOWNLOAD_URL"custom-actions.pkla"
+    createDirectory "$POWERMANAGEMENT_DIR"
     IS_MOVED=$(move $TEMP_DIRECTORY"custom-actions.pkla" "$POWERMANAGEMENT_DIR")
 }
 
 function installAudio()
 {
     showInfo "Installing audio packages....\n!! Please make sure no used channels are muted !!"
-    IS_INSTALLED=$(aptInstall linux-sound-base)
-    IS_INSTALLED=$(aptInstall alsa-base)
     IS_INSTALLED=$(aptInstall alsa-utils)
     IS_INSTALLED=$(aptInstall libasound2)
     sudo alsamixer
@@ -364,7 +362,7 @@ function installLirc()
 
 function allowRemoteWakeup()
 {
-    showInfo "Allowing for remote wakeup (won't work for all remotes)..."
+	showInfo "Allowing for remote wakeup (won't work for all remotes)..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	handleFileBackup "$REMOTE_WAKEUP_RULES_FILE" 1 1
 	download $DOWNLOAD_URL"remote_wakeup_rules"
@@ -380,7 +378,7 @@ function allowRemoteWakeup()
 function installTvHeadend()
 {
     showInfo "Adding jabbors hts-stable PPA..."
-	addRepository "$HTS_TVHEADEND_PPA"
+    addRepository "$HTS_TVHEADEND_PPA"
 
     clear
     echo ""
@@ -415,7 +413,7 @@ function installXbmc()
 
 function enableDirtyRegionRendering()
 {
-    showInfo "Enabling XBMC dirty region rendering..."
+	showInfo "Enabling XBMC dirty region rendering..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	handleFileBackup $XBMC_ADVANCEDSETTINGS_FILE 0 1
 	download $DOWNLOAD_URL"dirty_region_rendering.xml"
@@ -431,10 +429,10 @@ function enableDirtyRegionRendering()
 
 function installXbmcAddonRepositoriesInstaller()
 {
-    showInfo "Installing Addon Repositories Installer addon..."
+	showInfo "Installing Addon Repositories Installer addon..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download $DOWNLOAD_URL"plugin.program.repo.installer-1.0.5.tar.gz"
-    createDirectory "$XBMC_ADDONS_DIR" 0 0
+	createDirectory "$XBMC_ADDONS_DIR" 0 0
 
     if [ -e $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" ]; then
         tar -xvzf $TEMP_DIRECTORY"plugin.program.repo.installer-1.0.5.tar.gz" -C "$XBMC_ADDONS_DIR" > /dev/null 2>&1
@@ -524,7 +522,7 @@ function installVideoDriver()
 
 function installAutomaticDistUpgrade()
 {
-    showInfo "Enabling automatic system upgrade..."
+	showInfo "Enabling automatic system upgrade..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download $DOWNLOAD_URL"dist_upgrade.sh"
 	IS_MOVED=$(move $TEMP_DIRECTORY"dist_upgrade.sh" "$DIST_UPGRADE_FILE" 1)
@@ -567,7 +565,7 @@ function installXbmcInitScript()
     removeAutorunFiles
     showInfo "Installing XBMC init.d autorun support..."
     createDirectory "$TEMP_DIRECTORY" 1 0
-	download $DOWNLOAD_URL"xbmc_init_script"
+    download $DOWNLOAD_URL"xbmc_init_script"
 	
 	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
 	    if [ -e $XBMC_INIT_FILE ]; then
@@ -598,7 +596,7 @@ function installXbmcRunFile()
 {
     showInfo "Installing custom XBMC startup executable..."
     createDirectory "$TEMP_DIRECTORY" 1 0
-    download $DOWNLOAD_URL"xbmc_run_script"
+    	download $DOWNLOAD_URL"xbmc_run_script"
     
     if [ -e $TEMP_DIRECTORY"xbmc_run_script" ]; then
         IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_run_script" "$XBMC_CUSTOM_EXEC")
@@ -619,7 +617,7 @@ function installXbmcUpstartScript()
     removeAutorunFiles
     showInfo "Installing XBMC upstart autorun support..."
     createDirectory "$TEMP_DIRECTORY" 1 0
-	download $DOWNLOAD_URL"xbmc_upstart_script_2"
+    	download $DOWNLOAD_URL"xbmc_upstart_script_2"
 
 	if [ -e $TEMP_DIRECTORY"xbmc_upstart_script_2" ]; then
 	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_upstart_script_2" "$XBMC_INIT_CONF_FILE")
@@ -636,10 +634,10 @@ function installXbmcUpstartScript()
 
 function installNyxBoardKeymap()
 {
-    showInfo "Applying Pulse-Eight Motorola NYXboard advanced keymap..."
+	showInfo "Applying Pulse-Eight Motorola NYXboard advanced keymap..."
 	createDirectory "$TEMP_DIRECTORY" 1 0
 	download $DOWNLOAD_URL"nyxboard.tar.gz"
-    createDirectory "$XBMC_KEYMAPS_DIR" 0 0
+	createDirectory "$XBMC_KEYMAPS_DIR" 0 0
 
     if [ -e $XBMC_KEYMAPS_DIR"keyboard.xml" ]; then
         handleFileBackup $XBMC_KEYMAPS_DIR"keyboard.xml" 0 1
@@ -930,7 +928,7 @@ function optimizeInstallation()
 
 function cleanUp()
 {
-    showInfo "Cleaning up..."
+	showInfo "Cleaning up..."
 	sudo apt-get -y autoremove > /dev/null 2>&1
 	sudo apt-get -y autoclean > /dev/null 2>&1
 	sudo apt-get -y clean > /dev/null 2>&1
@@ -946,7 +944,7 @@ function cleanUp()
 
 function rebootMachine()
 {
-    showInfo "Reboot system..."
+	showInfo "Reboot system..."
 	dialog --title "Installation complete" \
 		--backtitle "$SCRIPT_TITLE" \
 		--yesno "Do you want to reboot now?" 7 $DIALOG_WIDTH
