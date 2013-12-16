@@ -752,7 +752,7 @@ function selectXbmcPpa()
         15 $DIALOG_WIDTH 6)
         
     options=(1 "Team XBMC (stable)" on
-            2 "Team XBMC (UNstable)" off
+            2 "Team XBMC (Unstable)" off
             3 "Wsnipex - Frodo (stable)" off
             4 "Wsnipex - Git Builds (tested)" off
 			5 "Wsnipex - VAAPI (only for INTEL)" off)
