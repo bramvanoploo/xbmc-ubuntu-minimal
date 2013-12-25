@@ -47,6 +47,10 @@ SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.04 by Bram
 
 GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'} |tr [a-z] [A-Z])
 
+mkdir /home/xbmc/.xbmc
+chown -R xbmc:xbmc /home/xbmc/.xbmc/
+
+
 ## ------ START functions ---------
 
 function showInfo()
@@ -753,9 +757,9 @@ function selectXbmcPpa()
         
     options=(1 "Team XBMC (stable)" on
             2 "Team XBMC (Unstable)" off
-            3 "Wsnipex - Frodo (stable)" off
-            4 "Wsnipex - Git Builds (tested)" off
-			5 "Wsnipex - VAAPI (only for INTEL)" off)
+            3 "Wsnipex - VAAPI (only for INTEL)" off
+            4 "Wsnipex - Fernetmenta master" off
+            5 "Empty" off)
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
@@ -767,13 +771,13 @@ function selectXbmcPpa()
             addXbmcPpa "ppa:team-xbmc/unstable"
             ;;
         3)
-            addXbmcPpa "ppa:wsnipex/xbmc-xvba-frodo"
+            addXbmcPpa "ppa:wsnipex/vaapi"
             ;;
         4)
-            addXbmcPpa "ppa:wsnipex/xbmc-xvba"
+            addXbmcPpa "ppa:wsnipex/xbmc-fernetmenta-master"
             ;;
-		5)
-            addXbmcPpa "ppa:wsnipex/vaapi"
+        5)
+            addXbmcPpa ""
             ;;
         *)
             addXbmcPpa
