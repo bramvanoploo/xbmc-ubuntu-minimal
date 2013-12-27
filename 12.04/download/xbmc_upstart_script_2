@@ -10,7 +10,10 @@ start on (filesystem and stopped udevtrigger)
 stop on runlevel [016]
 
 # tell upstart to respawn the process if abnormal exit
+# Nice levels are to allow AEsynk more priority This is required in conjusntion to /etc/securit/limits.conf
 respawn
+respawn limit 10 5
+limit nice 21 21
 
 script
   exec su -c "xinit /usr/bin/xbmc -d --standalone -- -nocursor :0" $USER
