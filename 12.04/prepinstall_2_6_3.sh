@@ -47,10 +47,6 @@ SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.04 by Bram
 
 GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'} |tr [a-z] [A-Z])
 
-mkdir /home/xbmc/.xbmc
-chown -R xbmc:xbmc /home/xbmc/.xbmc/
-
-
 ## ------ START functions ---------
 
 function showInfo()
@@ -791,8 +787,8 @@ function selectXbmcStartupMethod()
         --radiolist "Please select the method used to start XBMC (default recommended):" 
         15 $DIALOG_WIDTH 3)
         
-    options=(1 "init.d" on
-            2 "upstart (experimental)" off)
+    options=(1 "init.d" off
+            2 "upstart (Preferred)" on)
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
@@ -817,7 +813,7 @@ function selectXbmcTweaks()
         15 $DIALOG_WIDTH 6)
         
     options=(1 "Enable dirty region rendering (improved performance)" on
-            2 "Enable temperature monitoring (confirm with ENTER)" on
+            2 "Enable temperature monitoring (Automatically deployed)" on
             3 "Install Addon Repositories Installer addon" off
             4 "Apply improved Pulse-Eight Motorola NYXboard keymap" off)
             
@@ -936,6 +932,7 @@ function cleanUp()
 	sudo apt-get -y autoremove > /dev/null 2>&1
 	sudo apt-get -y autoclean > /dev/null 2>&1
 	sudo apt-get -y clean > /dev/null 2>&1
+	sudo chown -R xbmc:xbmc /home/xbmc/.xbmc/ > /dev/null 2>&1
 	
 	if [ -e "$TEMP_DIRECTORY" ]; then
 	    sudo rm -R "$TEMP_DIRECTORY" > /dev/null 2>&1
