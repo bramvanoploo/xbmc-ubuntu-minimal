@@ -28,8 +28,9 @@ Instead this is used now [Linux Radeon OSS with vdpau how-to](http://forum.xbmc.
 Both of that needs adding to script for options for each ATI and Intel without breaking nvidia.
 
 ###Contributions
-Your contributions to this script are welcome make PR's to Master and shall be merged.
-Loads of cleanup required for unused functions ad make all intel and ATI work without breaking existing.
-Anyones help will be greatly apprecciated by anyone using this.
+Your contributions to this script are welcome, please make your PR's to Master and shall be merged.
+Loads of cleanup required for unused functions and make all intel and ATI work without breaking existing.
+
+Whoever contributes shall go onto hall of fame and aprecciated by anyone using this.
 
 [![lgplv3](https://f.cloud.github.com/assets/3521959/153710/2745bbea-7601-11e2-8b61-c8ff3ef97d32.png)](http://www.gnu.org/licenses/lgpl.txt)
