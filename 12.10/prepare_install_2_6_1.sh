@@ -38,7 +38,7 @@ SYSCTL_CONF_FILE="/etc/sysctl.conf"
 RSYSLOG_FILE="/etc/init/rsyslog.conf"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://github.com/Bram77/xbmc-ubuntu-minimal/raw/master/12.10/download/"
-XBMC_PPA="ppa:wsnipex/xbmc-xvba"
+XBMC_PPA="ppa:team-xbmc/ppa"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
