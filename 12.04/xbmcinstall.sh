@@ -1,7 +1,8 @@
 #!/bin/bash
 #
-# @author   Bram van Oploo / Bug fixes by uNiversal
-# @date     2013-02-22
+# @author   Bug fixes by uNiversal
+# @original author Bram van Oploo
+# @date     2013-12-28
 # @version  2.8
 #
 
@@ -22,7 +23,6 @@ XBMC_KEYMAPS_DIR=$XBMC_USERDATA_DIR"keymaps/"
 XBMC_ADVANCEDSETTINGS_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml"
 XBMC_INIT_CONF_FILE="/etc/init/xbmc.conf"
 XBMC_XSESSION_FILE="/home/xbmc/.xsession"
-XBMC_CUSTOM_EXEC="/usr/bin/runXBMC"
 UPSTART_JOB_FILE="/lib/init/upstart-job"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
 GRUB_CONFIG_FILE="/etc/default/grub"
