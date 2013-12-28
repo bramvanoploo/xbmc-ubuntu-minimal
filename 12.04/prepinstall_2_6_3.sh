@@ -560,58 +560,6 @@ function removeAutorunFiles()
     fi
 }
 
-function installXbmcInitScript()
-{
-    removeAutorunFiles
-    showInfo "Installing XBMC init.d autorun support..."
-    createDirectory "$TEMP_DIRECTORY" 1 0
-    download $DOWNLOAD_URL"xbmc_init_script"
-	
-	if [ -e $TEMP_DIRECTORY"xbmc_init_script" ]; then
-	    if [ -e $XBMC_INIT_FILE ]; then
-		    sudo rm $XBMC_INIT_FILE > /dev/null 2>&1
-	    fi
-	    
-	    IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_init_script" "$XBMC_INIT_FILE")
-
-	    if [ "$IS_MOVED" == "1" ]; then
-	        sudo chmod a+x "$XBMC_INIT_FILE" > /dev/null 2>&1
-	        sudo update-rc.d xbmc defaults > /dev/null 2>&1
-	        
-	        if [ "$?" == "0" ]; then
-                showInfo "XBMC autorun succesfully configured"
-            else
-                showError "XBMC autorun script could not be activated (error code: $?)"
-            fi
-	    else
-	        showError "XBMC autorun script could not be installed"
-	    fi
-	else
-	    showError "Download of XBMC autorun script failed"
-	fi
-}
-
-# This function could be deleted because it is not used anywhere
-function installXbmcRunFile()
-{
-    showInfo "Installing custom XBMC startup executable..."
-    createDirectory "$TEMP_DIRECTORY" 1 0
-    	download $DOWNLOAD_URL"xbmc_run_script"
-    
-    if [ -e $TEMP_DIRECTORY"xbmc_run_script" ]; then
-        IS_MOVED=$(move $TEMP_DIRECTORY"xbmc_run_script" "$XBMC_CUSTOM_EXEC")
-    
-        if [ "$IS_MOVED" == "1" ]; then
-            sudo chmod a+x "$XBMC_CUSTOM_EXEC" > /dev/null 2>&1
-            showInfo "Installation of custom XBMC startup executable successfull"
-        else
-            showError "Installation of custom XBMC startup executable failed"
-        fi
-    else
-        showError "Download of custom XBMC startup executable failed"
-    fi
-}
-
 function installXbmcUpstartScript()
 {
     removeAutorunFiles
@@ -781,30 +729,6 @@ function selectXbmcPpa()
     esac
 }
 
-function selectXbmcStartupMethod()
-{
-    cmd=(dialog --backtitle "XBMC autorun method"
-        --radiolist "Please select the method used to start XBMC (default recommended):" 
-        15 $DIALOG_WIDTH 3)
-        
-    options=(1 "init.d" off
-            2 "upstart (Preferred)" on)
-         
-    choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-
-    case ${choice//\"/} in
-        1)
-            installXbmcInitScript
-            ;;
-        2)
-            installXbmcUpstartScript
-            ;;
-        *)
-            selectStartupMethod
-            ;;
-    esac
-}
-
 function selectXbmcTweaks()
 {
     cmd=(dialog --title "Optional XBMC tweaks and additions" 
@@ -881,7 +805,7 @@ function selectAdditionalPackages()
         --checklist "Plese select to install:" 
         15 $DIALOG_WIDTH 6)
         
-    options=(1 "Lirc (IR remote support)" off
+    options=(1 "LIRC (IR remote support)" off
             2 "Hts tvheadend (live TV backend)" off
             3 "Oscam (live HDTV decryption tool)" off
             4 "Automatic upgrades (every 4 hours)" off)
@@ -1005,7 +929,7 @@ distUpgrade
 installVideoDriver
 installXinit
 installXbmc
-selectXbmcStartupMethod
+installXbmcUpstartScript
 installXbmcBootScreen
 selectScreenResolution
 reconfigureXServer
