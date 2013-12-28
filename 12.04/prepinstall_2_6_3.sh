@@ -1,13 +1,13 @@
 #!/bin/bash
 #
-# @author   Bram van Oploo / Edited by uNiversal
+# @author   Bram van Oploo / Bug fixes by uNiversal
 # @date     2013-02-22
-# @version  2.6.2
+# @version  2.8
 #
 
 XBMC_USER="xbmc"
 THIS_FILE=$0
-SCRIPT_VERSION="2.6.3"
+SCRIPT_VERSION="2.8"
 VIDEO_DRIVER=""
 HOME_DIRECTORY="/home/$XBMC_USER/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
