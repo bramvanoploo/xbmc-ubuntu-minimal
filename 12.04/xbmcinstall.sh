@@ -43,7 +43,7 @@ OSCAM_PPA="ppa:oscam/ppa"
 
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
-SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.04 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
+SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu minimal 12.04LTS by Bram van Oploo :: Edited by Universal"
 
 GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'} |tr [a-z] [A-Z])
 
@@ -242,9 +242,8 @@ function move()
 
 function installDependencies()
 {
-    echo "-- Installing installation dependencies..."
+    echo "-- Installing script and apt-get dependencies..."
     echo ""
-
 	# python-software-properties for add-apt-repository (Ubuntu 12.04)
 	# software-properties-common for add-apt-repository (Ubuntu 12.10 and above)
 	sudo apt-get -y install dialog python-software-properties software-properties-common pastebinit > /dev/null 2>&1
