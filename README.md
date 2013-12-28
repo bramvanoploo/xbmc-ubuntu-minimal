@@ -13,7 +13,7 @@ x64: http://archive.ubuntu.com/ubuntu/dists/precise/main/installer-amd64/current
 
 ```
 cd ~ 
-wget https://github.com/uNiversaI/xbmc-ubuntu-minimal/blob/master/12.04/prepinstall_2_6_2.sh
+wget https://github.com/uNiversaI/xbmc-ubuntu-minimal/blob/master/12.04/xbmcinstall.sh
 bash ./xbmcinstall.sh
 ```
 
