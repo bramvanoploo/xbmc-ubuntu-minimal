@@ -2,6 +2,7 @@
 #
 # @author   Bug fixes by uNiversal
 # @original author Bram van Oploo
+# @halloffame Bran van Oploo | Morrtin | Albinoman887 | 
 # @date     2013-12-28
 # @version  2.8
 #
