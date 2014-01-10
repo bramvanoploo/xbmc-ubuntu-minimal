@@ -1,4 +1,4 @@
-xbmc-ubuntu-minimal
+xbmc-minimal
 ===================
 
 * Install Ubuntu minimal 12.04LTS on your HTPC machine...
